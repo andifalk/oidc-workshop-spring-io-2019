@@ -15,8 +15,8 @@ spring:
 
 github:
   base:
-    url: https://api.github.com/            
-      
+    url: https://api.github.com/
+
 logging:
   level:
     root: INFO

@@ -1,0 +1,3 @@
+rootProject.name = 'lab2'
+
+include 'library-server-initial'

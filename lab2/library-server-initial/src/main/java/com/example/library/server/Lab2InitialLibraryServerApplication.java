@@ -1,12 +1,12 @@
-package com.example.lab1;
+package com.example.library.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Lab1CompleteApplication {
+public class Lab2InitialLibraryServerApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(Lab1CompleteApplication.class, args);
+    SpringApplication.run(Lab2InitialLibraryServerApplication.class, args);
   }
 }

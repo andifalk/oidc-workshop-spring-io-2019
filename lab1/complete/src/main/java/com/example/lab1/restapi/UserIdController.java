@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserIdController {
 
-	@GetMapping("/")
-	public String index(Model model,
-						@RegisteredOAuth2AuthorizedClient(registrationId = "github") OAuth2AuthorizedClient authorizedClient,
-						@AuthenticationPrincipal OAuth2User oauth2User) {
-		model.addAttribute("userName", oauth2User.getName());
-		model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
-        model.addAttribute("userAttributes", oauth2User.getAttributes());
-		return "index";
-	}
+  @GetMapping("/")
+  public String index(
+      Model model,
+      @RegisteredOAuth2AuthorizedClient(registrationId = "github")
+          OAuth2AuthorizedClient authorizedClient,
+      @AuthenticationPrincipal OAuth2User oauth2User) {
+    model.addAttribute("userName", oauth2User.getName());
+    model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
+    model.addAttribute("userAttributes", oauth2User.getAttributes());
+    return "index";
+  }
 }
