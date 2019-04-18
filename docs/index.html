@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Securing Microservices with OpenID Connect and Spring Security 5.1</title>
+        <meta name="description" content="Securing Microservices with OpenID Connect and Spring Security 5.1">
+        <meta name="author" content="Andreas Falk">
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="icon" href="images/cropped-novatec-favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" href="images/cropped-novatec-favicon-192x192.png" sizes="192x192" />
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/novatec.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+                <!-- Title, Speaker and Workshop Introduction -->
+                <section>
+                    <section>
+                        <img src="images/spring_io_2019_workshop.jpg" class="plain">
+                        <p>
+                            <small>
+                            <a href="https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html">https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section data-background-color="white">
+                        <img src="images/andreas_falk.jpg" class="plain" width="35%">
+                        <h4>Andreas Falk</h4>
+                        <small>
+                            <p><strong>Novatec Consulting GmbH</strong></p>
+                            </p>andreas.falk@novatec-gmbh.de / @andifalk (Twitter)<br>
+                            <br><a href="https://www.novatec-gmbh.de/">https://www.novatec-gmbh.de</a><br>
+                            <img src="images/novatec_logo_big.png" class="plain" width="40%">
+                        </small>
+                    </section>
+                </section>
+
+                <!-- Introduction into OAuth 2.0 and OpenID Connect 1.0 -->
+                <section>
+                    <section>
+                        <h1>Introduction to</h1>
+                        <h2>OAuth 2.0</h2>
+                        <h2>and</h2>
+                        <h2>OpenID Connect 1.0</h2>
+                    </section>
+                    <section>
+                        <img src="images/big_picture_technology.png" class="plain" width="72%">
+                        <br>
+                        <small>
+                            <a href="#"></a>
+                        </small>
+                    </section>
+                </section>
+
+                <!-- The End -->
+                <section>
+                    <section>
+                        <h2>The Big Picture</h2>
+                        <img src="images/big_picture_security.png" class="plain" width="85%">
+                    </section>
+                    <section>
+                        <h2>Book References</h2>
+                        <img src="images/iron-glad-java.jpg" class="plain" width="24%">
+                        <img src="images/devops-handbook.jpg" class="plain" width="20%">
+                        <img src="images/threat-modeling-book.jpg" class="plain" width="24%">
+                        <img src="images/agile-security-book.jpg" class="plain" width="24%">
+                    </section>
+                    <section>
+                        <h1>Q&A</h1>
+                        <a href="https://www.novatec-gmbh.de/">https://www.novatec-gmbh.de</a></br>
+                        <a href="https://blog.novatec-gmbh.de/">https://blog.novatec-gmbh.de</a><br>
+                        andreas.falk@novatec-gmbh.de<br>
+                        Twitter: @andifalk<br>
+                    </section>
+                    <section>
+                        <h2>Online References</h2>
+                        <small>
+                            <ul>
+                                <li><a href="https://github.com/OWASP/Top10">OWASP Top 10 2017 (https://github.com/OWASP/Top10)</a></li>
+                            </ul>
+                            <p>All images used are from <a href="https://pixabay.com/">Pixabay</a> and are published under <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">Creative Commons CC0 license.</a></p>
+                            All used logos are trademarks of respective companies
+                        </small>
+                    </section>
+                </section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				allottedTime: 40 * 60 * 1000, // 40 minutes
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/tagcloud/tagcloud.js', async: true },
+                    { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'},
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
