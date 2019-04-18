@@ -128,9 +128,9 @@ public class BookRestController {
               b.setDescription(bookResource.getDescription());
               b.setIsbn(bookResource.getIsbn());
               b.setTitle(bookResource.getTitle());
-              bookService.update(b);
+              UUID identifier = bookService.update(b);
               return bookService
-                  .findWithDetailsByIdentifier(bookId)
+                  .findWithDetailsByIdentifier(identifier)
                   .map(ub -> ResponseEntity.ok(new BookResourceAssembler().toResource(ub)))
                   .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
             })

@@ -58,6 +58,56 @@ further information.
 
 The REST API uses HATEOAS to include links to further resources or actions using hypermedia links.
 
+== Authorization
+
+=== Book API
+
+|===
+| REST API | Required Role
+
+| `GET /books`
+| USER or CURATOR
+
+| `GET /books/{identifier}`
+| USER or CURATOR
+
+| `POST /books/{identifier}/borrow`
+| USER
+
+| `POST /books/{identifier}/return`
+| USER
+
+| `POST /books`
+| CURATOR
+
+| `PUT /books/{identifier}`
+| CURATOR
+
+| `DELETE /books/{identifier}`
+| CURATOR
+|===
+
+=== User API
+
+|===
+| REST API | Required Role
+
+| `GET /users`
+| ADMIN
+
+| `GET /users/{identifier}`
+| ADMIN
+
+| `POST /users`
+| ADMIN
+
+| `PUT /users/{identifier}`
+| ADMIN
+
+| `DELETE /users/{identifier}`
+| ADMIN
+|===
+
 == Resources
 
 === Books
@@ -87,6 +137,32 @@ include::{snippets}/create-book/httpie-request.adoc[]
 ===== HTTP response
 
 include::{snippets}/create-book/http-response.adoc[]
+
+==== Update an existing Book
+
+In order to update a book, the consumer needs to provide an `isbn` number, a
+a `title` and a `description` for the new book and `PUT` them to `/books/{identifier}`.
+This will update an existing book in the library's collection.
+
+[[update-book_curl_request]]
+===== Curl request
+
+include::{snippets}/update-book/curl-request.adoc[]
+
+[[update-book_http_request]]
+===== HTTP request
+
+include::{snippets}/update-book/http-request.adoc[]
+
+[[update-book_httpie_request]]
+===== HTTPie request
+
+include::{snippets}/update-book/httpie-request.adoc[]
+
+[[update-book_http_response]]
+===== HTTP response
+
+include::{snippets}/update-book/http-response.adoc[]
 
 ==== Listing all existing Books
 
@@ -169,7 +245,7 @@ include::{snippets}/borrow-book/http-response.adoc[]
 
 ==== Returning a Book
 
-In order to return a book it has to (1) exist and (2) be borrowed by someone.
+In order to return a book it has to (1) exist and (2) be borrowed by the current user.
 A book can be returned sending an empty `POST` request to the
 `/books/{identifier}/return` action resource.
 
@@ -249,9 +325,37 @@ include::{snippets}/create-user/http-request.adoc[]
 [[create-user_http_response]]
 ===== HTTP response
 
-Successful deletion is indicated with a response like this:
+Successful creation is indicated with a response like this:
 
 include::{snippets}/create-user/http-response.adoc[]
+
+==== Update an existing User
+
+In order to update an existing user, the consumer needs to provide an `email address`, `first name` and `last name`
+for the existing user and `PUT` them to `/users/{identifier}`.
+This will update the existing user in the user's collection.
+
+[[update-user_curl_request]]
+===== Curl request
+
+include::{snippets}/update-user/curl-request.adoc[]
+
+[[update-user_httpie_request]]
+===== HTTPie request
+
+include::{snippets}/update-user/httpie-request.adoc[]
+
+[[update-user_http_request]]
+===== HTTP request
+
+include::{snippets}/update-user/http-request.adoc[]
+
+[[update-user_http_response]]
+===== HTTP response
+
+Successful update is indicated with a response like this:
+
+include::{snippets}/update-user/http-response.adoc[]
 
 ==== Listing all existing Users
 

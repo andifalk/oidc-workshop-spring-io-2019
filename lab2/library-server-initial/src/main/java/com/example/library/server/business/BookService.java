@@ -2,8 +2,10 @@ package com.example.library.server.business;
 
 import com.example.library.server.dataaccess.Book;
 import com.example.library.server.dataaccess.BookRepository;
+import com.example.library.server.dataaccess.User;
 import com.example.library.server.dataaccess.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,7 @@ public class BookService {
     return bookRepository.save(book).getIdentifier();
   }
 
+  @PreAuthorize("hasAnyRole('USER', 'CURATOR')")
   public Optional<Book> findByIdentifier(UUID uuid) {
     return bookRepository.findOneByIdentifier(uuid);
   }
@@ -69,7 +72,7 @@ public class BookService {
                     .findOneByIdentifier(bookIdentifier)
                     .ifPresent(
                         b -> {
-                          b.doBorrow(u);
+                          doBorrow(b, u);
                           bookRepository.save(b);
                         }));
   }
@@ -90,7 +93,7 @@ public class BookService {
                     .findOneByIdentifier(bookIdentifier)
                     .ifPresent(
                         b -> {
-                          b.doReturn(u);
+                          doReturn(b, u);
                           bookRepository.save(b);
                         }));
   }
@@ -104,5 +107,24 @@ public class BookService {
   @PreAuthorize("hasRole('CURATOR')")
   public void deleteByIdentifier(UUID bookIdentifier) {
     bookRepository.deleteBookByIdentifier(bookIdentifier);
+  }
+
+  private void doReturn(Book book, User user) {
+    if (book.isBorrowed()) {
+      if (book.getBorrowedBy().equals(user)) {
+        book.setBorrowed(false);
+        book.setBorrowedBy(null);
+      } else {
+        throw new AccessDeniedException(
+                String.format("User %s cannot return a book borrowed by another user", user.getEmail()));
+      }
+    }
+  }
+
+  private void doBorrow(Book book, User user) {
+    if (!book.isBorrowed()) {
+      book.setBorrowed(true);
+      book.setBorrowedBy(user);
+    }
   }
 }

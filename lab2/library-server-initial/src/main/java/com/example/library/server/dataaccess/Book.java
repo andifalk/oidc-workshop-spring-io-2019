@@ -2,6 +2,7 @@ package com.example.library.server.dataaccess;
 
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.security.access.AccessDeniedException;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -38,6 +39,7 @@ public class Book extends AbstractPersistable<Long> {
 
   @ManyToOne private User borrowedBy;
 
+  @SuppressWarnings("unused")
   public Book() {}
 
   @PersistenceConstructor
@@ -86,21 +88,22 @@ public class Book extends AbstractPersistable<Long> {
     return borrowed;
   }
 
+  public void setBorrowed(boolean borrowed) {
+    this.borrowed = borrowed;
+  }
+
   public User getBorrowedBy() {
     return borrowedBy;
+  }
+
+  public void setBorrowedBy(User borrowedBy) {
+    this.borrowedBy = borrowedBy;
   }
 
   public void doBorrow(User user) {
     if (!this.borrowed) {
       this.borrowed = true;
       this.borrowedBy = user;
-    }
-  }
-
-  public void doReturn(User user) {
-    if (this.borrowed) {
-      this.borrowed = false;
-      this.borrowedBy = null;
     }
   }
 
