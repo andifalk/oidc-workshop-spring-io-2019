@@ -3,6 +3,8 @@
 
 # Securing Microservices with OpenID Connect and Spring Security 5.1 @ Spring I/O 2019
 
+![Spring IO Workshop 2019](docs/images/spring_io_2019_workshop.jpg)
+
 This repository contains material for workshop at [Spring I/O 2019](https://2019.springio.net/) on "Securing Microservices with OpenID Connect and Spring Security 5.1"
 
 ## Topics
