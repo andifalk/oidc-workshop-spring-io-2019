@@ -11,12 +11,19 @@
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="icon" href="images/cropped-novatec-favicon-32x32.png" sizes="32x32" />
         <link rel="icon" href="images/cropped-novatec-favicon-192x192.png" sizes="192x192" />
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
-		<link rel="stylesheet" href="css/theme/novatec.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/novatec.css" id="theme">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -56,20 +63,492 @@
                 <!-- Introduction into OAuth 2.0 and OpenID Connect 1.0 -->
                 <section>
                     <section>
-                        <h1>Introduction to</h1>
-                        <h2>OAuth 2.0</h2>
-                        <h2>and</h2>
-                        <h2>OpenID Connect 1.0</h2>
+                        <h1>OAuth 2.0</h1>
+                        <h2>101</h2>
+                        <p>
+                            <a href="https://tools.ietf.org/html/rfc6749">RFC 6749: The OAuth 2.0 Authorization Framework</a><br>
+                            <a href="https://tools.ietf.org/html/rfc6750">RFC 6750: OAuth 2.0 Bearer Token Usage</a><br>
+                            <a href="https://tools.ietf.org/html/rfc6819">RFC 6819: OAuth 2.0 Threat Model and Security Considerations</a>
+                        </p>
                     </section>
                     <section>
-                        <img src="images/big_picture_technology.png" class="plain" width="72%">
-                        <br>
-                        <small>
-                            <a href="#"></a>
-                        </small>
+                        <h2>What is OAuth 2.0?</h2>
+                        <p>
+                            OAuth 2.0 is an authorization delegation framework<br>
+                            It allows a client application to ask resource owner (users) for permission to access a protected resource (an HTTP API) on their behalf.
+                        </p>
+                        <img src="images/Valet_Ferrari.png" class="plain" width="45%">
+                    </section>
+                    <section>
+                        <h3>OAuth 2.0 Model</h3>
+                        <img src="images/oauth2_protocol.png" class="plain">
+                    </section>
+                    <section>
+                        <h3>OAuth 2.0 Grant Flows</h3>
+                        <table style="font-size: smaller">
+                            <thead>
+                                <tr>
+                                    <th>Client Type</th>
+                                    <th>Flow</th>
+                                    <th>Refresh Tokens</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Confidential</td>
+                                    <td>Authorization Code</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td>Public (Native)</td>
+                                    <td>Authorization Code (PKCE)</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td>Public (SPA)</td>
+                                    <td>Implicit</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <td>Trusted</td>
+                                    <td>RO Password Creds</td>
+                                    <td>X</td>
+                                </tr>
+                                <tr>
+                                    <td>No Resource Owner</td>
+                                    <td>Client Credentials</td>
+                                    <td>--</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h4>Authorization Code Grant Flow</h4>
+                        <img src="images/authorization_code_schema.png" class="plain" width="100%">
+                    </section>
+                    <section>
+                        <h3>Authorization Request</h3>
+                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">?response_type=code</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&state=xyz</p>
+                    </section>
+                    <section>
+                        <h3>Authorization Response</h3>
+                        <p style="text-align: left">HTTP/1.1 302 Found</p>
+                        <p style="text-align: left">Location: https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">?code=ab23bhW56Xb</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&state=xyz</p>
+                    </section>
+                    <section>
+                        <h4>Token Request (Basic Auth)</h4>
+                        <p><small>Client-Id=123, Client-Secret=456, Base64(123:456)="MTIzOjQ1Ng=="</small></p>
+                        <p style="text-align: left">POST https://authserver.example.com/token</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">Authorization: Basic MTIzOjQ1Ng==</p>
+                        <p>&nbsp;</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
+                    </section>
+                    <section>
+                        <h4>Token Request (Body)</h4>
+                        <p><small>Client-Id=123, Client-Secret=456</small></p>
+                        <p style="text-align: left">POST https://authserver.example.com/token</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
+                        <p>&nbsp;</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">&client_id=123&client_secret=456</p>
+                    </section>
+                    <section>
+                        <h4>Token Response</h4>
+                        <pre><code class="json" data-trim>
+                             HTTP/1.1 200 OK
+                             Content-Type: application/json;charset=UTF-8
+
+                             {
+                               "access_token":"2YotnFZFEjr1zCsicMWpAA",
+                               "token_type":"bearer",
+                               "expires_in":3600,
+                               "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
+                             }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4>Refresh Token Request</h4>
+                        <p><small>Client-Id=123, Client-Secret=456, Base64(123:456)="MTIzOjQ1Ng=="</small></p>
+                        <p style="text-align: left">POST https://authserver.example.com/token</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">Authorization: Basic MTIzOjQ1Ng==</p>
+                        <p>&nbsp;</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">grant_type=refresh_token</p>
+                        <p class="fragment" style="text-align: left; margin-left: 60px;">&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA</p>
+                    </section>
+                    <section>
+                        <h4>Refresh Token Response</h4>
+                        <pre><code class="json" data-trim>
+                             HTTP/1.1 200 OK
+                             Content-Type: application/json;charset=UTF-8
+
+                             {
+                               "access_token":"3YotnFZFEjr1zCsicMWpBB",
+                               "token_type":"bearer",
+                               "expires_in":3600,
+                               "refresh_token":"zHzv3JOkF0XG5Qx2TlQAIs"
+                             }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4>Implicit Grant Flow</h4>
+                        <img src="images/implicit_schema.png" class="plain" >
+                    </section>
+                    <section>
+                        <h3>Authorization Request</h3>
+                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">?response_type=token</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&state=xyz</p>
+                    </section>
+                    <section>
+                        <h3>Authorization Response (with Access Token)</h3>
+                        <p style="text-align: left">HTTP/1.1 302 Found</p>
+                        <p style="text-align: left">Location: https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">#access_token=2YotnFZFEjr1zCsicMWpAA</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&token_type=bearer</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&expires_in=3600</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&scope=api.read api.write</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&state=xyz</p>
+                    </section>
+                    <section>
+                        <h2>Further OAuth 2.0 Standards</h2>
+                        <p><a href="http://tools.ietf.org/html/rfc7636">RFC 7636: Proof Key for Code Exchange (&ldquo;Pixy&rdquo;)</a></p>
+                        <p><a href="http://tools.ietf.org/html/rfc7662">RFC 7662: Token Introspection</a></p>
+                        <p><a href="http://tools.ietf.org/html/rfc7009">RFC 7009: Token Revocation</a></p>
+                        <p><a href="http://tools.ietf.org/html/rfc6750">RFC 6750: OAuth 2.0 Bearer Token Usage</a></p>
+                        <p><a href="http://tools.ietf.org/html/rfc6819">RFC 6819: OAuth 2.0 Threat Model and Security Considerations</a></p>
+                    </section>
+                    <section>
+                        <h3>4th OAuth Security Workshop 2019</h3>
+                        <p>March 20–22, 2019, in Stuttgart/Germany</p>
+                        <img src="images/osw2019picture.jpg" class="plain">
+                        <p><small><a href="https://sec.uni-stuttgart.de/events/osw2019">https://sec.uni-stuttgart.de/events/osw2019</a></small></p>
+                    </section>
+                    <section>
+                        <h3>New Recommendations & Drafts</h3>
+                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">OAuth 2.0 Security Best Current Practice</a></p>
+                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps">OAuth 2.0 for Browser-Based Apps</a></p>
+                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-mtls">OAuth 2.0 Mutual TLS Client Authentication and Certificate-Bound
+                            Access Tokens</a></p>
+                        <p><a href="https://tools.ietf.org/html/draft-bertocci-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a></p>
+                    </section>
+                    <section>
+                        <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
+                        <table style="font-size: smaller">
+                            <thead>
+                            <tr>
+                                <th>Client Type</th>
+                                <th>Flow</th>
+                                <th>Refresh Tokens</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Confidential</td>
+                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Public (Native)</td>
+                                <td>Authorization Code (PKCE)</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Public (SPA)</td>
+                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
+                                <td>--</td>
+                            </tr>
+                            <tr style="text-decoration: line-through;">
+                                <td>Trusted</td>
+                                <td>RO Password Creds</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>No Resource Owner</td>
+                                <td>Client Credentials</td>
+                                <td>--</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
                     </section>
                 </section>
 
+                <!-- OpenID Connect 1.0 -->
+                <section>
+                    <section>
+                        <h2>OpenID Connect 1.0</h2>
+                        <h2>(OIDC)</h2>
+                        <h2>101</h2>
+                        <small>
+                        <p>
+                            <a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a><br>
+                            <a href="https://openid.net/specs/openid-connect-registration-1_0.html">OpenID Connect Dynamic Client Registration 1.0</a><br>
+                            <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a>
+                        </p>
+                        </small>
+                    </section>
+                    <section>
+                        <h3>OpenID Connect is for Authentication</h3>
+                        <img src="images/manico_tweet_oauth2_not_authentication.png" class="plain" width="100%">
+                    </section>
+                    <section>
+                        <h3>OIDC Components</h3>
+                        <img src="images/oidc-map-2014.png" class="plain" width="60%">
+                        <p><small><a href="https://openid.net/connect/">https://openid.net/connect</a></small></p>
+                    </section>
+                    <section>
+                        <h3>OIDC Model (Based on OAuth 2.0)</h3>
+                        <img src="images/oidc_roles.png" class="plain" width="70%">
+                    </section>
+                    <section>
+                        <h3>Additions to OAuth 2.0</h3>
+                        <p>Identity Token (JWT format)</p>
+                        <p>User Info Endpoint</p>
+                        <p>Standard Scopes</p>
+                        <p>Hybrid Grant Flow</p>
+                    </section>
+                    <section>
+                        <h2>ID Token</h2>
+                        <p>&ldquo;The primary extension that OpenID Connect makes to OAuth 2.0 to enable End-Users to be Authenticated is the ID Token data structure.<br>
+                        The ID Token is represented as a JSON Web Token (JWT)&rdquo;</p>
+                    </section>
+                    <section>
+                        <h3>JSON Web token (JWT)</h3>
+                        <h4>Base 64 Encoded JSON Formatted Value of...</h4>
+                        <p class="fragment">...Header</p>
+                        <p class="fragment">...Payload</p>
+                        <p class="fragment">...Signature</p>
+                        <pre><code class="http" data-trim>
+                            GET / HTTP/1.1
+                            Host: localhost:8080
+                            Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1N...
+                        </code></pre>
+                        <small>
+                        <ul>
+                        <li><a href="https://tools.ietf.org/html/rfc7519">RFC 7519: JSON Web Token (JWT)</a></li>
+                        <li><a href="https://tools.ietf.org/html/draft-ietf-oauth-jwt-bcp">JSON Web Token Best Current Practices</a></li>
+                        <li><a href="https://tools.ietf.org/html/draft-ietf-oauth-proof-of-possession">Proof-of-Possession Key Semantics for JSON Web Tokens (JWTs)</a></li>
+                        </ul>
+                        </small>
+                    </section>
+                    <section>
+                        <h3>JSON Web Token (JWT)</h3>
+                        <p>Header</p>
+                        <pre><code class="json" data-trim>
+                            {
+                              typ: "JWT",
+                              alg: "RS256"
+                            }
+                        </code></pre>
+                        <p>Payload</p>
+                        <pre><code class="json" data-trim>
+                            {
+                              iss: "https://identity.example.com",
+                              aud: "my-client-id",
+                              exp: 1495782385,
+                              nonce: "N0.46824857243233511495739124749",
+                              iat: 1495739185,
+                              at_hash: "hC1NDSB8WZ9SnjXTid175A",
+                              sub: "mysubject",
+                              auth_time: 1495739185,
+                              email: "test@gmail.com"
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>ID Token Claims</h2>
+                        <table style="font-size: smaller">
+                            <thead>
+                            <tr>
+                                <th>Scope</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>iss</td>
+                                <td>X</td>
+                                <td>Issuer Identifier</td>
+                            </tr>
+                            <tr>
+                                <td>sub</td>
+                                <td>X</td>
+                                <td>Subject Identifier</td>
+                            </tr>
+                            <tr>
+                                <td>aud</td>
+                                <td>X</td>
+                                <td>Audience(s) that this ID Token is intended for</td>
+                            </tr>
+                            <tr>
+                                <td>exp</td>
+                                <td>X</td>
+                                <td>Expiration time</td>
+                            </tr>
+                            <tr>
+                                <td>iat</td>
+                                <td>X</td>
+                                <td>Time at which the JWT was issued</td>
+                            </tr>
+                            <tr>
+                                <td>auth_time</td>
+                                <td>--</td>
+                                <td>Time when the End-User authentication occurred</td>
+                            </tr>
+                            <tr>
+                                <td>nonce</td>
+                                <td>--</td>
+                                <td>Associate a client with an ID Token</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h2>User Info Endpoint</h2>
+                        <p>OAuth 2.0 Protected Resource that returns Claims about the authenticated End-User</p>
+                        <pre><code class="http" data-trim>
+                            GET /userinfo HTTP/1.1
+                            Host: identityserver.example.com
+                            Authorization: Bearer SlAV32hkKG
+                        </code></pre>
+                        <pre><code class="http" data-trim>
+                            HTTP/1.1 200 OK
+                            Content-Type: application/json
+
+                            {
+                             "sub": "248289761001",
+                             "name": "Jane Doe",
+                             "given_name": "Jane",
+                             "family_name": "Doe",
+                             "preferred_username": "j.doe",
+                             "email": "janedoe@example.com",
+                             "picture": "http://example.com/janedoe/me.jpg"
+                            }
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Standard Scopes</h3>
+                        <table style="font-size: smaller">
+                            <thead>
+                            <tr>
+                                <th>Scope</th>
+                                <th>Mandatory</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>openid</td>
+                                <td>X</td>
+                                <td>OIDC MUST contain the openid scope</td>
+                            </tr>
+                            <tr>
+                                <td>profile</td>
+                                <td>--</td>
+                                <td>Request claims like "name", "family_name", "picture"</td>
+                            </tr>
+                            <tr>
+                                <td>email</td>
+                                <td>--</td>
+                                <td>Request claims for "email" and "email_verified"</td>
+                            </tr>
+                            <tr>
+                                <td>address</td>
+                                <td>--</td>
+                                <td>Request "address" claim</td>
+                            </tr>
+                            <tr>
+                                <td>phone</td>
+                                <td>--</td>
+                                <td>Request "phone_number" & "phone_number_verified" claims</td>
+                            </tr>
+                            <tr>
+                                <td>offline</td>
+                                <td>--</td>
+                                <td>Include refresh token in token response</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section data-transition="none">
+                        <h3>OIDC Flows</h3>
+                        <ul>
+                            <li>Authorization Code (w/ or w/o PKCE)</li>
+                            <li>Implicit</li>
+                            <li style="font-weight: bold">Hybrid</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <!-- OIDC Workshop -->
+
+                <section>
+                    <section>
+                        <h2>Hands-On Workshop</h2>
+                    </section>
+                    <section>
+                        TODO
+                    </section>
+                </section>
+
+                <!-- Spring Security 5.2 & 5.3 outlook -->
+                <section>
+                    <section>
+                        <h2>What's new in</h2>
+                        <h2>Spring Security 5.2 & 5.3</h2>
+                        <p>
+                            <img src="images/spring_security_5_2.png" class="plain" width="70%">
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Spring Security 5.2</h2>
+                        <ul>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/6446">Client Support for PKCE</a></li>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/5350">OpenID Connect RP-Initiated Logout</a></li>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/5200">Support for OAuth 2.0 Token Introspection</a></li>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/5351">Support for Resource Server Multi-tenancy (Servlet)</a></li>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/6727">Support for Resource Server Multi-tenancy (Reactive)</a></li>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/5465">Ability to use symmetric keys with JwtDecoder</a></li>
+                        <li><a href="https://github.com/spring-projects/spring-security/issues/6634">JWT Flow API in Test Support</a></li>
+                        </ul>
+                        <p>
+                            <small>
+                                <a href="https://github.com/spring-projects/spring-security/milestone/132">Spring Security 5.2.0 M2 GitHub Issues</a><br>
+                                <a href="https://github.com/spring-projects/spring-security/milestone/141">Spring Security 5.2.0 RC1 GitHub Issues</a><br>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Spring Security 5.3</h2>
+                        <p><a href="https://github.com/spring-projects/spring-security/issues/6320">Support OAuth 2.0 Authorization Server:</a></p>
+                        <ul>
+                            <li>OAuth 2.0 Authorization Code Grant</li>
+                            <li>OpenID Connect 1.0 (Authorization Code Flow)</li>
+                            <li>PKCE</li>
+                            <li>OAuth 2.0 Client Credentials Grant</li>
+                            <li>JWT Access Token format</li>
+                            <li>JWK Set Endpoint</li>
+                            <li>Opaque Access Token format</li>
+                            <li>OAuth 2.0 Token Revocation</li>
+                        </ul>
+                        <p><small><a href="https://github.com/spring-projects/spring-security/milestone/136">Spring Security 5.3.0 GitHub Issues</a></small></p>
+                    </section>
+                </section>
                 <!-- The End -->
                 <section>
                     <section>
@@ -80,7 +559,7 @@
                         <h2>Book References</h2>
                         <img src="images/iron-glad-java.jpg" class="plain" width="24%">
                         <img src="images/devops-handbook.jpg" class="plain" width="20%">
-                        <img src="images/threat-modeling-book.jpg" class="plain" width="24%">
+                        <img src="images/oauth2_in_action.jpg" class="plain" width="24%">
                         <img src="images/agile-security-book.jpg" class="plain" width="24%">
                     </section>
                     <section>
@@ -111,16 +590,20 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
-				allottedTime: 40 * 60 * 1000, // 40 minutes
-				dependencies: [
+                hash: true,
+                fragmentInURL: false,
+                dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/tagcloud/tagcloud.js', async: true },
-                    { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'},
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
 					{ src: 'plugin/highlight/highlight.js', async: true }
 				]
 			});
+            Reveal.configure({
+                slideNumber: true,
+                pdfMaxPagesPerSlide: 1
+            });
 		</script>
 	</body>
 </html>
