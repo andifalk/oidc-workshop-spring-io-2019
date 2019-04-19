@@ -25,25 +25,19 @@ class BookServiceAuthorizationTest {
   @Test
   void update() {}
 
-  @Nested
-  @DisplayName("User is authorized to find a book")
-  class findByIdentifierAuthorized {
-
-    @WithMockUser
-    @Test
-    @DisplayName("for USER role")
-    void findByIdentifierIsAuthorizedForRoleUser() {
-      assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
-    }
-
-    @WithMockUser(roles = "CURATOR")
-    @Test
-    @DisplayName("for CURATOR role")
-    void findByIdentifierIsAuthorizedForRoleCurator() {
-      assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
-    }
+  @WithMockUser
+  @Test
+  @DisplayName("for USER role")
+  void findByIdentifierIsAuthorizedForRoleUser() {
+    assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
   }
 
+  @WithMockUser(roles = "CURATOR")
+  @Test
+  @DisplayName("for CURATOR role")
+  void findByIdentifierIsAuthorizedForRoleCurator() {
+    assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
+  }
 
   @Test
   void findWithDetailsByIdentifier() {}
