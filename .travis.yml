@@ -1,0 +1,18 @@
+language: java
+dist: trusty
+install: skip
+sudo: required
+services:
+  - docker
+
+jobs:
+  include:
+
+    - stage: build
+      jdk: openjdk8
+      script:
+        - ./gradlew build
+    - stage: build
+      jdk: openjdk11
+      script:
+        - ./gradlew build
