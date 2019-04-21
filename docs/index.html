@@ -126,6 +126,10 @@
                         <img src="images/authorization_code_schema.png" class="plain" width="100%">
                     </section>
                     <section>
+                        <h4>Authorization Code Grant Flow</h4>
+                        <img src="images/server_web.png" class="plain" width="100%">
+                    </section>
+                    <section>
                         <h3>Authorization Request</h3>
                         <p style="text-align: left">GET https://authserver.example.com/authorize</p>
                         <p class="fragment" style="text-align: left; margin-left: 100px;">?response_type=code</p>
@@ -202,6 +206,10 @@
                     <section>
                         <h4>Implicit Grant Flow</h4>
                         <img src="images/implicit_schema.png" class="plain" >
+                    </section>
+                    <section>
+                        <h4>Implicit Grant Flow</h4>
+                        <img src="images/spa.png" class="plain" >
                     </section>
                     <section>
                         <h3>Authorization Request</h3>
@@ -301,8 +309,13 @@
                         </small>
                     </section>
                     <section>
-                        <h3>OpenID Connect is for Authentication</h3>
+                        <h3>OpenID Connect 1.0 is for Authentication</h3>
                         <img src="images/manico_tweet_oauth2_not_authentication.png" class="plain" width="100%">
+                        <p>
+                            <small>
+                                <a href="https://oauth.net/articles/authentication/">OAuth 2.0 is not an authentication protocol</a>
+                            </small>
+                        </p>
                     </section>
                     <section>
                         <h3>OIDC Components</h3>
@@ -310,15 +323,17 @@
                         <p><small><a href="https://openid.net/connect/">https://openid.net/connect</a></small></p>
                     </section>
                     <section>
-                        <h3>OIDC Model (Based on OAuth 2.0)</h3>
+
+                        <h3>OIDC Model</h3>
                         <img src="images/oidc_roles.png" class="plain" width="70%">
                     </section>
                     <section>
                         <h3>Additions to OAuth 2.0</h3>
-                        <p>Identity Token (JWT format)</p>
-                        <p>User Info Endpoint</p>
-                        <p>Standard Scopes</p>
-                        <p>Hybrid Grant Flow</p>
+                        <p class="fragment highlight-current-red">Identity Token (JWT format)</p>
+                        <p class="fragment highlight-current-red">User Info Endpoint</p>
+                        <p class="fragment highlight-current-red">Standard Scopes</p>
+                        <p class="fragment highlight-current-red">Hybrid Grant Flow</p>
+                        <p class="fragment highlight-current-red">OpenID Provider Configuration Information</p>
                     </section>
                     <section>
                         <h2>ID Token</h2>
@@ -392,7 +407,7 @@
                             <tr>
                                 <td>aud</td>
                                 <td>X</td>
-                                <td>Audience(s) that this ID Token is intended for</td>
+                                <td>Audience(s) of this ID Token</td>
                             </tr>
                             <tr>
                                 <td>exp</td>
@@ -406,8 +421,8 @@
                             </tr>
                             <tr>
                                 <td>auth_time</td>
-                                <td>--</td>
-                                <td>Time when the End-User authentication occurred</td>
+                                <td>(X)</td>
+                                <td>Time of End-User authentication</td>
                             </tr>
                             <tr>
                                 <td>nonce</td>
@@ -419,7 +434,6 @@
                     </section>
                     <section>
                         <h2>User Info Endpoint</h2>
-                        <p>OAuth 2.0 Protected Resource that returns Claims about the authenticated End-User</p>
                         <pre><code class="http" data-trim>
                             GET /userinfo HTTP/1.1
                             Host: identityserver.example.com
@@ -484,13 +498,83 @@
                             </tbody>
                         </table>
                     </section>
-                    <section data-transition="none">
+                    <section>
                         <h3>OIDC Flows</h3>
                         <ul>
                             <li>Authorization Code (w/ or w/o PKCE)</li>
                             <li>Implicit</li>
                             <li style="font-weight: bold">Hybrid</li>
                         </ul>
+                    </section>
+                    <section>
+                        <h3>OpenID Connect 1.0 Configuration</h3>
+                        <p>https://example.com/.well-known/openid-configuration</p>
+                        <pre><code class="json" data-trim>
+                            {
+                              "authorization_endpoint": "https://idp.example.com/auth",
+                              "grant_types_supported": [
+                                  "authorization_code",
+                                  "implicit",
+                                  "refresh_token"
+                              ],
+                              "issuer": "https://idp.example.com",
+                              "jwks_uri": "https://idp.example.com/keys",
+                              "token_endpoint": "https://idp.example.com/token",
+                              "userinfo_endpoint": "https://idp.example.com/userinfo",
+                              ...
+                            }
+                        </code></pre>
+                        <p>
+                            <small>
+                                <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Certified OIDC Provider</h3>
+                        <table style="font-size: smaller">
+                            <thead>
+                            <tr>
+                                <th>Server/Service</th>
+                                <th>Reference</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Auth0</td>
+                                <td><a href="https://auth0.com/">https://auth0.com</a></td>
+                            </tr>
+                            <tr>
+                                <td>Okta</td>
+                                <td><a href="https://okta.com">https://okta.com</a></td>
+                            </tr>
+                            <tr>
+                                <td>IdentityServer</td>
+                                <td><a href="https://identityserver.io/">https://identityserver.io</a></td>
+                            </tr>
+                            <tr>
+                                <td>JBoss Keycloak</td>
+                                <td><a href="https://www.keycloak.org/">https://www.keycloak.org</a></td>
+                            </tr>
+                            <tr>
+                                <td>Pivotal CloudFoundry UAA</td>
+                                <td><a href="https://github.com/cloudfoundry/uaa">https://github.com/cloudfoundry/uaa</a></td>
+                            </tr>
+                            <tr>
+                                <td>PingFederate</td>
+                                <td><a href="https://www.pingidentity.com">https://www.pingidentity.com</a></td>
+                            </tr>
+                            <tr>
+                                <td>...</td>
+                                <td>...</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <small>
+                                <a href="https://openid.net/developers/certified/">Certified OpenID Provider Servers and Services</a>
+                            </small>
+                        </p>
                     </section>
                 </section>
 
