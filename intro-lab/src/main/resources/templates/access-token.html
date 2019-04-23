@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>OAuth 2.0 Client</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>OAuth 2.0 Client</h1>
+
+<h2>End of Authorization Code Flow</h2>
+
+<h3>Access Token</h3>
+
+<p th:text="'Access Token: ' + ${access_token}"></p>
+
+<p th:text="'Expires in: ' + ${expires_in}"></p>
+
+<p th:text="'Token Type: ' + ${token_type}"></p>
+
+<p th:text="'Scope: ' + ${scope}"></p>
+
+<h3>Refresh Token</h3>
+
+<p th:text="'Refresh Token: ' + ${refresh_token}"></p>
+
+<hr>
+
+<a th:href="@{'/refreshtoken?refresh_token=' + ${refresh_token}}" href="#">Refresh Access Token</a>
+
+</body>
+</html>

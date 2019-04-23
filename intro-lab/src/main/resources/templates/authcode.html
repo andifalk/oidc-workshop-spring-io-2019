@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>OAuth 2.0 Client</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>OAuth 2.0 Client Callback</h1>
+
+<h2>Second step: Exchange authorization code for access token</h2>
+
+<ul>
+    <li th:text="'authorization-code:' + ${code}"></li>
+    <li th:text="'state:' + ${state}"></li>
+</ul>
+
+<h2>Token Request</h2>
+
+<p th:utext="${token_request}"></p>
+
+<a th:href="@{'/tokenrequest?code=' + ${code} + '&state=' + ${state}}" href="#">Request Token</a>
+
+</body>
+</html>
