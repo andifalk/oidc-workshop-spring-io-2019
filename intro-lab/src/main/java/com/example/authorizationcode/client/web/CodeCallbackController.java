@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Controller
 public class CodeCallbackController {
@@ -26,12 +29,11 @@ public class CodeCallbackController {
   private URI redirectUri;
 
   @GetMapping(path = "/callback")
-  public String oauthCallBack(
-      @RequestParam(name = "code", required = false) String code,
-      @RequestParam(name = "state", required = false) String state,
-      @RequestParam(name = "error", required = false) String error,
-      @RequestParam(name = "error_description", required = false) String error_description,
-      Model model) {
+  public String oauthCallBack(@RequestParam(name = "code", required = false) String code,
+                              @RequestParam(name = "state", required = false) String state,
+                              @RequestParam(name = "error", required = false) String error,
+                              @RequestParam(name = "error_description", required = false) String error_description,
+                              Model model) {
 
     if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(state)) {
       model.addAttribute("token_endpoint", tokenEndpointUrl.toString());
@@ -42,23 +44,6 @@ public class CodeCallbackController {
       model.addAttribute("client_id", clientid);
       model.addAttribute("client_secret", clientSecret);
       model.addAttribute("tokenRequest", new TokenRequest());
-
-      String tokenRequest =
-          "POST "
-              + tokenEndpointUrl
-              + "<p>Content-Type: application/x-www-form-urlencoded</p>"
-              + "grant_type=authorization_code&code="
-              + code
-              + "<br>&state="
-              + state
-              + "&redirect_uri="
-              + redirectUri.toString()
-              + "<br>&client_id="
-              + clientid
-              + "<br>&client_secret="
-              + clientSecret;
-
-      model.addAttribute("token_request", tokenRequest);
       return "authcode";
     } else {
       model.addAttribute("error", error);

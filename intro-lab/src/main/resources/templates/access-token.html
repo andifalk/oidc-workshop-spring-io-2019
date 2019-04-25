@@ -13,11 +13,18 @@
 
 <p th:text="'Access Token: ' + ${access_token}"></p>
 
-<p th:text="'Expires in: ' + ${expires_in}"></p>
+<p th:text="'Expires in: ' + ${expires_in} + ' seconds'"></p>
 
 <p th:text="'Token Type: ' + ${token_type}"></p>
 
 <p th:text="'Scope: ' + ${scope}"></p>
+
+<h3>Access Token (decoded JWT)</h3>
+
+<p th:text="'JWT Header: ' + ${jwt_header}"></p>
+<p th:text="'JWT Payload: ' + ${jwt_payload}"></p>
+<p th:text="'JWT Signature: ' + ${jwt_signature}"></p>
+
 
 <h3>Refresh Token</h3>
 

@@ -1,0 +1,14 @@
+democlient:
+  authorization:
+    endpoint: https://access-me.eu.auth0.com/authorize
+    clientid: nneDSPLo11m16058eVyE2ST6EuPN50mW
+    response-type: code
+    redirect-uri: http://localhost:8080/client/callback
+    scope: offline_access
+  token:
+    endpoint: https://access-me.eu.auth0.com/oauth/token
+    clientid: nneDSPLo11m16058eVyE2ST6EuPN50mW
+    client-secret: rDneBCPht8HqdmKxwexIQ3nAe7GJ6yOF8wKH0H-ds96MXdUDzxl_JYh73-5r-vVR
+    redirect-uri: http://localhost:8080/client/callback
+  introspection:
+    endpoint: https://access-me.eu.auth0.com/oauth/introspect
