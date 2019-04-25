@@ -32,7 +32,10 @@
 
 <hr>
 
-<a th:href="@{'/refreshtoken?refresh_token=' + ${refresh_token}}" href="#">Refresh Access Token</a>
+<ul>
+    <li><a th:href="@{'/refreshtoken?refresh_token=' + ${refresh_token}}" href="#">Refresh Access Token</a></li>
+    <li><a th:href="@{'/introspection?access_token=' + ${access_token}}" href="#">Token Introspection</a></li>
+</ul>
 
 </body>
 </html>
