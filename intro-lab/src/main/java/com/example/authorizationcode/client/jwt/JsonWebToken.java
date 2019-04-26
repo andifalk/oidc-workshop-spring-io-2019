@@ -8,7 +8,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * A simple JWT decoder.
- */
+ * This just splits the base 64 encoded string into 2 or 3 parts
+ * (depending on existing signature part) and does a base 64 decoding on the first two parts.
+ * There is no check of the signature included (which is a must have in productive code)
+ * */
 public class JsonWebToken {
 
   private String base64Header;
@@ -28,7 +31,9 @@ public class JsonWebToken {
   }
 
   public boolean isJwt() {
-    return StringUtils.isNotBlank(base64Header) && StringUtils.isNotBlank(base64Payload) && StringUtils.isNotBlank(signature);
+    return StringUtils.isNotBlank(base64Header)
+        && StringUtils.isNotBlank(base64Payload)
+        && StringUtils.isNotBlank(signature);
   }
 
   public String getHeader() {
@@ -42,5 +47,4 @@ public class JsonWebToken {
   public String getSignature() {
     return signature != null ? signature : "--";
   }
-
 }
