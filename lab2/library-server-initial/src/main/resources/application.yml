@@ -13,9 +13,11 @@ spring:
     date-format: com.fasterxml.jackson.databind.util.StdDateFormat
     default-property-inclusion: non_null
 
-
 logging:
   level:
     org:
       springframework:
         security: debug
+server:
+  error:
+    include-stacktrace: never

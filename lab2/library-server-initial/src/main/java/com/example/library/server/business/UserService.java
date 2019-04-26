@@ -3,6 +3,7 @@ package com.example.library.server.business;
 import com.example.library.server.dataaccess.User;
 import com.example.library.server.dataaccess.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.IdGenerator;
@@ -28,6 +29,7 @@ public class UserService {
     return userRepository.findOneByEmail(email);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @Transactional
   public UUID create(User user) {
     if (user.getIdentifier() == null) {
@@ -36,19 +38,23 @@ public class UserService {
     return userRepository.save(user).getIdentifier();
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @Transactional
   public User update(User user) {
     return userRepository.save(user);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   public Optional<User> findByIdentifier(UUID userIdentifier) {
     return userRepository.findOneByIdentifier(userIdentifier);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   public List<User> findAll() {
     return userRepository.findAll();
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @Transactional
   public void deleteByIdentifier(UUID userIdentifier) {
     userRepository.deleteUserByIdentifier(userIdentifier);

@@ -2,7 +2,6 @@ package com.example.library.server.dataaccess;
 
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
-import org.springframework.security.access.AccessDeniedException;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;

@@ -116,7 +116,8 @@ public class BookService {
         book.setBorrowedBy(null);
       } else {
         throw new AccessDeniedException(
-                String.format("User %s cannot return a book borrowed by another user", user.getEmail()));
+            String.format(
+                "User %s cannot return a book borrowed by another user", user.getEmail()));
       }
     }
   }

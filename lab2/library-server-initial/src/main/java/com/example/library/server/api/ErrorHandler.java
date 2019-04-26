@@ -22,7 +22,7 @@ public class ErrorHandler {
   public ResponseEntity<String> handle(Exception ex) {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     logger.error(ex.getMessage(), ex);
-    return ResponseEntity.badRequest().build();
+    return ResponseEntity.badRequest().body(ex.getMessage());
   }
 
   @ExceptionHandler(AccessDeniedException.class)
