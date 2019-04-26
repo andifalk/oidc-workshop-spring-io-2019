@@ -41,15 +41,15 @@ To start the workshop you need:
 
 The hands-on part of the workshop is split up into the following parts:
 
-[Intro Lab: Follow the OAuth 2.0 authorization code flow in detail](intro-lab/README.md)
+[Intro Lab: Follow the OAuth 2.0 authorization code flow in detail](intro-lab)
 
-[Lab 1: Implementing a GitHub Client with OAuth 2.0](lab1/README.md)
+[Lab 1: Implementing a GitHub Client with OAuth 2.0](lab1)
 
-[Lab 2: Implementing an OIDC resource server](lab2/README.md)
+[Lab 2: Implementing an OIDC resource server](lab2)
 
-[Lab 3: Implementing an OIDC client](lab3/README.md)
+[Lab 3: Implementing an OIDC client](lab3)
 
-[Lab 4: Testing OIDC security](lab4/README.md)
+[Lab 4: Testing OIDC security](lab4)
 
 
 ## License
