@@ -329,20 +329,16 @@
                     </section>
                     <section>
                         <h3>Additions to OAuth 2.0</h3>
-                        <p class="fragment highlight-current-red">Identity Token (JWT format)</p>
+                        <p class="fragment highlight-current-red">Id Token (JWT format)</p>
                         <p class="fragment highlight-current-red">User Info Endpoint</p>
                         <p class="fragment highlight-current-red">Standard Scopes</p>
                         <p class="fragment highlight-current-red">Hybrid Grant Flow</p>
                         <p class="fragment highlight-current-red">OpenID Provider Configuration Information</p>
                     </section>
                     <section>
-                        <h2>ID Token</h2>
-                        <p>&ldquo;The primary extension that OpenID Connect makes to OAuth 2.0 to enable End-Users to be Authenticated is the ID Token data structure.<br>
-                        The ID Token is represented as a JSON Web Token (JWT)&rdquo;</p>
-                    </section>
-                    <section>
-                        <h3>JSON Web token (JWT)</h3>
-                        <h4>Base 64 Encoded JSON Formatted Value of...</h4>
+                        <h3>ID Token</h3>
+                        <h4>JSON Web token (JWT)</h4>
+                        <p>Base 64 Encoded JSON Formatted Value of...</p>
                         <p class="fragment">...Header</p>
                         <p class="fragment">...Payload</p>
                         <p class="fragment">...Signature</p>
@@ -591,6 +587,14 @@
                         <h2>Hands-On Workshop</h2>
                     </section>
                     <section>
+                        <h2>&ldquo;Legacy&rdquo; Spring Security OAuth 2 Stack</h2>
+                        <img src="images/spring_security_old.png" class="plain">
+                    </section>
+                    <section>
+                        <h2>&ldquo;New&rdquo; Spring Security OAuth 2 Stack</h2>
+                        <img src="images/spring_security_new.png" class="plain">
+                    </section>
+                    <section>
                         TODO
                     </section>
                 </section>
@@ -690,7 +694,7 @@
 				]
 			});
             Reveal.configure({
-                slideNumber: true,
+                slideNumber: 'c/t',
                 pdfMaxPagesPerSlide: 1
             });
 		</script>
