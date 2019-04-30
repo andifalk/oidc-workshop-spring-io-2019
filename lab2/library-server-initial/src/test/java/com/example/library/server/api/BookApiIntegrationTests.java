@@ -95,7 +95,7 @@ class BookApiIntegrationTests {
   @Test
   @DisplayName("borrow a book")
   @WithUserDetails(
-      value = "user@example.com",
+      value = "bruce.wayne@example.com",
       userDetailsServiceBeanName = "libraryUserDetailsService")
   void verifyAndDocumentBorrowBook() throws Exception {
 
@@ -110,7 +110,7 @@ class BookApiIntegrationTests {
   @Test
   @DisplayName("return a borrowed book")
   @WithUserDetails(
-      value = "user@example.com",
+      value = "bruce.wayne@example.com",
       userDetailsServiceBeanName = "libraryUserDetailsService")
   void verifyAndDocumentReturnBook() throws Exception {
 

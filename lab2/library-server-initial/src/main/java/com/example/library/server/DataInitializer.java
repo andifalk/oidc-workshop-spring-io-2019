@@ -70,24 +70,24 @@ public class DataInitializer implements CommandLineRunner {
         Stream.of(
                 new User(
                     USER_IDENTIFIER,
-                    "user@example.com",
-                    passwordEncoder.encode("user_4demo!"),
-                    "Library",
-                    "User",
+                    "bruce.wayne@example.com",
+                    passwordEncoder.encode("wayne"),
+                    "Bruce",
+                    "Wayne",
                     Collections.singletonList(Role.USER.name())),
                 new User(
                     CURATOR_IDENTIFIER,
-                    "curator@example.com",
-                    passwordEncoder.encode("curator_4demo!"),
-                    "Library",
-                    "Curator",
+                    "peter.parker@example.com",
+                    passwordEncoder.encode("parker"),
+                    "Peter",
+                    "Parker",
                     Collections.singletonList(Role.CURATOR.name())),
                 new User(
                     ADMIN_IDENTIFIER,
-                    "admin@example.com",
-                    passwordEncoder.encode("admin_4demo!"),
-                    "Library",
-                    "Administrator",
+                    "clark.kent@example.com",
+                    passwordEncoder.encode("kent"),
+                    "Clark",
+                    "Kent",
                     Collections.singletonList(Role.ADMIN.name())))
             .map(userRepository::save)
             .collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
   void createBooks() {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    Optional<User> loadedUser = userRepository.findOneByEmail("user@example.com");
+    Optional<User> loadedUser = userRepository.findOneByEmail("bruce.wayne@example.com");
 
     if (loadedUser.isPresent()) {
 
