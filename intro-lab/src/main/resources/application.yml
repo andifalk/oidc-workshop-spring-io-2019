@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /client
-  port: 9090
+  port: 9095
 
 spring:
   thymeleaf:
