@@ -1,6 +1,7 @@
 rootProject.name = 'oidc-workshop-spring-io-2019'
 
-include 'intro-lab'
-include 'lab1:complete'
-include 'lab2:library-server-initial'
+include 'intro-labs:auth-code-demo'
+include 'intro-labs:github-client'
+include 'lab1:library-server-initial'
+include 'lab1:library-server-complete'
 

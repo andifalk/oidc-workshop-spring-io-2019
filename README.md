@@ -37,20 +37,23 @@ To start the workshop you need:
 * The [REST API documentation](https://andifalk.github.io/oidc-workshop-spring-io-2019/api-doc.html) of the initial library application
 * This GitHub repository: [(https://github.com/andifalk/oidc-workshop-spring-io-2019.git](https://github.com/andifalk/oidc-workshop-spring-io-2019.git)
 
+## Intro Labs
+
+[Intro Lab 1: Follow the OAuth 2.0 authorization code flow in detail](intro-labs/auth-code-demo)
+
+[Intro Lab 2: Implementing a GitHub Client using common OAuth 2.0 providers](intro-labs/github-client)
+
 ## Hands-On Part Labs
 
 The hands-on part of the workshop is split up into the following parts:
 
-[Intro Lab: Follow the OAuth 2.0 authorization code flow in detail](intro-lab)
+[Setting up Keycloak as Identity Provider]()
 
-[Lab 1: Implementing a GitHub Client with OAuth 2.0](lab1)
+[Lab 1: Implementing an OIDC resource server](lab1)
 
-[Lab 2: Implementing an OIDC resource server](lab2)
+[Lab 2: Implementing an OIDC client](lab2)
 
-[Lab 3: Implementing an OIDC client](lab3)
-
-[Lab 4: Testing OIDC security](lab4)
-
+[Lab 3: Testing OIDC security](lab3)
 
 ## License
 
@@ -59,8 +62,3 @@ Apache 2.0 licensed
 Copyright (c) by 2019 Andreas Falk
 
 [1]:http://www.apache.org/licenses/LICENSE-2.0.txt
-
-
-
-
-
