@@ -7,9 +7,13 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class BooksController {
@@ -34,6 +38,20 @@ public class BooksController {
             .log()
             .map(BookListResource::getBooks)
             .map(c -> { model.addAttribute("books", c); return "index"; });
+  }
+
+  @GetMapping("/createbook")
+  String createForm(Model model) {
+
+    model.addAttribute("book", new CreateBookResource());
+
+    return "createbookform";
+  }
+
+  @PostMapping("/create")
+  String create(CreateBookResource createBookResource, HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+    response.sendRedirect(request.getContextPath());
+    return null;
   }
 
 }
