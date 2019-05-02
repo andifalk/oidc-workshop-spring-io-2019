@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Library Client</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Library Client</h1>
+
+    <div class="row">
+
+        <div class="col">
+            <p>A nice library to borrow books</p>
+        </div>
+
+        <div class="col">
+            <p th:text="'Hello ' + ${fullname}"></p>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Author(s)</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">ISBN</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>@mdo</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+            <td>@fat</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+            <td>@twitter</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <div class="jumbotron">
+        <button class="btn btn-primary" role="button" th:href="@{/create-book}" href="#">Create Book</button>
+    </div>
+
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/popper.min.js"></script>
+    <script src="../static/js/bootstrap.js" th:href="@{/js/bootstrap.js}"></script>
+
+</div>
+
+</body>
+</html>
