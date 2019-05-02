@@ -28,34 +28,22 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Author(s)</th>
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">ISBN</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>@twitter</td>
+        <tr th:each="bookResource : ${books}">
+            <td th:text="${bookResource.authors}">Author</td>
+            <td th:text="${bookResource.title}">Title</td>
+            <td th:text="${bookResource.description}">descr</td>
+            <td th:text="${bookResource.isbn}">isbn</td>
+            <td><a class="btn btn-primary" role="button" th:href="@{/edit}" href="#">Edit</a></td>
+            <td><a class="btn btn-primary" role="button" th:href="@{/borrow}" href="#">Borrow</a></td>
         </tr>
         </tbody>
     </table>
@@ -63,7 +51,7 @@
     <hr>
 
     <div class="jumbotron">
-        <button class="btn btn-primary" role="button" th:href="@{/create-book}" href="#">Create Book</button>
+        <button class="btn btn-primary" role="button" th:href="@{/create-bookResource}" href="#">Create Book</button>
     </div>
 
     <script src="../static/js/jquery.min.js"></script>

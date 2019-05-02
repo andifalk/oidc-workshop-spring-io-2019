@@ -4,4 +4,5 @@ include 'intro-labs:auth-code-demo'
 include 'intro-labs:github-client'
 include 'lab1:library-server-initial'
 include 'lab1:library-server-complete'
+include 'lab2:library-client-complete'
 

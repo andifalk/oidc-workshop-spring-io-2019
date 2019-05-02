@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Book {
+public class BookResource {
 
   private UUID identifier;
 
@@ -22,9 +22,9 @@ public class Book {
   private User borrowedBy;
 
   @SuppressWarnings("unused")
-  public Book() {}
+  public BookResource() {}
 
-  public Book(
+  public BookResource(
       UUID identifier,
       String isbn,
       String title,
@@ -109,14 +109,14 @@ public class Book {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     if (!super.equals(o)) return false;
-    Book book = (Book) o;
-    return borrowed == book.borrowed
-        && identifier.equals(book.identifier)
-        && isbn.equals(book.isbn)
-        && title.equals(book.title)
-        && description.equals(book.description)
-        && authors.equals(book.authors)
-        && Objects.equals(borrowedBy, book.borrowedBy);
+    BookResource bookResource = (BookResource) o;
+    return borrowed == bookResource.borrowed
+        && identifier.equals(bookResource.identifier)
+        && isbn.equals(bookResource.isbn)
+        && title.equals(bookResource.title)
+        && description.equals(bookResource.description)
+        && authors.equals(bookResource.authors)
+        && Objects.equals(borrowedBy, bookResource.borrowedBy);
   }
 
   @Override
@@ -127,7 +127,7 @@ public class Book {
 
   @Override
   public String toString() {
-    return "Book{"
+    return "BookResource{"
         + "identifier="
         + identifier
         + ", isbn='"
