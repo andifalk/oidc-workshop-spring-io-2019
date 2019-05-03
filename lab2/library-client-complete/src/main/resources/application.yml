@@ -30,3 +30,5 @@ logging:
       springframework:
         web: info
 
+library:
+  server: http://localhost:9091/library-server
