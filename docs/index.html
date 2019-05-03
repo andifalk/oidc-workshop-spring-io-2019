@@ -44,8 +44,8 @@
                         <img src="images/spring_io_2019_workshop.jpg" class="plain">
                         <p>
                             <small>
-                            <a href="https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html">https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html</a>
-                            <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019">Demos: https://github.com/andifalk/oidc-workshop-spring-io-2019</a>
+                            Slides: <a href="https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html">https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html</a><br>
+                            Source-Code: <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019">https://github.com/andifalk/oidc-workshop-spring-io-2019</a>
                             </small>
                         </p>
                     </section>
@@ -64,6 +64,7 @@
                         <p>Intro to OAuth 2.0 & OpenID Connect 1.0</p>
                         <p>Intro Labs</p>
                         <p>Hands-On Labs</p>
+                        <p>What's new in OAuth 2.0 & OIDC</p>
                         <p>What's new in Spring Security 5.2 and 5.3</p>
                     </section>
                 </section>
@@ -73,10 +74,13 @@
                     <section>
                         <h1>OAuth 2.0</h1>
                         <h2>101</h2>
+                        <p><img src="images/oauth.png" class="plain"></p>
                         <p>
+                            <small>
                             <a href="https://tools.ietf.org/html/rfc6749">RFC 6749: The OAuth 2.0 Authorization Framework</a><br>
                             <a href="https://tools.ietf.org/html/rfc6750">RFC 6750: OAuth 2.0 Bearer Token Usage</a><br>
                             <a href="https://tools.ietf.org/html/rfc6819">RFC 6819: OAuth 2.0 Threat Model and Security Considerations</a>
+                            </small>
                         </p>
                     </section>
                     <section>
@@ -234,76 +238,14 @@
                         <p class="fragment" style="text-align: left; margin-left: 200px;">&scope=api.read api.write</p>
                         <p class="fragment" style="text-align: left; margin-left: 200px;">&state=xyz</p>
                     </section>
-                    <section>
-                        <h2>Further OAuth 2.0 Standards</h2>
-                        <p><a href="http://tools.ietf.org/html/rfc7636">RFC 7636: Proof Key for Code Exchange (&ldquo;Pixy&rdquo;)</a></p>
-                        <p><a href="http://tools.ietf.org/html/rfc7662">RFC 7662: Token Introspection</a></p>
-                        <p><a href="http://tools.ietf.org/html/rfc7009">RFC 7009: Token Revocation</a></p>
-                        <p><a href="http://tools.ietf.org/html/rfc6750">RFC 6750: OAuth 2.0 Bearer Token Usage</a></p>
-                        <p><a href="http://tools.ietf.org/html/rfc6819">RFC 6819: OAuth 2.0 Threat Model and Security Considerations</a></p>
-                    </section>
-                    <section>
-                        <h3>4th OAuth Security Workshop 2019</h3>
-                        <p>March 20–22, 2019, in Stuttgart/Germany</p>
-                        <img src="images/osw2019picture.jpg" class="plain">
-                        <p><small><a href="https://sec.uni-stuttgart.de/events/osw2019">https://sec.uni-stuttgart.de/events/osw2019</a></small></p>
-                    </section>
-                    <section>
-                        <h3>New Recommendations & Drafts</h3>
-                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">OAuth 2.0 Security Best Current Practice</a></p>
-                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps">OAuth 2.0 for Browser-Based Apps</a></p>
-                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-mtls">OAuth 2.0 Mutual TLS Client Authentication and Certificate-Bound
-                            Access Tokens</a></p>
-                        <p><a href="https://tools.ietf.org/html/draft-bertocci-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a></p>
-                    </section>
-                    <section>
-                        <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
-                        <table style="font-size: smaller">
-                            <thead>
-                            <tr>
-                                <th>Client Type</th>
-                                <th>Flow</th>
-                                <th>Refresh Tokens</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Confidential</td>
-                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
-                                <td>X</td>
-                            </tr>
-                            <tr>
-                                <td>Public (Native)</td>
-                                <td>Authorization Code (PKCE)</td>
-                                <td>X</td>
-                            </tr>
-                            <tr>
-                                <td>Public (SPA)</td>
-                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
-                                <td>--</td>
-                            </tr>
-                            <tr style="text-decoration: line-through;">
-                                <td>Trusted</td>
-                                <td>RO Password Creds</td>
-                                <td>X</td>
-                            </tr>
-                            <tr>
-                                <td>No Resource Owner</td>
-                                <td>Client Credentials</td>
-                                <td>--</td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    </section>
                 </section>
 
                 <!-- OpenID Connect 1.0 -->
                 <section>
                     <section>
                         <h2>OpenID Connect 1.0</h2>
-                        <h2>(OIDC)</h2>
                         <h2>101</h2>
+                        <p><img src="images/OpenID_logo_2.svg.png" class="plain" width="50%"></p>
                         <small>
                         <p>
                             <a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a><br>
@@ -599,6 +541,184 @@
                         <h2>Hands-On application</h2>
                         <img src="images/demo-architecture.png" class="plain" width="100%">
                     </section>
+
+                    <section>
+                        <h2>Let's Code!!</h2>
+                        <p>Check out (git) or download source (zip) from</p>
+                        <p><a href="https://tinyurl.com/yylensdd">https://tinyurl.com/yylensdd</a></p>
+                    </section>
+
+                </section>
+
+                <!-- OAuth Security Workshop Stuttgart -->
+                <section>
+                    <section>
+                        <h4>4th OAuth Security Workshop 2019</h4>
+                        <p>Stuttgart</p>
+                        <p>
+                            <img src="images/osw2019picture.jpg" class="plain" width="70%">
+                        </p>
+                        <p>
+                            <small>
+                                <a href="https://sec.uni-stuttgart.de/events/osw2019">https://sec.uni-stuttgart.de/events/osw2019</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <img src="images/why_not_use_implicit_grant.png" class="plain" width="50%">
+                        <br><small><a href="https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926">https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926</a></small>
+                    </section>
+                    <section>
+                        <h3>Implicit Flow Attacks</h3>
+                        <img src="images/oauth_implicit_grant_attacks_d_fett.png" class="plain" width="100%">
+                        <br><small>Source: Torsten Lodderstedt and Daniel Fett</small>
+                        <p><small><a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">OAuth 2.0 Security Best Current Practice</a></small></p>
+                    </section>
+                    <section>
+                        <h3>OAuth 2.0 for Browser-Based Apps</h3>
+                        <p>Content-Security Policy</p>
+                        <p>Use a unique redirect URI</p>
+                        <p>NOT issue refresh tokens</p>
+                        <p><small><a href="https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps">OAuth 2.0 for Browser-Based Apps</a></small></p>
+                    </section>
+                    <section>
+                        <h3>Other Known OAuth 2.0 Attacks</h3>
+                        <ul>
+                            <li>Lack of CSRF protection</li>
+                            <li>Authorization code leakage and replay</li>
+                            <li>Authorization code injection</li>
+                            <li>Open Re-directors</li>
+                            <li>State leakage and replay</li>
+                            <li>Insufficient Redirect URI matching</li>
+                            <li>Too powerful access tokens</li>
+                            <li>Mix-Up Attacks</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Open Redirect !!</h2>
+                        <img src="images/openredirector_spring_security.png" class="plain">
+                    </section>
+                    <section>
+                        <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
+                        <table style="font-size: smaller">
+                            <thead>
+                            <tr>
+                                <th>Client Type</th>
+                                <th>Flow</th>
+                                <th>Refresh Tokens</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Confidential</td>
+                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Public (Native)</td>
+                                <td>Authorization Code (PKCE)</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Public (SPA)</td>
+                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
+                                <td>--</td>
+                            </tr>
+                            <tr style="text-decoration: line-through;">
+                                <td>Trusted</td>
+                                <td>RO Password Creds</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>No Resource Owner</td>
+                                <td>Client Credentials</td>
+                                <td>--</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h2>Proof Key for Code Exchange by OAuth Public Clients (PKCE)</h2>
+                        <p>(&ldquo;Pixy&rdquo;)</p>
+                        <p>Mitigates authorization code attacks</p>
+                        <p>Mitigates token leakage in SPAs</p>
+                        <p>
+                            <small>
+                                <a href="https://tools.ietf.org/html/rfc7636">Proof Key for Code Exchange by OAuth Public Clients</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>PKCE - Authorization Request</h3>
+                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
+                        <p style="text-align: left; margin-left: 100px;">?response_type=code</p>
+                        <p style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
+                        <p style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
+                        <p style="text-align: left; margin-left: 100px;">&state=xyz</p>
+                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge=xyz...&code_challenge_method=S256</p>
+                    </section>
+                    <section>
+                        <h4>PKCE - Token Request</h4>
+                        <p><small>Client-Id=123, Client-Secret=456</small></p>
+                        <p style="text-align: left">POST https://authserver.example.com/token</p>
+                        <p style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
+                        <p style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
+                        <p style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p style="text-align: left; margin-left: 60px;">&client_id=123&client_secret=456</p>
+                        <p style="text-align: left; margin-left: 60px; color: red;">&code_verifier=4gth4jn78k_8</p>
+                    </section>
+                    <section>
+                        <h3>Steal Tokens via XSS</h3>
+                        <p>&ldquo;XSS is Game-Over for OAuth 2&rdquo; (Jim Manico)</p>
+                        <img src="images/manico_xss_local_storage.jpeg" class="plain" width="60%">
+                    </section>
+                    <section>
+                        <h3>OAuth 2 Access Token JWT Profile</h3>
+                        <p>Vittorio Bertocci (Auth0)</p>
+                        <img src="images/vittorio_jwt.jpeg" class="plain" width="60%">
+                        <p>
+                            <small>
+                                <a href="https://tools.ietf.org/html/draft-ietf-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>OAuth 2 Access Token JWT Profile</h3>
+                        <p>Required claims: iss, exp, aud, sub, client_id</p>
+                        <p>Consider privacy restrictions for identity claims</p>
+                        <p>Authorization claims according to SCIM Core (RFC7643):</p>
+                        <ul>
+                            <li>Groups</li>
+                            <li>Entitlements</li>
+                            <li>Roles</li>
+                        </ul>
+                        <p>
+                            <small>
+                                <a href="https://tools.ietf.org/html/draft-ietf-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a><br>
+                                <a href="https://tools.ietf.org/pdf/rfc7643.pdf">System for Cross-domain Identity Management (SCIM)</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Token Binding</h3>
+                        <p style="text-decoration: line-through"><a href="https://tools.ietf.org/html/rfc8471">RFC8471: The Token Binding Protocol Version 1.0</a></p>
+                        <p style="text-decoration: line-through"><a href="https://tools.ietf.org/html/rfc8472">RFC8472: (TLS) Extension for Token Binding Protocol Negotiation</a></p>
+                        <p style="text-decoration: line-through"><a href="https://tools.ietf.org/html/rfc8473">RFC8473: Token Binding over HTTP</a></p>
+                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-mtls">OAuth 2.0 Mutual TLS Client Authentication and Certificate-Bound Access Tokens</a></p>
+                        <p>
+                            <small>
+                                <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/OkdLUyYmY1E/w2ESAeshBgAJ">Google - Intent to Remove: Token Binding</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Further Internet-Drafts for OAuth 2</h2>
+                        <p><a href="https://tools.ietf.org/id/draft-*-oauth-?maxhits=100&key=date&dir=desc">List of OAuth 2 Internet-Drafts (by date)</a></p>
+                    </section>
+                </section>
+
+                <section>
                     <section>
                         <h2>What's new in</h2>
                         <h2>Spring Security 5.2 & 5.3</h2>
@@ -607,15 +727,19 @@
                         </p>
                     </section>
                     <section>
+                        <h2>Always use most recent versions !!</h2>
+                        <img src="images/openredirector_spring_security.png" class="plain">
+                    </section>
+                    <section>
                         <h2>Spring Security 5.2</h2>
                         <ul>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/6446">Client Support for PKCE</a></li>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/5350">OpenID Connect RP-Initiated Logout</a></li>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/5200">Support for OAuth 2.0 Token Introspection</a></li>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/5351">Support for Resource Server Multi-tenancy (Servlet)</a></li>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/6727">Support for Resource Server Multi-tenancy (Reactive)</a></li>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/5465">Ability to use symmetric keys with JwtDecoder</a></li>
-                        <li><a href="https://github.com/spring-projects/spring-security/issues/6634">JWT Flow API in Test Support</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/6446">Client Support for PKCE</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/5350">OpenID Connect RP-Initiated Logout</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/5200">Support for OAuth 2.0 Token Introspection</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/5351">Support for Resource Server Multi-tenancy (Servlet)</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/6727">Support for Resource Server Multi-tenancy (Reactive)</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/5465">Ability to use symmetric keys with JwtDecoder</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/6634">JWT Flow API in Test Support</a></li>
                         </ul>
                         <p>
                             <small>
@@ -640,6 +764,7 @@
                         <p><small><a href="https://github.com/spring-projects/spring-security/milestone/136">Spring Security 5.3.0 GitHub Issues</a></small></p>
                     </section>
                 </section>
+
                 <!-- The End -->
                 <section>
                     <section>
