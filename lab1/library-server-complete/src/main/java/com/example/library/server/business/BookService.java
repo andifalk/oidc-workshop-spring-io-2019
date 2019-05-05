@@ -46,12 +46,12 @@ public class BookService {
     return bookRepository.save(book).getIdentifier();
   }
 
-  @PreAuthorize("hasAnyRole('LIBRARY_USER', 'LIBRARY_CURATOR')")
+  @PreAuthorize("isAuthenticated()")
   public Optional<Book> findByIdentifier(UUID uuid) {
     return bookRepository.findOneByIdentifier(uuid);
   }
 
-  @PreAuthorize("hasAnyRole('LIBRARY_USER', 'LIBRARY_CURATOR')")
+  @PreAuthorize("isAuthenticated()")
   public Optional<Book> findWithDetailsByIdentifier(UUID uuid) {
     return bookRepository.findOneWithDetailsByIdentifier(uuid);
   }
@@ -98,7 +98,7 @@ public class BookService {
                         }));
   }
 
-  @PreAuthorize("hasAnyRole('LIBRARY_USER', 'LIBRARY_CURATOR')")
+  @PreAuthorize("isAuthenticated()")
   public List<Book> findAll() {
     return bookRepository.findAll();
   }

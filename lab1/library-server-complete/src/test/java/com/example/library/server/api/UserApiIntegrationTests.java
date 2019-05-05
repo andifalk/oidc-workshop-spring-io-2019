@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static com.example.library.server.DataInitializer.CURATOR_IDENTIFIER;
-import static com.example.library.server.DataInitializer.USER_IDENTIFIER;
+import static com.example.library.server.DataInitializer.WAYNE_USER_IDENTIFIER;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -77,7 +77,7 @@ class UserApiIntegrationTests {
   void verifyAndDocumentGetUser() throws Exception {
 
     this.mockMvc
-        .perform(RestDocumentationRequestBuilders.get("/users/{userId}", USER_IDENTIFIER))
+        .perform(RestDocumentationRequestBuilders.get("/users/{userId}", WAYNE_USER_IDENTIFIER))
         .andExpect(status().isOk())
         .andDo(document("get-user"));
   }

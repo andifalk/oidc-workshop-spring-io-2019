@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2Res
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -120,10 +121,17 @@ class BookServiceAuthorizationTest {
 
     @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is forbidden for LIBRARY_ADMIN role")
-    void findByIdentifierIsForbiddenForRoleAdmin() {
-      assertThatThrownBy(() -> cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
-          .isInstanceOf(AccessDeniedException.class);
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
+    void findByIdentifierIsAuthorizedForRoleAdmin() {
+      given(bookRepository.findOneByIdentifier(any()))
+              .willReturn(Optional.of(BookBuilder.book().build()));
+      assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
+    }
+
+    @Test
+    @DisplayName("is forbidden for unauthenticated users")
+    void findByIdentifierIsForbiddenForUnauthenticatedUser() {
+      assertThatThrownBy(() -> cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isInstanceOf(AuthenticationException.class);
     }
 
     @WithMockUser(roles = "LIBRARY_USER")
@@ -148,11 +156,18 @@ class BookServiceAuthorizationTest {
 
     @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("with details is forbidden for LIBRARY_ADMIN role")
-    void findWithDetailsByIdentifierIsForbiddenForRoleAdmin() {
-      assertThatThrownBy(
-              () -> cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
-          .isInstanceOf(AccessDeniedException.class);
+    @DisplayName("with details is authorized for LIBRARY_ADMIN role")
+    void findWithDetailsByIdentifierIsAuthorizedForRoleAdmin() {
+      given(bookRepository.findOneWithDetailsByIdentifier(any()))
+              .willReturn(Optional.of(BookBuilder.book().build()));
+      assertThat(cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
+              .isPresent();
+    }
+
+    @Test
+    @DisplayName("with details is forbidden for unauthenticated users")
+    void findWithDetailsByIdentifierIsForbiddenForUnauthenticatedUser() {
+      assertThatThrownBy(() -> cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isInstanceOf(AuthenticationException.class);
     }
   }
 
@@ -180,9 +195,17 @@ class BookServiceAuthorizationTest {
 
     @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is forbidden for LIBRARY_ADMIN role")
-    void findAllIsForbiddenForAdminRole() {
-      assertThatThrownBy(() -> cut.findAll()).isInstanceOf(AccessDeniedException.class);
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
+    void findAllIsAuthorizedForAdminRole() {
+      given(bookRepository.findAll())
+              .willReturn(Collections.singletonList(BookBuilder.book().build()));
+      assertThat(cut.findAll()).isNotNull().isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("is forbidden for unauthenticated users")
+    void findAllIsForbiddenForUnauthenticatedUser() {
+      assertThatThrownBy(() -> cut.findAll()).isInstanceOf(AuthenticationException.class);
     }
   }
 

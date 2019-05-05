@@ -534,6 +534,10 @@
                         <img src="images/spring_security_old.png" class="plain">
                     </section>
                     <section>
+                        <h2>Always use most recent versions !!</h2>
+                        <img class="plain" src="images/openredirector_spring_security.png">
+                    </section>
+                    <section>
                         <h2>&ldquo;New&rdquo; Spring Security <br> OAuth 2 Stack</h2>
                         <img src="images/spring_security_new.png" class="plain">
                     </section>
@@ -593,10 +597,6 @@
                             <li>Too powerful access tokens</li>
                             <li>Mix-Up Attacks</li>
                         </ul>
-                    </section>
-                    <section>
-                        <h2>Open Redirect !!</h2>
-                        <img src="images/openredirector_spring_security.png" class="plain">
                     </section>
                     <section>
                         <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
@@ -675,16 +675,6 @@
                     </section>
                     <section>
                         <h3>OAuth 2 Access Token JWT Profile</h3>
-                        <p>Vittorio Bertocci (Auth0)</p>
-                        <img src="images/vittorio_jwt.jpeg" class="plain" width="60%">
-                        <p>
-                            <small>
-                                <a href="https://tools.ietf.org/html/draft-ietf-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a>
-                            </small>
-                        </p>
-                    </section>
-                    <section>
-                        <h3>OAuth 2 Access Token JWT Profile</h3>
                         <p>Required claims: iss, exp, aud, sub, client_id</p>
                         <p>Consider privacy restrictions for identity claims</p>
                         <p>Authorization claims according to SCIM Core (RFC7643):</p>
@@ -712,41 +702,121 @@
                             </small>
                         </p>
                     </section>
-                    <section>
-                        <h2>Further Internet-Drafts for OAuth 2</h2>
-                        <p><a href="https://tools.ietf.org/id/draft-*-oauth-?maxhits=100&key=date&dir=desc">List of OAuth 2 Internet-Drafts (by date)</a></p>
-                    </section>
                 </section>
+
+                <!-- What is new in Spring Security -->
 
                 <section>
                     <section>
-                        <h2>What's new in</h2>
-                        <h2>Spring Security 5.2 & 5.3</h2>
+                        <h3>What's new in <br>Spring Security<br>5.2 & 5.3</h3>
                         <p>
                             <img src="images/spring_security_5_2.png" class="plain" width="70%">
                         </p>
                     </section>
                     <section>
-                        <h2>Always use most recent versions !!</h2>
-                        <img src="images/openredirector_spring_security.png" class="plain">
-                    </section>
-                    <section>
-                        <h2>Spring Security 5.2</h2>
+                        <h2>Spring Security 5.2 (08/2019)</h2>
                         <ul>
                             <li><a href="https://github.com/spring-projects/spring-security/issues/6446">Client Support for PKCE</a></li>
                             <li><a href="https://github.com/spring-projects/spring-security/issues/5350">OpenID Connect RP-Initiated Logout</a></li>
                             <li><a href="https://github.com/spring-projects/spring-security/issues/5200">Support for OAuth 2.0 Token Introspection</a></li>
-                            <li><a href="https://github.com/spring-projects/spring-security/issues/5351">Support for Resource Server Multi-tenancy (Servlet)</a></li>
-                            <li><a href="https://github.com/spring-projects/spring-security/issues/6727">Support for Resource Server Multi-tenancy (Reactive)</a></li>
-                            <li><a href="https://github.com/spring-projects/spring-security/issues/5465">Ability to use symmetric keys with JwtDecoder</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/5351">Resource Server Multi-tenancy (Servlet & Reactive)</a></li>
+                            <li><a href="https://github.com/spring-projects/spring-security/issues/5465">Use symmetric keys with JwtDecoder</a></li>
                             <li><a href="https://github.com/spring-projects/spring-security/issues/6634">JWT Flow API in Test Support</a></li>
                         </ul>
                         <p>
                             <small>
                                 <a href="https://github.com/spring-projects/spring-security/milestone/132">Spring Security 5.2.0 M2 GitHub Issues</a><br>
-                                <a href="https://github.com/spring-projects/spring-security/milestone/141">Spring Security 5.2.0 RC1 GitHub Issues</a><br>
+                                <a href="https://github.com/spring-projects/spring-security/milestone/141">Spring Security 5.2.0 M3 GitHub Issues</a><br>
+                                <a href="https://github.com/spring-projects/spring-security/milestone/142">Spring Security 5.2.0 RC1 GitHub Issues</a><br>
                             </small>
                         </p>
+                    </section>
+                    <section>
+                        <h3>OAuth 2.0 Token Introspection</h3>
+                        <p>Opaque Tokens</p>
+                        <pre><code class="java" data-trim>
+                            class ResSrvConfig extends WebSecurityConfigurerAdapter {
+
+                                @Override
+                                protected void configure(HttpSecurity http)
+                                        throws Exception {
+                                    http.oauth2ResourceServer()
+                                            .opaqueToken()
+                                                .introspectionUri(this.introspectionUri)
+                                                .introspectionClientCredentials(
+                                                    this.clientId, this.clientSecret);
+                                }
+                            }
+                        </code></pre>
+                        <small>
+                            <a href="https://github.com/spring-projects/spring-security/issues/5200">https://github.com/spring-projects/spring-security/issues/5200</a>
+                        </small>
+                    </section>
+                    <section>
+                        <h3>Resource Server Multi-tenancy</h3>
+                        <pre><code class="java" data-trim>
+                            class ResSrvConfig extends WebSecurityConfigurerAdapter {
+
+                                @Override protected void configure(HttpSecurity http) {
+                                    http.oauth2ResourceServer()
+                                        .authenticationManagerResolver(
+                                            multitenantAuthenticationManager());
+                                }
+
+                                @Bean AuthenticationManagerResolver&lt;HttpServletRequest&gt;
+                                    multiTenantAuthMgr() {...}
+
+                                AuthenticationManager jwt() {...}
+                                AuthenticationManager opaque() {...}
+                            }
+                        </code></pre>
+                        <small>
+                            <a href="https://github.com/spring-projects/spring-security/issues/5351">https://github.com/spring-projects/spring-security/issues/5351</a><br>
+                            <a href="https://github.com/spring-projects/spring-security/issues/6727">https://github.com/spring-projects/spring-security/issues/6727</a>
+                        </small>
+                    </section>
+                    <section>
+                        <h4>Use symmetric keys with JwtDecoder</h4>
+                        <pre><code class="java" data-trim>
+                            class ResSrvConfig extends WebSecurityConfigurerAdapter {
+
+                              @Value("${spring.security.oauth2.resourceserver.
+                                            jwt.key-value}") RSAPublicKey key;
+
+                              @Override protected void configure(HttpSecurity http) {
+                                http.oauth2ResourceServer().jwt().decoder(jwtDecoder());
+                              }
+
+                              @Bean JwtDecoder jwtDecoder() throws Exception {
+                                  return NimbusJwtDecoder.
+                                          withPublicKey(this.key).build();
+                              }
+                            }
+                        </code></pre>
+                        <small>
+                            <a href="https://github.com/spring-projects/spring-security/issues/5465">https://github.com/spring-projects/spring-security/issues/5465</a>
+                        </small>
+                    </section>
+                    <section>
+                        <h4>JWT Flow API in Test Support</h4>
+                        <pre><code class="java" data-trim>
+                            public class OAuth2ResourceServerTest {
+
+                                @Test
+                                public void testRequestPostProcessor() {
+                                  mockMvc.perform(get("/message")
+                                  .with(mockAccessToken().scope("message:read")))
+                                  .andExpect(status().isOk())
+
+                                  mockMvc.perform(get("/")
+                                  .with(jwt().claim(SUB, "the-subject")))
+                                  .andExpect(status().isOk())
+                                }
+                            }
+                        </code></pre>
+                        <small>
+                            <a href="https://github.com/spring-projects/spring-security/issues/6634">https://github.com/spring-projects/spring-security/issues/6634</a>
+                        </small>
                     </section>
                     <section>
                         <h2>Spring Security 5.3</h2>

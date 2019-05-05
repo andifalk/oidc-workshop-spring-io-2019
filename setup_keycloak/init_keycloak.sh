@@ -23,24 +23,28 @@ kcadm.sh create groups -r workshop -s name=library_admin
 # create users
 
 kcadm.sh create users -r workshop -s username=bwayne -s firstName=Bruce -s lastName=Wayne -s 'email=bruce.wayne@example.com' -s emailVerified=true -s enabled=true
+kcadm.sh create users -r workshop -s username=bbanner -s firstName=Bruce -s lastName=Banner -s 'email=bruce.banner@example.com' -s emailVerified=true -s enabled=true
 kcadm.sh create users -r workshop -s username=pparker -s firstName=Peter -s lastName=Parker -s 'email=peter.parker@example.com' -s emailVerified=true -s enabled=true
 kcadm.sh create users -r workshop -s username=ckent -s firstName=Clark -s lastName=Kent -s 'email=clark.kent@example.com' -s emailVerified=true -s enabled=true
 
 # set passwords for users
 
 kcadm.sh set-password -r workshop --username bwayne --new-password wayne
+kcadm.sh set-password -r workshop --username bbanner --new-password banner
 kcadm.sh set-password -r workshop --username pparker --new-password parker
 kcadm.sh set-password -r workshop --username ckent --new-password kent
 
 # set roles to users
 
 kcadm.sh add-roles --uusername bwayne --rolename library_user -r workshop
+kcadm.sh add-roles --uusername bbanner --rolename library_user -r workshop
 kcadm.sh add-roles --uusername pparker --rolename library_curator -r workshop
 kcadm.sh add-roles --uusername ckent --rolename library_admin -r workshop
 
 # assign groups to users
 
 bwayne_userid=$(kcadm.sh get users -r workshop -q username=bwayne --fields id | jq '.[0].id' -r)
+bbanner_userid=$(kcadm.sh get users -r workshop -q username=bbanner --fields id | jq '.[0].id' -r)
 pparker_userid=$(kcadm.sh get users -r workshop -q username=pparker --fields id | jq '.[0].id' -r)
 ckent_userid=$(kcadm.sh get users -r workshop -q username=ckent --fields id | jq '.[0].id' -r)
 
@@ -49,6 +53,7 @@ curator_groupid=$(kcadm.sh get groups -r workshop | jq '.[] | select(.name == "l
 admin_groupid=$(kcadm.sh get groups -r workshop | jq '.[] | select(.name == "library_admin")' | jq '.id' -r)
 
 kcadm.sh update users/$bwayne_userid/groups/$user_groupid -r workshop -s realm=workshop -s userId=$bwayne_userid -s groupId=$user_groupid -n
+kcadm.sh update users/$bbanner_userid/groups/$user_groupid -r workshop -s realm=workshop -s userId=$bbanner_userid -s groupId=$user_groupid -n
 kcadm.sh update users/$pparker_userid/groups/$curator_groupid -r workshop -s realm=workshop -s userId=$pparker_userid -s groupId=$curator_groupid -n
 kcadm.sh update users/$ckent_userid/groups/$admin_groupid -r workshop -s realm=workshop -s userId=$ckent_userid -s groupId=$admin_groupid -n
 

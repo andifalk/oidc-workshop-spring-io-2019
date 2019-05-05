@@ -1,5 +1,6 @@
 package com.example.library.client.web;
 
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +34,7 @@ public class BooksController {
   Mono<String> index(@AuthenticationPrincipal OAuth2User oauth2User, Model model) {
 
     model.addAttribute("fullname", oauth2User.getName());
-
+    model.addAttribute("isCurator", ((JSONArray) oauth2User.getAttributes().get("groups")).get(0).equals("library_curator"));
     return webClient.get().uri(libraryServer + "/books")
             .retrieve()
             .onStatus(s -> s.equals(HttpStatus.UNAUTHORIZED), cr -> Mono.just(new BadCredentialsException("Not authenticated")))
@@ -57,6 +59,36 @@ public class BooksController {
 
     webClient.post().uri(libraryServer + "/books")
             .body(Mono.just(createBookResource), CreateBookResource.class)
+            .retrieve()
+            .onStatus(s -> s.equals(HttpStatus.UNAUTHORIZED), cr -> Mono.just(new BadCredentialsException("Not authenticated")))
+            .onStatus(HttpStatus::is4xxClientError, cr -> Mono.just(new IllegalArgumentException(cr.statusCode().getReasonPhrase())))
+            .onStatus(HttpStatus::is5xxServerError, cr -> Mono.just(new Exception(cr.statusCode().getReasonPhrase())))
+            .bodyToMono(BookResource.class)
+            .log()
+            .block();
+
+    response.sendRedirect(request.getContextPath());
+    return null;
+  }
+
+  @GetMapping("/borrow")
+  String borrowBook(@RequestParam("identifier") String identifier, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    webClient.post().uri(libraryServer + "/books/{bookId}/borrow", identifier)
+            .retrieve()
+            .onStatus(s -> s.equals(HttpStatus.UNAUTHORIZED), cr -> Mono.just(new BadCredentialsException("Not authenticated")))
+            .onStatus(HttpStatus::is4xxClientError, cr -> Mono.just(new IllegalArgumentException(cr.statusCode().getReasonPhrase())))
+            .onStatus(HttpStatus::is5xxServerError, cr -> Mono.just(new Exception(cr.statusCode().getReasonPhrase())))
+            .bodyToMono(BookResource.class)
+            .log()
+            .block();
+
+    response.sendRedirect(request.getContextPath());
+    return null;
+  }
+
+  @GetMapping("/return")
+  String returnBook(@RequestParam("identifier") String identifier, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    webClient.post().uri(libraryServer + "/books/{bookId}/return", identifier)
             .retrieve()
             .onStatus(s -> s.equals(HttpStatus.UNAUTHORIZED), cr -> Mono.just(new BadCredentialsException("Not authenticated")))
             .onStatus(HttpStatus::is4xxClientError, cr -> Mono.just(new IllegalArgumentException(cr.statusCode().getReasonPhrase())))

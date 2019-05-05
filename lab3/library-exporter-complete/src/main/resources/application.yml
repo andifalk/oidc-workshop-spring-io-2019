@@ -1,0 +1,26 @@
+server:
+  port: 9092
+  error:
+    include-stacktrace: never
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak_client:
+            client-id: 'library-client'
+            client-secret: '9584640c-3804-4dcd-997b-93593cfb9ea7'
+            authorizationGrantType: client_credentials
+        provider:
+          keycloak_client:
+            tokenUri: http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        web: info

@@ -1,10 +1,13 @@
-package com.example.library.client.web;
+package com.example.library.exporter.web;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
-public class CreateBookResource {
+public class BookResource {
+
+  private UUID identifier;
 
   private String isbn;
 
@@ -16,25 +19,66 @@ public class CreateBookResource {
 
   private List<String> authors = new ArrayList<>();
 
-  private User borrowedBy = null;
+  private User borrowedBy;
 
   @SuppressWarnings("unused")
-  public CreateBookResource() {}
+  public BookResource() {}
+
+  public BookResource(
+      UUID identifier,
+      String isbn,
+      String title,
+      String description,
+      List<String> authors,
+      boolean borrowed,
+      User borrowedBy) {
+    this.identifier = identifier;
+    this.isbn = isbn;
+    this.title = title;
+    this.description = description;
+    this.authors = authors;
+    this.borrowed = borrowed;
+    this.borrowedBy = borrowedBy;
+  }
+
+  public UUID getIdentifier() {
+    return identifier;
+  }
+
+  public void setIdentifier(UUID identifier) {
+    this.identifier = identifier;
+  }
 
   public String getIsbn() {
     return isbn;
+  }
+
+  public void setIsbn(String isbn) {
+    this.isbn = isbn;
   }
 
   public String getTitle() {
     return title;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public String getDescription() {
     return description;
   }
 
-  public String getAuthor() {
-    return authors.isEmpty() ? null : authors.get(0);
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public List<String> getAuthors() {
+    return authors;
+  }
+
+  public void setAuthors(List<String> authors) {
+    this.authors = authors;
   }
 
   public boolean isBorrowed() {
@@ -53,28 +97,11 @@ public class CreateBookResource {
     this.borrowedBy = borrowedBy;
   }
 
-  public void setIsbn(String isbn) {
-    this.isbn = isbn;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public void setAuthor(String author) {
-    this.authors.add(author);
-  }
-
-  public List<String> getAuthors() {
-    return authors;
-  }
-
-  public void setAuthors(List<String> authors) {
-    this.authors = authors;
+  public void doBorrow(User user) {
+    if (!this.borrowed) {
+      this.borrowed = true;
+      this.borrowedBy = user;
+    }
   }
 
   @Override
@@ -82,8 +109,9 @@ public class CreateBookResource {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     if (!super.equals(o)) return false;
-    CreateBookResource bookResource = (CreateBookResource) o;
+    BookResource bookResource = (BookResource) o;
     return borrowed == bookResource.borrowed
+        && identifier.equals(bookResource.identifier)
         && isbn.equals(bookResource.isbn)
         && title.equals(bookResource.title)
         && description.equals(bookResource.description)
@@ -94,12 +122,14 @@ public class CreateBookResource {
   @Override
   public int hashCode() {
     return Objects.hash(
-        super.hashCode(), isbn, title, description, borrowed, authors, borrowedBy);
+        super.hashCode(), identifier, isbn, title, description, borrowed, authors, borrowedBy);
   }
 
   @Override
   public String toString() {
     return "BookResource{"
+        + "identifier="
+        + identifier
         + ", isbn='"
         + isbn
         + '\''
