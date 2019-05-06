@@ -1,9 +1,7 @@
 # Preparation: Setting up Keycloak as Identity Provider
 
-In this workshop we will use [Keycloak](https://keycloak.org) by JBoss/RedHat as local identity provider.
-
-[Keycloak](https://keycloak.org) is certified for OpenID Connect 1.0 and OAuth 2.0 and therefore supports all
-hands-on labs of this workshop.
+In this workshop we will use [Keycloak](https://keycloak.org) by JBoss/RedHat as local identity provider.  
+[Keycloak](https://keycloak.org) is [certified for OpenID Connect 1.0](https://openid.net/developers/certified/) and implements OAuth 2.0.
 
 ## Setup Keycloak
 
