@@ -55,7 +55,7 @@ The hands-on part of the workshop is split up into the following parts:
 
 [Lab 3: Implementing an OIDC client (client credentials flow)](lab3)
 
-[Lab 4: Testing OIDC security](lab4)
+[Lab 4: Testing JWT tokens](lab4)
 
 ## License
 
