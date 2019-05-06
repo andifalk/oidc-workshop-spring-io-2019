@@ -12,14 +12,4 @@ pluginManagement {
         }
     }
 }
-rootProject.name = 'oidc-workshop-spring-io-2019'
-
-include 'intro-labs:auth-code-demo'
-include 'intro-labs:github-client'
-include 'lab1:library-server-initial'
-include 'lab1:library-server-complete'
-include 'lab2:library-client-complete'
-include 'lab3:library-exporter-complete'
-include 'lab4:jwt-generator'
-include 'lab4:library-server-complete'
-
+rootProject.name = 'lab4-library-server-complete'
