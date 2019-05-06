@@ -20,8 +20,11 @@ that has been created as part of step 2
 scripts depending on your operating system used
 6. Wait until keycloak has been started completely - you should see something like this `6.0.1 (WildFly Core 8.0.0.Final) started in 6902ms - Started 580 of 842 services`
 7. Now direct your browser to [localhost:8080/auth/admin](http://localhost:8080/auth/admin/)
-8. Login into the admin console using admin/admin as credentials
+8. Login into the admin console using __admin/admin__ as credentials
 
-Now, if you see the realm _workshop_ on the left and Keycloak is ready for this workshop
+Now, if you see the realm _workshop_ on the left then Keycloak is ready to use it for this workshop
 
 ![Keycloak Workshop](keycloak_workshop.png)
+
+If you want to know more about setting up a Keycloak server for your own projects 
+then please consult the [keycloak administration docs](https://www.keycloak.org/docs/latest/server_admin/index.html).
