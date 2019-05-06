@@ -1,33 +1,14 @@
 # Preparation: Setting up Keycloak as Identity Provider
 
+In this workshop we will use [Keycloak](https://keycloak.org) by JBoss/RedHat as local identity provider.
 
-```
-http --form http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token grant_type=password \
-username=bwayne password=wayne client_id=library-client client_secret=9584640c-3804-4dcd-997b-93593cfb9ea7
-``` 
+[Keycloak](https://keycloak.org) is certified for OpenID Connect 1.0 and OAuth 2.0 and therefore supports all
+hands-on labs of this workshop.
 
+## Setup Keycloak
 
-```
-http localhost:9091/library-service/books 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cC...'
-```
+To setup [Keycloak](https://keycloak.org): 
 
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgO...",
-    "expires_in": 300,
-    "not-before-policy": 1556650611,
-    "refresh_expires_in": 1800,
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIg...",
-    "scope": "profile email user",
-    "session_state": "c92a82d1-8e6d-44d7-a2f3-02f621066968",
-    "token_type": "bearer"
-}
-```
-
-
-
-
-
+1. Download the binary distribution [here (zip archive)](https://downloads.jboss.org/keycloak/6.0.1/keycloak-6.0.1.zip).
+2. Extract the downloaded zip file into a new local directory of your choice
+3. Download the prepared keycloak configuration for this workshop [here]()
