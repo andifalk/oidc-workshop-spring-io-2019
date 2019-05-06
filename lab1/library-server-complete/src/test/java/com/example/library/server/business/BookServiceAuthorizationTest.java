@@ -124,14 +124,15 @@ class BookServiceAuthorizationTest {
     @DisplayName("is authorized for LIBRARY_ADMIN role")
     void findByIdentifierIsAuthorizedForRoleAdmin() {
       given(bookRepository.findOneByIdentifier(any()))
-              .willReturn(Optional.of(BookBuilder.book().build()));
+          .willReturn(Optional.of(BookBuilder.book().build()));
       assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
     }
 
     @Test
     @DisplayName("is forbidden for unauthenticated users")
     void findByIdentifierIsForbiddenForUnauthenticatedUser() {
-      assertThatThrownBy(() -> cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isInstanceOf(AuthenticationException.class);
+      assertThatThrownBy(() -> cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
+          .isInstanceOf(AuthenticationException.class);
     }
 
     @WithMockUser(roles = "LIBRARY_USER")
@@ -159,15 +160,17 @@ class BookServiceAuthorizationTest {
     @DisplayName("with details is authorized for LIBRARY_ADMIN role")
     void findWithDetailsByIdentifierIsAuthorizedForRoleAdmin() {
       given(bookRepository.findOneWithDetailsByIdentifier(any()))
-              .willReturn(Optional.of(BookBuilder.book().build()));
+          .willReturn(Optional.of(BookBuilder.book().build()));
       assertThat(cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
-              .isPresent();
+          .isPresent();
     }
 
     @Test
     @DisplayName("with details is forbidden for unauthenticated users")
     void findWithDetailsByIdentifierIsForbiddenForUnauthenticatedUser() {
-      assertThatThrownBy(() -> cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isInstanceOf(AuthenticationException.class);
+      assertThatThrownBy(
+              () -> cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
+          .isInstanceOf(AuthenticationException.class);
     }
   }
 
@@ -198,7 +201,7 @@ class BookServiceAuthorizationTest {
     @DisplayName("is authorized for LIBRARY_ADMIN role")
     void findAllIsAuthorizedForAdminRole() {
       given(bookRepository.findAll())
-              .willReturn(Collections.singletonList(BookBuilder.book().build()));
+          .willReturn(Collections.singletonList(BookBuilder.book().build()));
       assertThat(cut.findAll()).isNotNull().isNotEmpty();
     }
 

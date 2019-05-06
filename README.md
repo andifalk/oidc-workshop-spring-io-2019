@@ -25,7 +25,7 @@ This workshop content is split up into the following parts:
   * Testing a [OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) resource server
 
 * A look into the future of OAuth 2.0 and OIDC features to be released in Spring Security 5.2 and 5.3  
-  [Presentation Slides (HTML5)](https://andifalk.github.io/oidc-workshop-spring-io-2019/#/4/)
+  [Presentation Slides (HTML5)](https://andifalk.github.io/oidc-workshop-spring-io-2019/#/5/)
 
 ## Requirements for Hands-On Part
 
@@ -47,13 +47,15 @@ To start the workshop you need:
 
 The hands-on part of the workshop is split up into the following parts:
 
-[Setting up Keycloak as Identity Provider]()
+[Preparation: Setting up Keycloak as Identity Provider](setup_keycloak)
 
 [Lab 1: Implementing an OIDC resource server](lab1)
 
-[Lab 2: Implementing an OIDC client](lab2)
+[Lab 2: Implementing an OIDC client (authorization code flow)](lab2)
 
-[Lab 3: Testing OIDC security](lab3)
+[Lab 3: Implementing an OIDC client (client credentials flow)](lab3)
+
+[Lab 4: Testing OIDC security](lab4)
 
 ## License
 

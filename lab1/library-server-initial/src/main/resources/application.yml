@@ -23,4 +23,4 @@ server:
     include-stacktrace: never
   port: 9091
   servlet:
-    context-path: /library-service
+    context-path: /library-server

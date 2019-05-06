@@ -58,7 +58,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("get list of books")
-  @WithMockUser
+  @WithMockUser(roles = "LIBRARY_USER")
   void verifyAndDocumentGetBooks() throws Exception {
 
     this.mockMvc
@@ -69,7 +69,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("get single book")
-  @WithMockUser
+  @WithMockUser(roles = "LIBRARY_USER")
   void verifyAndDocumentGetBook() throws Exception {
 
     this.mockMvc
@@ -82,7 +82,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("delete a book")
-  @WithMockUser(roles = "CURATOR")
+  @WithMockUser(roles = "LIBRARY_CURATOR")
   void verifyAndDocumentDeleteBook() throws Exception {
     this.mockMvc
         .perform(
@@ -124,7 +124,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("create a new book")
-  @WithMockUser(roles = "CURATOR")
+  @WithMockUser(roles = "LIBRARY_CURATOR")
   void verifyAndDocumentCreateBook() throws Exception {
 
     BookResource bookResource =
@@ -149,7 +149,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("update a book")
-  @WithMockUser(roles = "CURATOR")
+  @WithMockUser(roles = "LIBRARY_CURATOR")
   void verifyAndDocumentUpdateBook() throws Exception {
 
     BookResource bookResource =

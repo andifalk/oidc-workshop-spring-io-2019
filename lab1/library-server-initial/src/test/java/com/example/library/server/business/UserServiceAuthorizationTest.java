@@ -49,27 +49,27 @@ class UserServiceAuthorizationTest {
   @DisplayName("Finding a user by email")
   class FindUserByEmail {
 
-    @WithMockUser
+    @WithMockUser(roles = "LIBRARY_USER")
     @Test
-    @DisplayName("is authorized for USER role")
+    @DisplayName("is authorized for LIBRARY_USER role")
     void findOneByEmailIsAuthorizedForUserRole() {
       given(userRepository.findOneByEmail(EMAIL))
           .willReturn(Optional.of(UserBuilder.user().build()));
       assertThat(cut.findOneByEmail(EMAIL)).isPresent();
     }
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("is authorized for CURATOR role")
+    @DisplayName("is authorized for LIBRARY_CURATOR role")
     void findOneByEmailIsAuthorizedForCuratorRole() {
       given(userRepository.findOneByEmail(EMAIL))
           .willReturn(Optional.of(UserBuilder.user().build()));
       assertThat(cut.findOneByEmail(EMAIL)).isPresent();
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is authorized for ADMIN role")
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
     void findOneByEmailIsAuthorizedForAdminRole() {
       given(userRepository.findOneByEmail(EMAIL))
           .willReturn(Optional.of(UserBuilder.user().build()));
@@ -81,18 +81,18 @@ class UserServiceAuthorizationTest {
   @DisplayName("Creating a new user")
   class CreateUser {
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is authorized for ADMIN role")
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
     void createUserIsAuthorizedForAdminRole() {
       User user = UserBuilder.user().build();
       given(userRepository.save(any())).willReturn(user);
       assertThat(cut.create(user)).isNotNull();
     }
 
-    @WithMockUser(roles = {"USER", "CURATOR"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_CURATOR"})
     @Test
-    @DisplayName("is forbidden for USER and CURATOR roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_CURATOR roles")
     void createUserIsForbiddenForUserAndCuratorRoles() {
       assertThatThrownBy(() -> cut.create(UserBuilder.user().build()))
           .isInstanceOf(AccessDeniedException.class);
@@ -103,18 +103,18 @@ class UserServiceAuthorizationTest {
   @DisplayName("Updating an existing user")
   class UpdateUser {
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is authorized for ADMIN role")
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
     void updateUserIsAuthorizedForAdminRole() {
       User user = UserBuilder.user().build();
       given(userRepository.save(any())).willReturn(user);
       assertThat(cut.update(user)).isNotNull();
     }
 
-    @WithMockUser(roles = {"USER", "CURATOR"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_CURATOR"})
     @Test
-    @DisplayName("is forbidden for USER and CURATOR roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_CURATOR roles")
     void updateUserIsForbiddenForUserAndCuratorRoles() {
       assertThatThrownBy(() -> cut.update(UserBuilder.user().build()))
           .isInstanceOf(AccessDeniedException.class);
@@ -125,18 +125,18 @@ class UserServiceAuthorizationTest {
   @DisplayName("Finding a user by identifier")
   class FindUserByIdentifier {
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is authorized for ADMIN role")
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
     void findUserByIdentifierIsAuthorizedForAdminRole() {
       given(userRepository.findOneByIdentifier(any()))
           .willReturn(Optional.of(UserBuilder.user().build()));
       assertThat(cut.findByIdentifier(UUID.randomUUID())).isNotNull();
     }
 
-    @WithMockUser(roles = {"USER", "CURATOR"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_CURATOR"})
     @Test
-    @DisplayName("is forbidden for USER and CURATOR roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_CURATOR roles")
     void findUserByIdentifierIsForbiddenForUserAndCuratorRoles() {
       assertThatThrownBy(() -> cut.findByIdentifier(UUID.randomUUID()))
           .isInstanceOf(AccessDeniedException.class);
@@ -147,18 +147,18 @@ class UserServiceAuthorizationTest {
   @DisplayName("Finding all users")
   class FindAllUsers {
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is authorized for ADMIN role")
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
     void findAllUserIsAuthorizedForAdminRole() {
       given(userRepository.findAll())
           .willReturn(Collections.singletonList(UserBuilder.user().build()));
       assertThat(cut.findAll()).isNotNull().isNotEmpty();
     }
 
-    @WithMockUser(roles = {"USER", "CURATOR"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_CURATOR"})
     @Test
-    @DisplayName("is forbidden for USER and CURATOR roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_CURATOR roles")
     void findAllUsersIsForbiddenForUserAndCuratorRoles() {
       assertThatThrownBy(() -> cut.findAll()).isInstanceOf(AccessDeniedException.class);
     }
@@ -168,16 +168,16 @@ class UserServiceAuthorizationTest {
   @DisplayName("Deleting a user")
   class DeleteUser {
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is authorized for ADMIN role")
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
     void deleteUserIsAuthorizedForAdminRole() {
       cut.deleteByIdentifier(UUID.randomUUID());
     }
 
-    @WithMockUser(roles = {"USER", "CURATOR"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_CURATOR"})
     @Test
-    @DisplayName("is forbidden for USER and CURATOR roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_CURATOR roles")
     void deleteUserIsForbiddenForUserAndCuratorRoles() {
       assertThatThrownBy(() -> cut.deleteByIdentifier(UUID.randomUUID()))
           .isInstanceOf(AccessDeniedException.class);

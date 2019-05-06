@@ -8,10 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.Optional;
 
-/**
- * JWT converter that takes the roles from
- * persistent user roles.
- */
+/** JWT converter that takes the roles from persistent user roles. */
 @SuppressWarnings("unused")
 public class LibraryUserRolesJwtAuthenticationConverter
     implements Converter<Jwt, AbstractAuthenticationToken> {

@@ -33,7 +33,7 @@ public class UserService {
     return userRepository.findOneByEmail(email);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('LIBRARY_ADMIN')")
   @Transactional
   public UUID create(User user) {
     if (user.getIdentifier() == null) {
@@ -42,23 +42,23 @@ public class UserService {
     return userRepository.save(user).getIdentifier();
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('LIBRARY_ADMIN')")
   @Transactional
   public User update(User user) {
     return userRepository.save(user);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('LIBRARY_ADMIN')")
   public Optional<User> findByIdentifier(UUID userIdentifier) {
     return userRepository.findOneByIdentifier(userIdentifier);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('LIBRARY_ADMIN')")
   public List<User> findAll() {
     return userRepository.findAll();
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('LIBRARY_ADMIN')")
   @Transactional
   public void deleteByIdentifier(UUID userIdentifier) {
     userRepository.deleteUserByIdentifier(userIdentifier);

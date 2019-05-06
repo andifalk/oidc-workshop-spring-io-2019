@@ -58,6 +58,14 @@ further information.
 
 The REST API uses HATEOAS to include links to further resources or actions using hypermedia links.
 
+== Authentication
+
+All REST API endpoints are secured and required authentication. Only basic authentication is supported.
+
+```
+Authorization: Basic dXNlcjpzZWNyZXQ=
+```
+
 == Authorization
 
 === Book API
@@ -66,25 +74,25 @@ The REST API uses HATEOAS to include links to further resources or actions using
 | REST API | Required Role
 
 | `GET /books`
-| USER or CURATOR
+| --
 
 | `GET /books/{identifier}`
-| USER or CURATOR
+| --
 
 | `POST /books/{identifier}/borrow`
-| USER
+| LIBRARY_USER
 
 | `POST /books/{identifier}/return`
-| USER
+| LIBRARY_USER
 
 | `POST /books`
-| CURATOR
+| LIBRARY_CURATOR
 
 | `PUT /books/{identifier}`
-| CURATOR
+| LIBRARY_CURATOR
 
 | `DELETE /books/{identifier}`
-| CURATOR
+| LIBRARY_CURATOR
 |===
 
 === User API
@@ -93,19 +101,19 @@ The REST API uses HATEOAS to include links to further resources or actions using
 | REST API | Required Role
 
 | `GET /users`
-| ADMIN
+| LIBRARY_ADMIN
 
 | `GET /users/{identifier}`
-| ADMIN
+| LIBRARY_ADMIN
 
 | `POST /users`
-| ADMIN
+| LIBRARY_ADMIN
 
 | `PUT /users/{identifier}`
-| ADMIN
+| LIBRARY_ADMIN
 
 | `DELETE /users/{identifier}`
-| ADMIN
+| LIBRARY_ADMIN
 |===
 
 == Resources

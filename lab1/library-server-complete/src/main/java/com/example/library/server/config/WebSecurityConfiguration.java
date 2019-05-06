@@ -27,7 +27,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final LibraryUserDetailsService libraryUserDetailsService;
 
-  public WebSecurityConfiguration(OAuth2ResourceServerProperties oAuth2ResourceServerProperties, LibraryUserDetailsService libraryUserDetailsService) {
+  public WebSecurityConfiguration(
+      OAuth2ResourceServerProperties oAuth2ResourceServerProperties,
+      LibraryUserDetailsService libraryUserDetailsService) {
     this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
     this.libraryUserDetailsService = libraryUserDetailsService;
   }
@@ -44,17 +46,23 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .fullyAuthenticated()
         .and()
         .oauth2ResourceServer()
-        .jwt().jwtAuthenticationConverter(libraryUserJwtAuthenticationConverter());
+        .jwt()
+        .jwtAuthenticationConverter(libraryUserJwtAuthenticationConverter());
   }
 
   @Bean
   JwtDecoder jwtDecoder() {
-    NimbusJwtDecoderJwkSupport jwtDecoder = (NimbusJwtDecoderJwkSupport)
-            JwtDecoders.fromOidcIssuerLocation(oAuth2ResourceServerProperties.getJwt().getIssuerUri());
+    NimbusJwtDecoderJwkSupport jwtDecoder =
+        (NimbusJwtDecoderJwkSupport)
+            JwtDecoders.fromOidcIssuerLocation(
+                oAuth2ResourceServerProperties.getJwt().getIssuerUri());
 
     OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator();
-    OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(oAuth2ResourceServerProperties.getJwt().getIssuerUri());
-    OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
+    OAuth2TokenValidator<Jwt> withIssuer =
+        JwtValidators.createDefaultWithIssuer(
+            oAuth2ResourceServerProperties.getJwt().getIssuerUri());
+    OAuth2TokenValidator<Jwt> withAudience =
+        new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
 
     jwtDecoder.setJwtValidator(withAudience);
 

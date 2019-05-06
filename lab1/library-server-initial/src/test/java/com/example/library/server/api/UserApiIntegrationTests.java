@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static com.example.library.server.DataInitializer.CURATOR_IDENTIFIER;
-import static com.example.library.server.DataInitializer.USER_IDENTIFIER;
+import static com.example.library.server.DataInitializer.WAYNE_USER_IDENTIFIER;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @DirtiesContext
 @DisplayName("Verify user api can")
-@WithMockUser(roles = "ADMIN")
+@WithMockUser(roles = "LIBRARY_ADMIN")
 class UserApiIntegrationTests {
 
   @Autowired private WebApplicationContext context;
@@ -71,7 +71,7 @@ class UserApiIntegrationTests {
   void verifyAndDocumentGetUser() throws Exception {
 
     this.mockMvc
-        .perform(RestDocumentationRequestBuilders.get("/users/{userId}", USER_IDENTIFIER))
+        .perform(RestDocumentationRequestBuilders.get("/users/{userId}", WAYNE_USER_IDENTIFIER))
         .andExpect(status().isOk())
         .andDo(document("get-user"));
   }
@@ -97,7 +97,7 @@ class UserApiIntegrationTests {
             "test",
             "first",
             "mycoolpassword4tests",
-            Collections.singletonList(Role.USER));
+            Collections.singletonList(Role.LIBRARY_USER));
 
     this.mockMvc
         .perform(
@@ -119,7 +119,7 @@ class UserApiIntegrationTests {
             "Library",
             "Curator",
             "curator_newpassword!",
-            Arrays.asList(Role.USER, Role.CURATOR));
+            Arrays.asList(Role.LIBRARY_USER, Role.LIBRARY_CURATOR));
 
     this.mockMvc
         .perform(

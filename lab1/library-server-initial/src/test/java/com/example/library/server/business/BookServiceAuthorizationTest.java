@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -47,18 +48,18 @@ class BookServiceAuthorizationTest {
   @DisplayName("Creating a new book")
   class CreateBook {
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("is authorized for CURATOR role")
+    @DisplayName("is authorized for LIBRARY_CURATOR role")
     void createBookIsAuthorizedForRoleCurator() {
       Book book = BookBuilder.book().build();
       given(bookRepository.save(any())).willReturn(book);
       assertThat(cut.create(book)).isNotNull();
     }
 
-    @WithMockUser(roles = {"USER", "ADMIN"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_ADMIN"})
     @Test
-    @DisplayName("is forbidden for USER and ADMIN roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_ADMIN roles")
     void createBookIsForbiddenForRolesUserAndAdmin() {
       assertThatThrownBy(() -> cut.create(BookBuilder.book().build()))
           .isInstanceOf(AccessDeniedException.class);
@@ -69,18 +70,18 @@ class BookServiceAuthorizationTest {
   @DisplayName("Updating an existing book")
   class UpdateBook {
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("is authorized for CURATOR role")
+    @DisplayName("is authorized for LIBRARY_CURATOR role")
     void updateBookIsAuthorizedForCuratorRole() {
       Book book = BookBuilder.book().build();
       given(bookRepository.save(any())).willReturn(book);
       assertThat(cut.update(book)).isNotNull();
     }
 
-    @WithMockUser(roles = {"USER", "ADMIN"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_ADMIN"})
     @Test
-    @DisplayName("is forbidden for USER and ADMIN roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_ADMIN roles")
     void updateBookIsForbiddenForUserAndAdminRoles() {
       assertThatThrownBy(() -> cut.update(BookBuilder.book().build()))
           .isInstanceOf(AccessDeniedException.class);
@@ -90,35 +91,43 @@ class BookServiceAuthorizationTest {
   @Nested
   @DisplayName("Finding a book")
   class FindBook {
-    @WithMockUser
+    @WithMockUser(roles = "LIBRARY_USER")
     @Test
-    @DisplayName("is authorized for USER role")
+    @DisplayName("is authorized for LIBRARY_USER role")
     void findByIdentifierIsAuthorizedForRoleUser() {
       given(bookRepository.findOneByIdentifier(any()))
           .willReturn(Optional.of(BookBuilder.book().build()));
       assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
     }
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("is authorized for CURATOR role")
+    @DisplayName("is authorized for LIBRARY_CURATOR role")
     void findByIdentifierIsAuthorizedForRoleCurator() {
       given(bookRepository.findOneByIdentifier(any()))
           .willReturn(Optional.of(BookBuilder.book().build()));
       assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is forbidden for ADMIN role")
-    void findByIdentifierIsForbiddenForRoleAdmin() {
-      assertThatThrownBy(() -> cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
-          .isInstanceOf(AccessDeniedException.class);
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
+    void findByIdentifierIsAuthorizedForRoleAdmin() {
+      given(bookRepository.findOneByIdentifier(any()))
+          .willReturn(Optional.of(BookBuilder.book().build()));
+      assertThat(cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER)).isPresent();
     }
 
-    @WithMockUser
     @Test
-    @DisplayName("with details is authorized for CURATOR role")
+    @DisplayName("is forbidden for unauthenticated users")
+    void findByIdentifierIsForbiddenForUnauthenticatedUser() {
+      assertThatThrownBy(() -> cut.findByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
+          .isInstanceOf(AuthenticationException.class);
+    }
+
+    @WithMockUser(roles = "LIBRARY_USER")
+    @Test
+    @DisplayName("with details is authorized for LIBRARY_CURATOR role")
     void findWithDetailsByIdentifierIsAuthorizedForRoleUser() {
       given(bookRepository.findOneWithDetailsByIdentifier(any()))
           .willReturn(Optional.of(BookBuilder.book().build()));
@@ -126,9 +135,9 @@ class BookServiceAuthorizationTest {
           .isPresent();
     }
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("with details is authorized for CURATOR role")
+    @DisplayName("with details is authorized for LIBRARY_CURATOR role")
     void findWithDetailsByIdentifierIsAuthorizedForRoleCurator() {
       given(bookRepository.findOneWithDetailsByIdentifier(any()))
           .willReturn(Optional.of(BookBuilder.book().build()));
@@ -136,13 +145,22 @@ class BookServiceAuthorizationTest {
           .isPresent();
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("with details is forbidden for ADMIN role")
-    void findWithDetailsByIdentifierIsForbiddenForRoleAdmin() {
+    @DisplayName("with details is authorized for LIBRARY_ADMIN role")
+    void findWithDetailsByIdentifierIsAuthorizedForRoleAdmin() {
+      given(bookRepository.findOneWithDetailsByIdentifier(any()))
+          .willReturn(Optional.of(BookBuilder.book().build()));
+      assertThat(cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
+          .isPresent();
+    }
+
+    @Test
+    @DisplayName("with details is forbidden for unauthenticated users")
+    void findWithDetailsByIdentifierIsForbiddenForUnauthenticatedUser() {
       assertThatThrownBy(
               () -> cut.findWithDetailsByIdentifier(DataInitializer.BOOK_CLEAN_CODE_IDENTIFIER))
-          .isInstanceOf(AccessDeniedException.class);
+          .isInstanceOf(AuthenticationException.class);
     }
   }
 
@@ -150,29 +168,37 @@ class BookServiceAuthorizationTest {
   @DisplayName("Finding all books")
   class FindAll {
 
-    @WithMockUser
+    @WithMockUser(roles = "LIBRARY_USER")
     @Test
-    @DisplayName("is authorized for USER role")
+    @DisplayName("is authorized for LIBRARY_USER role")
     void findAllIsAuthorizedForUserRole() {
       given(bookRepository.findAll())
           .willReturn(Collections.singletonList(BookBuilder.book().build()));
       assertThat(cut.findAll()).isNotNull().isNotEmpty();
     }
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("is authorized for CURATOR role")
+    @DisplayName("is authorized for LIBRARY_CURATOR role")
     void findAllIsAuthorizedForCuratorRole() {
       given(bookRepository.findAll())
           .willReturn(Collections.singletonList(BookBuilder.book().build()));
       assertThat(cut.findAll()).isNotNull().isNotEmpty();
     }
 
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "LIBRARY_ADMIN")
     @Test
-    @DisplayName("is forbidden for ADMIN role")
-    void findAllIsForbiddenForAdminRole() {
-      assertThatThrownBy(() -> cut.findAll()).isInstanceOf(AccessDeniedException.class);
+    @DisplayName("is authorized for LIBRARY_ADMIN role")
+    void findAllIsAuthorizedForAdminRole() {
+      given(bookRepository.findAll())
+          .willReturn(Collections.singletonList(BookBuilder.book().build()));
+      assertThat(cut.findAll()).isNotNull().isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("is forbidden for unauthenticated users")
+    void findAllIsForbiddenForUnauthenticatedUser() {
+      assertThatThrownBy(() -> cut.findAll()).isInstanceOf(AuthenticationException.class);
     }
   }
 
@@ -180,16 +206,16 @@ class BookServiceAuthorizationTest {
   @DisplayName("Borrowing a book")
   class BorrowBook {
 
-    @WithMockUser
+    @WithMockUser(roles = "LIBRARY_USER")
     @Test
-    @DisplayName("is authorized for USER role")
+    @DisplayName("is authorized for LIBRARY_USER role")
     void borrowBookIsAuthorizedForUserRole() {
       cut.borrowById(UUID.randomUUID(), UUID.randomUUID());
     }
 
-    @WithMockUser(roles = {"CURATOR", "ADMIN"})
+    @WithMockUser(roles = {"LIBRARY_CURATOR", "LIBRARY_ADMIN"})
     @Test
-    @DisplayName("is forbidden for CURATOR and ADMIN roles")
+    @DisplayName("is forbidden for LIBRARY_CURATOR and LIBRARY_ADMIN roles")
     void borrowBookIsForbiddenForCuratorAndAdminRoles() {
       assertThatThrownBy(() -> cut.borrowById(UUID.randomUUID(), UUID.randomUUID()))
           .isInstanceOf(AccessDeniedException.class);
@@ -200,16 +226,16 @@ class BookServiceAuthorizationTest {
   @DisplayName("Returning a book")
   class ReturnBook {
 
-    @WithMockUser
+    @WithMockUser(roles = "LIBRARY_USER")
     @Test
-    @DisplayName("is authorized for USER role")
+    @DisplayName("is authorized for LIBRARY_USER role")
     void returnBookIsAuthorizedForUserRole() {
       cut.returnById(UUID.randomUUID(), UUID.randomUUID());
     }
 
-    @WithMockUser(roles = {"CURATOR", "ADMIN"})
+    @WithMockUser(roles = {"LIBRARY_CURATOR", "LIBRARY_ADMIN"})
     @Test
-    @DisplayName("is forbidden for CURATOR and ADMIN roles")
+    @DisplayName("is forbidden for LIBRARY_CURATOR and LIBRARY_ADMIN roles")
     void returnBookIsForbiddenForCuratorAndAdminRoles() {
       assertThatThrownBy(() -> cut.returnById(UUID.randomUUID(), UUID.randomUUID()))
           .isInstanceOf(AccessDeniedException.class);
@@ -220,16 +246,16 @@ class BookServiceAuthorizationTest {
   @DisplayName("Deleting a book")
   class DeleteBook {
 
-    @WithMockUser(roles = "CURATOR")
+    @WithMockUser(roles = "LIBRARY_CURATOR")
     @Test
-    @DisplayName("is authorized for CURATOR role")
+    @DisplayName("is authorized for LIBRARY_CURATOR role")
     void deleteBookIsAuthorizedForCuratorRole() {
       cut.deleteByIdentifier(UUID.randomUUID());
     }
 
-    @WithMockUser(roles = {"USER", "ADMIN"})
+    @WithMockUser(roles = {"LIBRARY_USER", "LIBRARY_ADMIN"})
     @Test
-    @DisplayName("is forbidden for USER and ADMIN roles")
+    @DisplayName("is forbidden for LIBRARY_USER and LIBRARY_ADMIN roles")
     void deleteBookIsForbiddenForUserAndAdminRoles() {
       assertThatThrownBy(() -> cut.deleteByIdentifier(UUID.randomUUID()))
           .isInstanceOf(AccessDeniedException.class);

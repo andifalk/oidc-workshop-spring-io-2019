@@ -13,10 +13,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * JWT converter that takes the roles
- * from 'groups' claim of JWT token.
- */
+/** JWT converter that takes the roles from 'groups' claim of JWT token. */
 @SuppressWarnings("unused")
 public class LibraryUserJwtAuthenticationConverter
     implements Converter<Jwt, AbstractAuthenticationToken> {
@@ -33,7 +30,8 @@ public class LibraryUserJwtAuthenticationConverter
   @Override
   public AbstractAuthenticationToken convert(Jwt jwt) {
     Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-    return Optional.ofNullable(libraryUserDetailsService.loadUserByUsername(jwt.getClaimAsString("email")))
+    return Optional.ofNullable(
+            libraryUserDetailsService.loadUserByUsername(jwt.getClaimAsString("email")))
         .map(u -> new UsernamePasswordAuthenticationToken(u, "n/a", authorities))
         .orElseThrow(() -> new BadCredentialsException("No user found"));
   }
