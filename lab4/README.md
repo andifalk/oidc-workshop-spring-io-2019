@@ -1,9 +1,5 @@
-# Lab 1: Creating an OAuth 2.0/OIDC compliant Resource Server
+# Lab 3: Creating an OAuth 2.0/OIDC compliant Client
 
-
-![Spring IO Workshop 2019](automatic_role_mapping.png)
-
-![Spring IO Workshop 2019](manual_role_mapping.png)
 
 ```
 http --form http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token grant_type=password \
