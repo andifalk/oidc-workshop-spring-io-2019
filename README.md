@@ -33,8 +33,9 @@ To start the workshop you need:
 
 * [Java JDK version 8 or 11](https://openjdk.java.net/install/)
 * A Java IDE ([Eclipse](https://www.eclipse.org/), [STS](https://spring.io/tools), [IntelliJ](https://www.jetbrains.com/idea/), [VS Code](https://code.visualstudio.com/), [NetBeans](https://netbeans.org/), ...)
-* A tool like [curl](https://curl.haxx.se/download.html), [HTTPie](https://httpie.org/) or [Postman](https://www.getpostman.com/) to play with the REST API services.  
+* A tool like [curl](https://curl.haxx.se/download.html), [HTTPie](https://httpie.org/) or [Postman](https://www.getpostman.com/) is helpful to play with the REST API services.  
 * The [REST API documentation](https://andifalk.github.io/oidc-workshop-spring-io-2019/api-doc.html) of the initial library application
+* [Keycloak](https://keycloak.org) as OpenID Connect/OAuth2 identity provider/authorization server (see below for setting this up)
 * This GitHub repository: [(https://github.com/andifalk/oidc-workshop-spring-io-2019.git](https://github.com/andifalk/oidc-workshop-spring-io-2019.git)
 
 ## Intro Labs
@@ -49,11 +50,11 @@ The hands-on part of the workshop is split up into the following parts:
 
 [Preparation: Setting up Keycloak as Identity Provider](setup_keycloak)
 
-[Lab 1: Implementing an OIDC resource server](lab1)
+[Lab 1: Implementing an OAuth2/OIDC resource server](lab1)
 
-[Lab 2: Implementing an OIDC client (authorization code flow)](lab2)
+[Lab 2: Implementing an OAuth2/OIDC client (authorization code flow)](lab2)
 
-[Lab 3: Implementing an OIDC client (client credentials flow)](lab3)
+[Lab 3: Implementing an OAuth2/OIDC client (client credentials flow)](lab3)
 
 [Lab 4: Testing JWT tokens](lab4)
 
