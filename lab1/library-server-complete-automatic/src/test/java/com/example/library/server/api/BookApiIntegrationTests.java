@@ -2,7 +2,7 @@ package com.example.library.server.api;
 
 import com.example.library.server.DataInitializer;
 import com.example.library.server.api.resource.BookResource;
-import com.example.library.server.test.WithMockLibraryUser;
+import com.example.library.server.test.WithMockJwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -40,6 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookApiIntegrationTests {
 
   @Autowired private WebApplicationContext context;
+
+  @SuppressWarnings("unused")
+  @MockBean
+  private JwtDecoder jwtDecoder;
 
   private MockMvc mockMvc;
 
@@ -96,7 +102,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("borrow a book")
-  @WithMockLibraryUser(roles = "LIBRARY_USER")
+  @WithMockJwt(email = "bruce.wayne@example.com", scopes = "library_user")
   void verifyAndDocumentBorrowBook() throws Exception {
 
     this.mockMvc
@@ -109,7 +115,7 @@ class BookApiIntegrationTests {
 
   @Test
   @DisplayName("return a borrowed book")
-  @WithMockLibraryUser(roles = "LIBRARY_USER")
+  @WithMockJwt(email = "bruce.wayne@example.com", scopes = "library_user")
   void verifyAndDocumentReturnBook() throws Exception {
 
     this.mockMvc
