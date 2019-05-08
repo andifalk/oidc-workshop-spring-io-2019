@@ -2,7 +2,8 @@
 
 A client demonstrating all steps of an OAuth 2.0 Authorization Code Grant Flow.
 
-__Important note: This demo client is just for demonstrating purposes. All the mandatory validations
+__Important note:   
+This demo client is just for demonstrating purposes. All the mandatory validations
 and recommended security precautions of a production-ready OAuth 2.0 client library are missing here. So do NOT use any code
 of this client for production !!!!__
 
@@ -31,21 +32,12 @@ Usually only step 1 is visible to a user of the client. Steps 2 and 3 are only v
 to visualize the whole flow.
 
 In addition the demo client can also call the token introspection endpoint to verify if a 
-token is still valid.
-
-The demo client _com.example.authorizationcode.client.AuthorizationCodeDemo_ supports 
-two different OAuth 2.0 authorization server providers by the following spring profiles:
-
-* __auth0__: This uses the identity service provider [auth0](https://auth0.com). This option requires
-             an internet connection
-* __keycloak__: This uses a local instance of [JBoss Keycloak](https://www.keycloak.org) and is the option
-                to choose if you do not have internet access
+token is still valid and get a new access token by using the refresh token.
                 
-To be able to follow all requests in detail there is also a spring profile available named "_proxy_"
-that configures a local proxy (with host "localhost" on port "8085"). This way you may look at the requests
-using a proxy tool like [OWASP Zap](https://github.com/zaproxy/zaproxy/wiki/Downloads) 
-or [Burp Suite](https://portswigger.net/burp/communitydownload).                             
-                  
+To start the demo:
+
+* Make sure _Keycloak_ is running correctly
+* Browse to [localhost:9095/client](http://localhost:9095/client) to start the demo client                  
 
 
 
