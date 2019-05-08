@@ -1,4 +1,4 @@
-package com.example.lab1.restapi;
+package com.example.github.restapi;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;

@@ -1,4 +1,4 @@
-package com.example.lab1.restapi;
+package com.example.github.restapi;
 
 import java.time.LocalDateTime;
 

@@ -12,7 +12,6 @@ spring:
               - read:user
               - notifications
             redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
-
 github:
   base:
     url: https://api.github.com/
@@ -20,4 +19,7 @@ github:
 logging:
   level:
     root: INFO
-    org.springframework.security: DEBUG   
+    org.springframework.security: DEBUG
+
+server:
+  port: 9090

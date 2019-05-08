@@ -1,12 +1,12 @@
-package com.example.lab1;
+package com.example.github;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Lab1CompleteApplication {
+public class GitHubClientApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(Lab1CompleteApplication.class, args);
+    SpringApplication.run(GitHubClientApplication.class, args);
   }
 }

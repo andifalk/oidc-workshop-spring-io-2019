@@ -1,4 +1,4 @@
-package com.example.lab1.restapi;
+package com.example.github.restapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
