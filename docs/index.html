@@ -20,7 +20,8 @@
 
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/reveal.css">
-        <link rel="stylesheet" href="css/theme/novatec.css" id="theme">
+        <!--link rel="stylesheet" href="css/theme/novatec.css" id="theme"-->
+        <link href="css/theme/spring_io.css" id="theme" rel="stylesheet">
 
         <!-- Theme used for syntax highlighting of code -->
         <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -40,30 +41,31 @@
 
                 <!-- Title, Speaker and Workshop Introduction -->
                 <section>
-                    <section>
-                        <img src="images/spring_io_2019_workshop.jpg" class="plain">
-                        <p>
+                    <section data-background="images/title_image.png">
+                        <h2 style="color: white">Securing Microservices with OpenID Connect and Spring Security 5.1 [Workshop]</h2>
+                        <p style="color: white">Andreas Falk</p>
+                        <p style="color: white">@andifalk</p>
+                        <p style="color: white">
                             <small>
-                            Slides: <a href="https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html">https://andifalk.github.io/oidc-workshop-spring-io-2019/index.html</a><br>
+                            Slides: <a href="https://andifalk.github.io/oidc-workshop-spring-io-2019">https://andifalk.github.io/oidc-workshop-spring-io-2019</a><br>
                             Source-Code: <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019">https://github.com/andifalk/oidc-workshop-spring-io-2019</a>
                             </small>
                         </p>
                     </section>
-                    <section data-background-color="white">
-                        <img src="images/andreas_falk.jpg" class="plain" width="35%">
+                    <section>
+                        <img class="plain" src="images/andreas_falk.jpg" width="40%">
                         <h4>Andreas Falk</h4>
-                        <small>
-                            <p><strong>Novatec Consulting GmbH</strong></p>
-                            </p>andreas.falk@novatec-gmbh.de / @andifalk (Twitter)<br>
-                            <br><a href="https://www.novatec-gmbh.de/">https://www.novatec-gmbh.de</a><br>
-                            <img src="images/novatec_logo_big.png" class="plain" width="40%">
-                        </small>
+                        <p><strong>Novatec Consulting GmbH</strong></p>
+                        <p><small>
+                            <a href="https://www.novatec-gmbh.de/">https://www.novatec-gmbh.de</a><br>
+                            andreas.falk@novatec-gmbh.de / @andifalk<br>
+                        </small></p>
+                        <p><img class="plain" src="images/novatec_logo_big.png" width="40%"></p>
                     </section>
                     <section>
                         <h1>Agenda</h1>
                         <p>Intro to OAuth 2.0 & OpenID Connect 1.0</p>
-                        <p>Intro Labs</p>
-                        <p>Hands-On Labs</p>
+                        <p>Intro & Hands-On Labs</p>
                         <p>What's new in OAuth 2.0 & OIDC</p>
                         <p>What's new in Spring Security 5.2 and 5.3</p>
                     </section>
@@ -71,10 +73,9 @@
 
                 <!-- Introduction into OAuth 2.0 and OpenID Connect 1.0 -->
                 <section>
-                    <section>
-                        <h1>OAuth 2.0</h1>
-                        <h2>101</h2>
-                        <p><img src="images/oauth.png" class="plain"></p>
+                    <section data-background="images/title_image.png">
+                        <h1 style="color: white">OAuth 2.0</h1>
+                        <h2 style="color: white">101</h2>
                         <p>
                             <small>
                             <a href="https://tools.ietf.org/html/rfc6749">RFC 6749: The OAuth 2.0 Authorization Framework</a><br>
@@ -137,119 +138,20 @@
                         <h4>Authorization Code Grant Flow</h4>
                         <img src="images/authorization_code_schema.png" class="plain" width="100%">
                     </section>
-                    <!--
-                    <section>
-                        <h3>Authorization Request</h3>
-                        <p class="fragment highlight-current-blue" style="text-align: left">GET https://authserver.example.com/authorize</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 100px;">?response_type=code</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 100px;">&state=xyz</p>
-                    </section>
-                    <section>
-                        <h3>Authorization Response</h3>
-                        <p style="text-align: left">HTTP/1.1 302 Found</p>
-                        <p style="text-align: left">Location: https://client.abc.com/callback</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 200px;">?code=ab23bhW56Xb</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 200px;">&state=xyz</p>
-                    </section>
-                    <section>
-                        <h4>Token Request (Basic Auth)</h4>
-                        <p><small>Client-Id=123, Client-Secret=456, Base64(123:456)="MTIzOjQ1Ng=="</small></p>
-                        <p class="fragment highlight-current-blue" style="text-align: left">POST https://authserver.example.com/token</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">Authorization: Basic MTIzOjQ1Ng==</p>
-                        <p>&nbsp;</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
-                    </section>
-                    <section>
-                        <h4>Token Request (Body)</h4>
-                        <p><small>Client-Id=123, Client-Secret=456</small></p>
-                        <p class="fragment highlight-current-blue" style="text-align: left">POST https://authserver.example.com/token</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
-                        <p>&nbsp;</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
-                        <p class="fragment highlight-current-blue" style="text-align: left; margin-left: 60px;">&client_id=123&client_secret=456</p>
-                    </section>
-                    <section>
-                        <h4>Token Response</h4>
-                        <pre><code class="json" data-trim>
-                             HTTP/1.1 200 OK
-                             Content-Type: application/json;charset=UTF-8
 
-                             {
-                               "access_token":"2YotnFZFEjr1zCsicMWpAA",
-                               "token_type":"bearer",
-                               "expires_in":3600,
-                               "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"
-                             }
-                        </code></pre>
+                    <section data-background="images/title_image.png">
+                        <h4 style="color: white">We'll see</h4>
+                        <h3 style="color: white">Authorization Code Grant Flow</h3>
+                        <p style="color: white">in action as part of <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/tree/master/intro-labs/auth-code-demo">Intro Lab</a></p>
                     </section>
-                    <section>
-                        <h4>Refresh Token Request</h4>
-                        <p><small>Client-Id=123, Client-Secret=456, Base64(123:456)="MTIzOjQ1Ng=="</small></p>
-                        <p style="text-align: left">POST https://authserver.example.com/token</p>
-                        <p class="fragment" style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
-                        <p class="fragment" style="text-align: left; margin-left: 60px;">Authorization: Basic MTIzOjQ1Ng==</p>
-                        <p>&nbsp;</p>
-                        <p class="fragment" style="text-align: left; margin-left: 60px;">grant_type=refresh_token</p>
-                        <p class="fragment" style="text-align: left; margin-left: 60px;">&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA</p>
-                    </section>
-                    <section>
-                        <h4>Refresh Token Response</h4>
-                        <pre><code class="json" data-trim>
-                             HTTP/1.1 200 OK
-                             Content-Type: application/json;charset=UTF-8
 
-                             {
-                               "access_token":"3YotnFZFEjr1zCsicMWpBB",
-                               "token_type":"bearer",
-                               "expires_in":3600,
-                               "refresh_token":"zHzv3JOkF0XG5Qx2TlQAIs"
-                             }
-                        </code></pre>
-                    </section>
-                    -->
-                    <section>
-                        <h2>Practice Time</h2>
-                        <h3>Authorization Code Grant Flow</h3>
-                        <h3>In Action</h3>
-                        <p>See <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/tree/master/intro-labs/auth-code-demo">Intro Lab</a></p>
-                    </section>
-                    <section>
-                        <h4>Implicit Grant Flow</h4>
-                        <img class="plain" src="images/implicit_schema.png" >
-                    </section>
-                    <section>
-                        <h3>Authorization Request</h3>
-                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">?response_type=token</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&state=xyz</p>
-                    </section>
-                    <section>
-                        <h3>Authorization Response (with Access Token)</h3>
-                        <p style="text-align: left">HTTP/1.1 302 Found</p>
-                        <p style="text-align: left">Location: https://client.abc.com/callback</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">#access_token=2YotnFZFEjr1zCsicMWpAA</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&token_type=bearer</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&expires_in=3600</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&scope=api.read api.write</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&state=xyz</p>
-                    </section>
                 </section>
 
                 <!-- OpenID Connect 1.0 -->
                 <section>
-                    <section>
-                        <h2>OpenID Connect 1.0</h2>
-                        <h2>101</h2>
-                        <p><img src="images/OpenID_logo_2.svg.png" class="plain" width="50%"></p>
+                    <section data-background="images/title_image.png">
+                        <h2 style="color: white">OpenID Connect 1.0</h2>
+                        <h2 style="color: white">101</h2>
                         <small>
                         <p>
                             <a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a><br>
@@ -519,11 +421,10 @@
                 <!-- OIDC Workshop -->
 
                 <section>
-                    <section>
-                        <h2>Hands-On Workshop</h2>
-                        <h3>OAuth 2.0 & OpenID Connect 1.0</h3>
-                        <h3>With Spring Security 5</h3>
-                        <img src="images/spring-logo.png" class="plain">
+                    <section data-background="images/title_image.png">
+                        <h2 style="color: white">Hands-On Part</h2>
+                        <h3 style="color: white">OAuth 2.0 & OpenID Connect 1.0</h3>
+                        <h3 style="color: white">With Spring Security 5</h3>
                     </section>
                     <section>
                         <h2>&ldquo;Legacy&rdquo; Spring Security OAuth 2 Stack</h2>
@@ -533,25 +434,86 @@
                         <h2>Always use most recent versions !!</h2>
                         <img class="plain" src="images/openredirector_spring_security.png">
                     </section>
-                    <section>
+                    <section data-transition="none">
                         <h2>&ldquo;New&rdquo; Spring Security <br> OAuth 2 Stack</h2>
                         <img src="images/spring_security_new.png" class="plain">
                     </section>
-                    <section>
-                        <h2>Hands-On application</h2>
-                        <img src="images/demo-architecture.png" class="plain" width="100%">
-                    </section>
-
-                    <section>
-                        <h2>Let's Code!!</h2>
-                        <p>Check out (git) or download source (zip) from</p>
-                        <p><a href="https://tinyurl.com/yylensdd">https://tinyurl.com/yylensdd</a></p>
+                    <section data-transition="none">
+                        <h2>&ldquo;New&rdquo; Spring Security <br> OAuth 2 Stack</h2>
+                        <img class="plain" src="images/spring_security_new.png">
+                        <h4 style="color: red">We will use THIS stack !!!</h4>
                     </section>
 
                 </section>
 
+                <section>
+                    <section data-background="images/title_image.png">
+                        <h2 style="color: white">Let's Code!!</h2>
+                        <p style="color: white">Check out (git) or download source (zip) from</p>
+                        <p><a href="https://tinyurl.com/yylensdd">https://tinyurl.com/yylensdd</a></p>
+                    </section>
+                    <section>
+                        <h2>Hands-On Organization</h2>
+                        <ul>
+                            <li>Setup <a href="https://keycloak.org">Keycloak</a> and Hands-On labs</li>
+                            <li>Intro Lab: &ldquo;Authorization Code Grant Flow In Action&rdquo;</li>
+                            <li>Lab 1: OAuth2/OIDC Resource Server</li>
+                            <li>Lab 2: OAuth2/OIDC Client (Auth Code Flow)</li>
+                            <li>Lab 3: OAuth2/OIDC Client (Client-Credentials Flow)</li>
+                            <li>Lab 4: OAuth2/OIDC Testing Environment</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Setup Keycloak</h3>
+                        <p>Follow instructions in <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/blob/master/setup_keycloak/README.md">setup_keycloak/README.md</a><br>
+                        or copy and extract ready-to use keycloak zip file from USB stick</p>
+                        Start keycloak on Linux/Mac OS
+                        <pre><code class="hljs" data-trim>
+                            [keycloak_install_dir]/bin/standalone.sh
+                        </code></pre>
+                        or on Windows
+                        <pre><code class="hljs" data-trim>
+                            [keycloak_install_dir]\bin\standalone.bat
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Intro-Lab</h2>
+                        <h3>Authorization Code Grant Flow</h3>
+                        <h3>In Action</h3>
+                        <p>See <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/tree/master/intro-labs/auth-code-demo">intro-Labs/auth-code-demo</a> for instructions</p>
+                    </section>
+                    <section>
+                        <h2>Hands-On application</h2>
+                        <h3>An online book library</h3>
+                        <p>Administer Books</p>
+                        <p>List available Books</p>
+                        <p>Borrow a Book</p>
+                        <p>Return a borrowed Book</p>
+                        <p>Administer Library Users</p>
+                    </section>
+                    <section>
+                        <h2>Hands-On application</h2>
+                        <img class="plain" src="images/demo-architecture.png" width="100%">
+                    </section>
+                    <section>
+                        <h2>Hands-On Labs</h2>
+                        <ul>
+                            <li>Lab 1: OAuth2/OIDC Resource Server</li>
+                            <li>Lab 2: OAuth2/OIDC Client (Auth Code Flow)</li>
+                            <li>Lab 3: OAuth2/OIDC Client (Client-Credentials Flow)</li>
+                            <li>Lab 4: OAuth2/OIDC Testing Environment</li>
+                        </ul>
+                        <p style="color: darkblue">Please follow lab tutorials in GitHub Repo</p>
+                    </section>
+                </section>
+
                 <!-- OAuth Security Workshop Stuttgart -->
                 <section>
+                    <section data-background="images/title_image.png">
+                        <h3 style="color: white">Current Discussions & </h3>
+                        <h3 style="color: white">Best Practices</h3>
+                        <h3 style="color: white">in OAuth 2.0/OIDC</h3>
+                    </section>
                     <section>
                         <h4>4th OAuth Security Workshop 2019</h4>
                         <p>Stuttgart</p>
@@ -569,30 +531,33 @@
                         <br><small><a href="https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926">https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926</a></small>
                     </section>
                     <section>
+                        <h4>Implicit Grant Flow</h4>
+                        <img class="plain" src="images/implicit_schema.png" >
+                    </section>
+                    <section>
+                        <h3>Authorization Request</h3>
+                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">?response_type=token</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
+                        <p class="fragment" style="text-align: left; margin-left: 100px;">&state=xyz</p>
+                    </section>
+                    <section>
+                        <h3>Authorization Response (with Access Token)</h3>
+                        <p style="text-align: left">HTTP/1.1 302 Found</p>
+                        <p style="text-align: left">Location: https://client.abc.com/callback</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">#access_token=2YotnFZFEjr1zCsicMWpAA</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&token_type=bearer</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&expires_in=3600</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&scope=api.read api.write</p>
+                        <p class="fragment" style="text-align: left; margin-left: 200px;">&state=xyz</p>
+                    </section>
+                    <section>
                         <h3>Implicit Flow Attacks</h3>
                         <img src="images/oauth_implicit_grant_attacks_d_fett.png" class="plain" width="100%">
                         <br><small>Source: Torsten Lodderstedt and Daniel Fett</small>
                         <p><small><a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">OAuth 2.0 Security Best Current Practice</a></small></p>
-                    </section>
-                    <section>
-                        <h3>OAuth 2.0 for Browser-Based Apps</h3>
-                        <p>Content-Security Policy</p>
-                        <p>Use a unique redirect URI</p>
-                        <p>NOT issue refresh tokens</p>
-                        <p><small><a href="https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps">OAuth 2.0 for Browser-Based Apps</a></small></p>
-                    </section>
-                    <section>
-                        <h3>Other Known OAuth 2.0 Attacks</h3>
-                        <ul>
-                            <li>Lack of CSRF protection</li>
-                            <li>Authorization code leakage and replay</li>
-                            <li>Authorization code injection</li>
-                            <li>Open Re-directors</li>
-                            <li>State leakage and replay</li>
-                            <li>Insufficient Redirect URI matching</li>
-                            <li>Too powerful access tokens</li>
-                            <li>Mix-Up Attacks</li>
-                        </ul>
                     </section>
                     <section>
                         <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
@@ -645,18 +610,18 @@
                         </p>
                     </section>
                     <section>
-                        <h3>PKCE - Authorization Request</h3>
+                        <h4>PKCE - Authorization Request</h4>
                         <p style="text-align: left">GET https://authserver.example.com/authorize</p>
                         <p style="text-align: left; margin-left: 100px;">?response_type=code</p>
                         <p style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
                         <p style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
                         <p style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
                         <p style="text-align: left; margin-left: 100px;">&state=xyz</p>
-                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge=xyz...&code_challenge_method=S256</p>
+                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge=xyz...</p>
+                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge_method=S256</p>
                     </section>
                     <section>
                         <h4>PKCE - Token Request</h4>
-                        <p><small>Client-Id=123, Client-Secret=456</small></p>
                         <p style="text-align: left">POST https://authserver.example.com/token</p>
                         <p style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
                         <p style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
@@ -686,28 +651,15 @@
                             </small>
                         </p>
                     </section>
-                    <section>
-                        <h3>Token Binding</h3>
-                        <p style="text-decoration: line-through"><a href="https://tools.ietf.org/html/rfc8471">RFC8471: The Token Binding Protocol Version 1.0</a></p>
-                        <p style="text-decoration: line-through"><a href="https://tools.ietf.org/html/rfc8472">RFC8472: (TLS) Extension for Token Binding Protocol Negotiation</a></p>
-                        <p style="text-decoration: line-through"><a href="https://tools.ietf.org/html/rfc8473">RFC8473: Token Binding over HTTP</a></p>
-                        <p><a href="https://tools.ietf.org/html/draft-ietf-oauth-mtls">OAuth 2.0 Mutual TLS Client Authentication and Certificate-Bound Access Tokens</a></p>
-                        <p>
-                            <small>
-                                <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/OkdLUyYmY1E/w2ESAeshBgAJ">Google - Intent to Remove: Token Binding</a>
-                            </small>
-                        </p>
-                    </section>
                 </section>
 
                 <!-- What is new in Spring Security -->
 
                 <section>
-                    <section>
-                        <h3>What's new in <br>Spring Security<br>5.2 & 5.3</h3>
-                        <p>
-                            <img src="images/spring_security_5_2.png" class="plain" width="70%">
-                        </p>
+                    <section data-background="images/title_image.png">
+                        <h2 style="color: white">What's new in</h2>
+                        <h2 style="color: white">Spring Security</h2>
+                        <h2 style="color: white">5.2 & 5.3</h2>
                     </section>
                     <section>
                         <h2>Spring Security 5.2 (08/2019)</h2>
@@ -840,12 +792,12 @@
                         <img src="images/oauth2_in_action.jpg" class="plain" width="24%">
                         <img src="images/agile-security-book.jpg" class="plain" width="24%">
                     </section>
-                    <section>
-                        <h1>Q&A</h1>
+                    <section data-background="images/title_image.png">
+                        <h1 style="color: white">Q&A</h1>
                         <a href="https://www.novatec-gmbh.de/">https://www.novatec-gmbh.de</a></br>
                         <a href="https://blog.novatec-gmbh.de/">https://blog.novatec-gmbh.de</a><br>
-                        andreas.falk@novatec-gmbh.de<br>
-                        Twitter: @andifalk<br>
+                        <p style="color: white">andreas.falk@novatec-gmbh.de<br>
+                        Twitter: @andifalk</p>
                     </section>
                     <section>
                         <h2>Online References</h2>
