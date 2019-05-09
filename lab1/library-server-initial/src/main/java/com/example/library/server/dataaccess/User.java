@@ -69,48 +69,48 @@ public class User extends AbstractPersistable<Long> {
     return identifier;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public List<String> getRoles() {
-    return roles;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
   public void setIdentifier(UUID identifier) {
     this.identifier = identifier;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public void setEmail(String email) {
     this.email = email;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public String getFirstName() {
+    return firstName;
   }
 
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
 
+  public String getLastName() {
+    return lastName;
+  }
+
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
 
+  public List<String> getRoles() {
+    return roles;
+  }
+
   public void setRoles(List<String> roles) {
     this.roles = roles;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   @Override

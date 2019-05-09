@@ -68,44 +68,44 @@ public class BookResource extends ResourceSupport {
     return identifier;
   }
 
-  public String getIsbn() {
-    return isbn;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public List<String> getAuthors() {
-    return authors;
-  }
-
-  public boolean isBorrowed() {
-    return borrowed;
-  }
-
   public void setIdentifier(UUID identifier) {
     this.identifier = identifier;
+  }
+
+  public String getIsbn() {
+    return isbn;
   }
 
   public void setIsbn(String isbn) {
     this.isbn = isbn;
   }
 
+  public String getTitle() {
+    return title;
+  }
+
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
   }
 
+  public List<String> getAuthors() {
+    return authors;
+  }
+
   public void setAuthors(List<String> authors) {
     this.authors = authors;
+  }
+
+  public boolean isBorrowed() {
+    return borrowed;
   }
 
   public void setBorrowed(boolean borrowed) {

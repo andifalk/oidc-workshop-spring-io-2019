@@ -74,6 +74,13 @@ public class DataInitializer implements CommandLineRunner {
     List<User> userList =
         Stream.of(
                 new User(
+                    SERVICE_USER_IDENTIFIER,
+                    "service-account-library-client@placeholder.org",
+                    passwordEncoder.encode("wayne"),
+                    "n/a",
+                    "n/a",
+                    Collections.singletonList("USER")),
+                new User(
                     WAYNE_USER_IDENTIFIER,
                     "bruce.wayne@example.com",
                     passwordEncoder.encode("wayne"),

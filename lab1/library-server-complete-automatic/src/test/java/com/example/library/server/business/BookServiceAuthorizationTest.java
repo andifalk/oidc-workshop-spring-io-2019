@@ -10,12 +10,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -45,14 +43,6 @@ class BookServiceAuthorizationTest {
   @SuppressWarnings("unused")
   @MockBean
   private DataInitializer dataInitializer;
-
-  @SuppressWarnings("unused")
-  @MockBean
-  private OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
-
-  @SuppressWarnings("unused")
-  @MockBean
-  private JwtDecoder jwtDecoder;
 
   @Nested
   @DisplayName("Creating a new book")

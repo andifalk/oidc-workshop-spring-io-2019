@@ -29,6 +29,7 @@ import static com.example.library.server.DataInitializer.WAYNE_USER_IDENTIFIER;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
@@ -48,6 +49,7 @@ class UserApiIntegrationTests {
   void setup(RestDocumentationContextProvider restDocumentationContextProvider) {
     this.mockMvc =
         MockMvcBuilders.webAppContextSetup(context)
+            .apply(springSecurity())
             .apply(
                 documentationConfiguration(restDocumentationContextProvider)
                     .operationPreprocessors()

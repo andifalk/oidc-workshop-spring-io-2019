@@ -14,11 +14,11 @@ public final class BookBuilder {
   private boolean borrowed = false;
   private User user = null;
 
-  private BookBuilder() {}
-
   public static BookBuilder book() {
     return new BookBuilder();
   }
+
+  private BookBuilder() {}
 
   public BookBuilder withIdentifier(UUID identifier) {
     this.identifier = identifier;

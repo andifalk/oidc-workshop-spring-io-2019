@@ -16,11 +16,11 @@ public final class UserBuilder {
 
   private List<String> roles = new ArrayList<>();
 
-  private UserBuilder() {}
-
   public static UserBuilder user() {
     return new UserBuilder();
   }
+
+  private UserBuilder() {}
 
   public UserBuilder withIdentifier(UUID identifier) {
     this.identifier = identifier;

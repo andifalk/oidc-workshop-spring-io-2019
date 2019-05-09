@@ -43,28 +43,28 @@ public class UserResource extends ResourceSupport {
     return identifier;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
   public void setIdentifier(UUID identifier) {
     this.identifier = identifier;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public void setEmail(String email) {
     this.email = email;
   }
 
+  public String getFirstName() {
+    return firstName;
+  }
+
   public void setFirstName(String firstName) {
     this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
   }
 
   public void setLastName(String lastName) {
