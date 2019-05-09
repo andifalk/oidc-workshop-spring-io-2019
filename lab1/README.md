@@ -79,25 +79,26 @@ keycloak as described in [Setup Keycloak](../setup_keycloak/README.md)
 
 Lab-1 is actually split into two parts:
 
-1. Build a basic resource server using __automatic mapping__
- (Automatically maps scopes inside JWT tokens to corresponding authorities in spring security)
-2. Enhance the resource server of step 1 with __custom user & authorities mapping__ 
-and also implement additional validation of _audience_ claim in access token 
+1. Build a resource server with __custom user & authorities mapping__ 
+   and also implement additional validation of _audience_ claim in access token 
+2. Having a closer look into an alternative resource server that is using __automatic authorities mapping__ 
+   provided by Spring Security 5 (i.e. automatically maps scopes inside JWT tokens 
+   to corresponding authorities in spring security)
 
 ### Contents of lab 1 folder
 
 In the lab 1 folder you find 3 applications:
 
 * __library-server-initial__: This is the application we will use as starting point for this lab
-* __library-server-complete-automatic__: This application is the completed one for the __first part__ of this lab 
-* __library-server-complete-manual__: This application is the completed one for the __second part__ of this lab 
+* __library-server-complete-custom__: This application is the completed one for the __first part__ of this lab 
+* __library-server-complete-automatic__: This application is the completed one for the __second part__ of this lab 
 
 ### Lab 1 - Part 1
 
-Now, let's start with part 1 of this lab. Here we will implement just the minimal required additions to get an 
-OAuth2/OIDC compliant resource server with automatic mapping of token scopes to spring security authorities.
+Now, let's start with part 1 of this lab. Here we will implement the required additions to get an 
+OAuth2/OIDC compliant resource server with customized mapping of token claims to Spring Security authorities.
 
-![Spring IO Workshop 2019](../docs/images/automatic_role_mapping.png)
+![Spring IO Workshop 2019](../docs/images/manual_role_mapping.png)
 
 #### Explore the initial application
 
@@ -225,7 +226,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  protected void configure(HttpSecurity http) {
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -262,7 +263,7 @@ from the following classes:
 * com.example.library.server.config.WebSecurityConfiguration 
 * com.example.library.server.api.UserRestController
 
-__<u>Step 3: Adapting authorization information</u>__ 
+__<u>Step 3: Run and test basic resource server</u>__ 
 
 After removing all password relict's from our application it should be possible to re-start
 the reconfigured application _com.example.library.server.Lab1InitialLibraryServerApplication_.
@@ -337,6 +338,7 @@ If you scroll down a bit on the right hand side then you will see the following 
 As you can see our user has the scopes _library_admin_, _email_ and _profile_.
 These scopes are now mapped to the Spring Security authorities 
 _SCOPE_library_admin_, _SCOPE_email_ and _SCOPE_profile_.  
+
 If you have a look inside the _com.example.library.server.business.UserService_ class
 you will notice that the corresponding method has the following authorization check:
 
@@ -347,7 +349,7 @@ public List<User> findAll() {
 }
 ``` 
 The required authority _ROLE_LIBRARY_ADMIN_ does not match the mapped authority _SCOPE_library_admin_.
-To solve this we have to add the _SCOPE_xxx_ authorities to the existing ones like this:
+To solve this we would have to add the _SCOPE_xxx_ authorities to the existing ones like this:
 
 ```
 @PreAuthorize("hasRole('LIBRARY_ADMIN') || hasAuthority('SCOPE_library_admin')")
@@ -356,94 +358,10 @@ public List<User> findAll() {
 }
 ```  
 
-__<u>Step 4: Adapting the Authentication Principal</u>__
+Due to time restrictions we won't add these additional authority checks, we rather want to implement our
+customized JWT to Spring Security authorities mapping. So let's continue with this next step. 
 
-Please open _com.example.library.server.api.BookRestController_ class and look
-for the methods to borrow or return a book:
-
-```
-@PostMapping("/{bookId}/borrow")
-  public ResponseEntity<BookResource> borrowBookById(
-      @PathVariable("bookId") UUID bookId, 
-      @AuthenticationPrincipal LibraryUser libraryUser) {
-  ...
-}
-```  
- 
-Currently the type _LibraryUser_ is expected as the authenticated principal to borrow
-a book. Unfortunately Spring Security is not able to know how to map the JWT token information
-to our desired _LibraryUser_ type. Instead the JWT token is automatically mapped
-to the type _JwtAuthenticationToken_.   
-To fix this we need to replace the _LibraryUser_ type with _JwtAuthenticationToken_ for
-this method and manually look up the matching _LibraryUser_ in our code by using the
-_LibraryUserDetailsService_:
-
-```
-@PostMapping("/{bookId}/borrow")
-  public ResponseEntity<BookResource> borrowBookById(
-      @PathVariable("bookId") UUID bookId,
-      @AuthenticationPrincipal JwtAuthenticationToken jwtAuthenticationToken) {
-
-    LibraryUser libraryUser =
-        (LibraryUser)
-            libraryUserDetailsService.loadUserByUsername(
-                (String) jwtAuthenticationToken.getTokenAttributes().get("email"));
-
-    return bookService
-        .findByIdentifier(bookId)
-        .map(
-            b -> {
-              bookService.borrowById(bookId, libraryUser.getIdentifier());
-              return bookService
-                  .findWithDetailsByIdentifier(b.getIdentifier())
-                  .map(bb -> ResponseEntity.ok(new BookResourceAssembler().toResource(bb)))
-                  .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-            })
-        .orElse(ResponseEntity.notFound().build());
-}
-```  
-It is required to do the same for the _return_ books method as well: 
-```
-@PostMapping("/{bookId}/return")
-  public ResponseEntity<BookResource> returnBookById(
-      @PathVariable("bookId") UUID bookId,
-      @AuthenticationPrincipal JwtAuthenticationToken jwtAuthenticationToken) {
-
-    LibraryUser libraryUser =
-        (LibraryUser)
-            libraryUserDetailsService.loadUserByUsername(
-                (String) jwtAuthenticationToken.getTokenAttributes().get("email"));
-
-    return bookService
-        .findByIdentifier(bookId)
-        .map(
-            b -> {
-              bookService.returnById(bookId, libraryUser.getIdentifier());
-              return bookService
-                  .findWithDetailsByIdentifier(b.getIdentifier())
-                  .map(bb -> ResponseEntity.ok(new BookResourceAssembler().toResource(bb)))
-                  .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-            })
-        .orElse(ResponseEntity.notFound().build());
-}
-```  
-
-This ends part 1 of this lab. We continue with part 2 to replace the automatic mapping with our 
-own custom mapping.
-
-__<u>Important Note</u>__: If you could not manage to finish part 1 then just open the 
-project _library-server-complete-automatic_ and continue with part 2 using this project.
-
-### Lab 1 - Part 2
-
-Now, let's start with part 2 of this lab. 
-Here we will the OAuth2/OIDC compliant resource server with the following:
-
-1. Implement a custom mapping of token groups to spring security authorities
-2. Add an additional JWT token validator to make sure our resource server only accepts
-   access tokens with the expected _audience_ claim inside the token
-   
-__<u>Step 1: Implement a custom JWT converter</u>__
+__<u>Step 4: Implement a custom JWT converter</u>__
     
 To add our custom mapping for a JWT access token Spring Security requires us to implement
 the interface _Converter<Jwt, AbstractAuthenticationToken>_.
@@ -458,7 +376,7 @@ In general you have two choices here:
 In this workshop we will use the first approach and read the authorization data
 from the _groups_ claim inside the JWT token:
 
-```
+```java
 package com.example.library.server.security;
 
 import org.springframework.core.convert.converter.Converter;
@@ -515,16 +433,284 @@ public class LibraryUserJwtAuthenticationConverter
   }
 }
 ```
+This converter maps the JWT token information to a _LibraryUser_ by associating 
+these via the _email_ claim. The authorities are read from _groups_ claim in the JWT token and mapped
+to the corresponding authorities.  
+This way we can map these groups again to our original authorities, e.g. _ROLE_LIBRARY_ADMIN_. 
 
+No open again the class _com.example.library.server.config.WebSecurityConfiguration_ and add this new JWT 
+converter to the JWT configuration:
 
-![Spring IO Workshop 2019](../docs/images/manual_role_mapping.png)
+```java
+package com.example.library.server.config;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private final LibraryUserDetailsService libraryUserDetailsService;
 
+  public WebSecurityConfiguration(LibraryUserDetailsService libraryUserDetailsService) {
+    this.libraryUserDetailsService = libraryUserDetailsService;
+  }
 
+  @Override
+  protected void configure(HttpSecurity http) {
+    http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .anyRequest()
+        .fullyAuthenticated()
+        .and()
+        .oauth2ResourceServer()
+        .jwt()
+        .jwtAuthenticationConverter(libraryUserJwtAuthenticationConverter());
+  }
+  
+  @Bean
+  LibraryUserJwtAuthenticationConverter libraryUserJwtAuthenticationConverter() {
+    return new LibraryUserJwtAuthenticationConverter(libraryUserDetailsService);
+  }
+}
+```
 
+_<u>Note:</u>_: The other approach can be seen in class _LibraryUserRolesJwtAuthenticationConverter_ in completed
+application in project _library-server-complete-custom_.
 
+__<u>Step 5: Add an additional JWT validator for the 'audience' claim</u>__
 
+Implementing an additional token validator is quite easy, you just have to implement the 
+provided interface _OAuth2TokenValidator_.
+Validating the _audience_ claim of a token is strongly recommended by OAuth 2 & OIDC experts
+to avoid misusing access tokens for other resource servers.
 
+```java
+package com.example.library.server.security;
 
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
+import org.springframework.security.oauth2.jwt.Jwt;
+
+/** Validator for expected audience in access tokens. */
+public class AudienceValidator implements OAuth2TokenValidator<Jwt> {
+
+  private OAuth2Error error =
+      new OAuth2Error("invalid_token", "The required audience 'library-service' is missing", null);
+
+  public OAuth2TokenValidatorResult validate(Jwt jwt) {
+    if (jwt.getAudience().contains("library-service")) {
+      return OAuth2TokenValidatorResult.success();
+    } else {
+      return OAuth2TokenValidatorResult.failure(error);
+    }
+  }
+}
+```
+
+Adding such validator is a bit more effort as we have to replace the auto-configured JwtDecoder
+with our own bean definition. An additional validator can only be added this way.
+
+To achieve this open again the class _com.example.library.server.config.WebSecurityConfiguration_ 
+one more time and add our customized JwtDecoder.
+
+```java
+package com.example.library.server.config;
+
+import com.example.library.server.security.AudienceValidator;
+import com.example.library.server.security.LibraryUserDetailsService;
+import com.example.library.server.security.LibraryUserJwtAuthenticationConverter;
+import com.example.library.server.security.LibraryUserRolesJwtAuthenticationConverter;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.JwtValidators;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoderJwkSupport;
+
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+  private final OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
+
+  private final LibraryUserDetailsService libraryUserDetailsService;
+
+  public WebSecurityConfiguration(
+      OAuth2ResourceServerProperties oAuth2ResourceServerProperties,
+      LibraryUserDetailsService libraryUserDetailsService) {
+    this.oAuth2ResourceServerProperties = oAuth2ResourceServerProperties;
+    this.libraryUserDetailsService = libraryUserDetailsService;
+  }
+
+  @Override
+  protected void configure(HttpSecurity http) {
+    http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .anyRequest()
+        .fullyAuthenticated()
+        .and()
+        .oauth2ResourceServer()
+        .jwt()
+        .jwtAuthenticationConverter(libraryUserJwtAuthenticationConverter());
+  }
+
+  @Bean
+  JwtDecoder jwtDecoder() {
+    NimbusJwtDecoderJwkSupport jwtDecoder =
+        (NimbusJwtDecoderJwkSupport)
+            JwtDecoders.fromOidcIssuerLocation(
+                oAuth2ResourceServerProperties.getJwt().getIssuerUri());
+
+    OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator();
+    OAuth2TokenValidator<Jwt> withIssuer =
+        JwtValidators.createDefaultWithIssuer(
+            oAuth2ResourceServerProperties.getJwt().getIssuerUri());
+    OAuth2TokenValidator<Jwt> withAudience =
+        new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
+
+    jwtDecoder.setJwtValidator(withAudience);
+
+    return jwtDecoder;
+  }
+
+  @Bean
+  LibraryUserJwtAuthenticationConverter libraryUserJwtAuthenticationConverter() {
+    return new LibraryUserJwtAuthenticationConverter(libraryUserDetailsService);
+  }
+}
+```  
+
+This ends part 1 of this lab. We continue with part 2 to replace the automatic mapping with our 
+own custom mapping.
+
+__<u>Important Note</u>__: If you could not manage to finish part 1 then just use the 
+project _library-server-complete-custom_ for the next labs.
+
+### Lab 1 - Part 2
+
+In part 2 of this lab we just have a look inside the completed resource server using
+the automatic mapping approach provided by Spring Security 5.
+ 
+![Spring IO Workshop 2019](../docs/images/automatic_role_mapping.png)
+
+To have a look open the project _library-server-complete-automatic_. 
+
+__<u>Step 1: Adapting the authorization checks</u>__
+
+As already mentioned in part 1 of this lab the authorities do not map to the verified ones any more
+when using the automatic scope mapping:
+
+The required authority _ROLE_LIBRARY_ADMIN_ does not match the mapped authority _SCOPE_library_admin_.
+To solve this we would have to add the _SCOPE_xxx_ authorities to the existing ones like this:
+
+```
+@PreAuthorize("hasRole('LIBRARY_ADMIN') || hasAuthority('SCOPE_library_admin')")
+public List<User> findAll() {
+  return userRepository.findAll();
+}
+```  
+
+This change would be required to perform this for all methods 
+in the classes _com.example.library.server.business.BookService_ and 
+_com.example.library.server.business.UserService_.
+
+__<u>Step 2: Adapting the Authentication Principal</u>__
+
+Please open _com.example.library.server.api.BookRestController_ class and look
+for the methods to borrow or return a book:
+
+```
+@PostMapping("/{bookId}/borrow")
+  public ResponseEntity<BookResource> borrowBookById(
+      @PathVariable("bookId") UUID bookId, 
+      @AuthenticationPrincipal LibraryUser libraryUser) {
+  ...
+}
+```  
+ 
+Currently the type _LibraryUser_ is expected as the authenticated principal to borrow
+a book.  
+Unfortunately Spring Security is not able to know how to map the JWT token information
+to our desired _LibraryUser_ type automatically. Instead the JWT token is automatically mapped
+to the predefined _JwtAuthenticationToken_ type.
+   
+To fix this we need to replace the _LibraryUser_ type with _JwtAuthenticationToken_ for
+this method and manually look up the matching _LibraryUser_ in our code by using the
+_LibraryUserDetailsService_:
+
+```
+@PostMapping("/{bookId}/borrow")
+  public ResponseEntity<BookResource> borrowBookById(
+      @PathVariable("bookId") UUID bookId,
+      @AuthenticationPrincipal JwtAuthenticationToken jwtAuthenticationToken) {
+
+    LibraryUser libraryUser =
+        (LibraryUser)
+            libraryUserDetailsService.loadUserByUsername(
+                (String) jwtAuthenticationToken.getTokenAttributes().get("email"));
+
+    return bookService
+        .findByIdentifier(bookId)
+        .map(
+            b -> {
+              bookService.borrowById(bookId, libraryUser.getIdentifier());
+              return bookService
+                  .findWithDetailsByIdentifier(b.getIdentifier())
+                  .map(bb -> ResponseEntity.ok(new BookResourceAssembler().toResource(bb)))
+                  .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+            })
+        .orElse(ResponseEntity.notFound().build());
+}
+```  
+It is required to do the same for the _return_ books method as well: 
+```
+@PostMapping("/{bookId}/return")
+  public ResponseEntity<BookResource> returnBookById(
+      @PathVariable("bookId") UUID bookId,
+      @AuthenticationPrincipal JwtAuthenticationToken jwtAuthenticationToken) {
+
+    LibraryUser libraryUser =
+        (LibraryUser)
+            libraryUserDetailsService.loadUserByUsername(
+                (String) jwtAuthenticationToken.getTokenAttributes().get("email"));
+
+    return bookService
+        .findByIdentifier(bookId)
+        .map(
+            b -> {
+              bookService.returnById(bookId, libraryUser.getIdentifier());
+              return bookService
+                  .findWithDetailsByIdentifier(b.getIdentifier())
+                  .map(bb -> ResponseEntity.ok(new BookResourceAssembler().toResource(bb)))
+                  .orElse(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+            })
+        .orElse(ResponseEntity.notFound().build());
+}
+```  
+
+This concludes the Lab 1. We will continue with implementing the corresponding OAuth2/OIDC client
+for the resource server in project _library-server-complete-custom.
+
+To continue with the client open [Lab 2](../lab2/README.md).
