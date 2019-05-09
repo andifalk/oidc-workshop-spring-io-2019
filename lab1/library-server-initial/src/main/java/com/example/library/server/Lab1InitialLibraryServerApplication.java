@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Lab2InitialLibraryServerApplication {
+public class Lab1InitialLibraryServerApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(Lab2InitialLibraryServerApplication.class, args);
+    SpringApplication.run(Lab1InitialLibraryServerApplication.class, args);
   }
 }
