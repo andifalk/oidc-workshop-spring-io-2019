@@ -164,7 +164,7 @@ Spring security 5 uses the
 [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig) specification 
 to completely configure the resource server to use our keycloak instance.
   
-__Make sure you have startet keycloak as described in the [setup section](../setup_keycloak/README.md).__
+__Make sure keycloak has been started as described in the [setup section](../setup_keycloak/README.md).__
 
 Navigate your web browser to the url [localhost:8080/auth/realms/workshop/.well-known/openid-configuration](http://localhost:8080/auth/realms/workshop/.well-known/openid-configuration).  
 Then you should see the public discovery information that keycloak provides 
@@ -428,12 +428,93 @@ It is required to do the same for the _return_ books method as well:
 }
 ```  
 
+This ends part 1 of this lab. We continue with part 2 to replace the automatic mapping with our 
+own custom mapping.
+
+__<u>Important Note</u>__: If you could not manage to finish part 1 then just open the 
+project _library-server-complete-automatic_ and continue with part 2 using this project.
 
 ### Lab 1 - Part 2
 
-Now, let's start with part 1 of this lab. Here we will implement just the minimal required additions to get an 
-OAuth2/OIDC compliant resource server with automatic mapping of token scopes to spring security authorities.
+Now, let's start with part 2 of this lab. 
+Here we will the OAuth2/OIDC compliant resource server with the following:
 
+1. Implement a custom mapping of token groups to spring security authorities
+2. Add an additional JWT token validator to make sure our resource server only accepts
+   access tokens with the expected _audience_ claim inside the token
+   
+__<u>Step 1: Implement a custom JWT converter</u>__
+    
+To add our custom mapping for a JWT access token Spring Security requires us to implement
+the interface _Converter<Jwt, AbstractAuthenticationToken>_.
+
+In general you have two choices here:
+
+* Map the corresponding _LibraryUser_ to the JWT token user data and read the 
+  authorization data from the token and map it to Spring Security authorities
+* Map the corresponding _LibraryUser_ to the JWT token user data but map locally
+  stored roles of the _LibraryUser_ to Spring Security authorities.
+
+In this workshop we will use the first approach and read the authorization data
+from the _groups_ claim inside the JWT token:
+
+```
+package com.example.library.server.security;
+
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/** JWT converter that takes the roles from 'groups' claim of JWT token. */
+@SuppressWarnings("unused")
+public class LibraryUserJwtAuthenticationConverter
+    implements Converter<Jwt, AbstractAuthenticationToken> {
+  private static final String GROUPS_CLAIM = "groups";
+  private static final String ROLE_PREFIX = "ROLE_";
+
+  private final LibraryUserDetailsService libraryUserDetailsService;
+
+  public LibraryUserJwtAuthenticationConverter(
+      LibraryUserDetailsService libraryUserDetailsService) {
+    this.libraryUserDetailsService = libraryUserDetailsService;
+  }
+
+  @Override
+  public AbstractAuthenticationToken convert(Jwt jwt) {
+    Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
+    return Optional.ofNullable(
+            libraryUserDetailsService.loadUserByUsername(jwt.getClaimAsString("email")))
+        .map(u -> new UsernamePasswordAuthenticationToken(u, "n/a", authorities))
+        .orElseThrow(() -> new BadCredentialsException("No user found"));
+  }
+
+  private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
+    return this.getGroups(jwt).stream()
+        .map(authority -> ROLE_PREFIX + authority.toUpperCase())
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
+  }
+
+  @SuppressWarnings("unchecked")
+  private Collection<String> getGroups(Jwt jwt) {
+    Object groups = jwt.getClaims().get(GROUPS_CLAIM);
+    if (groups instanceof Collection) {
+      return (Collection<String>) groups;
+    }
+
+    return Collections.emptyList();
+  }
+}
+```
 
 
 ![Spring IO Workshop 2019](../docs/images/manual_role_mapping.png)
