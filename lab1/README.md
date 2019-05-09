@@ -8,8 +8,8 @@
   * [User roles](#user-roles)
 * [The Lab 1 tutorial](#lab-1-tutorial)
   * [Lab 1 contents](#lab-contents)
-  * [Part 1: Basic resource server w/ automatic scope mapping](#lab-1---part-1)
-  * [Part 2: Enhanced resource server w/ custom user/authorities mapping](#lab-1---part-2)
+  * [Part 1: Implement a resource server w/ custom user/authorities mapping](#lab-1---part-1)
+  * [Part 2: Look inside a resource server w/ automatic scope mapping](#lab-1---part-2)
 
 ## The workshop application
 
