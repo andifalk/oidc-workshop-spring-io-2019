@@ -48,7 +48,7 @@
                         <p style="color: white">
                             <small>
                             Slides: <a href="https://andifalk.github.io/oidc-workshop-spring-io-2019">https://andifalk.github.io/oidc-workshop-spring-io-2019</a><br>
-                            Source-Code: <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019">https://github.com/andifalk/oidc-workshop-spring-io-2019</a>
+                            Source-Code: <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019.git">https://github.com/andifalk/oidc-workshop-spring-io-2019.git</a>
                             </small>
                         </p>
                     </section>
@@ -64,10 +64,17 @@
                     </section>
                     <section>
                         <h1>Agenda</h1>
-                        <p>Intro to OAuth 2.0 & OpenID Connect 1.0</p>
-                        <p>Hands-On Part</p>
-                        <p>What's new in OAuth 2.0 & OIDC</p>
+                        <p>Intro to OAuth 2.0</p>
+                        <p>Intro to OpenID Connect 1.0</p>
+                        <p>Hands-On Part with Spring Security 5.1</p>
                         <p>What's new in Spring Security 5.2 and 5.3</p>
+                    </section>
+                    <section data-background="images/title_image.png">
+                        <h2 style="color: white">In the meantime...</h2>
+                        <p style="color: white">git clone https://tinyurl.com/yylensdd oidc_workshop</p>
+                        <p style="color: white">import as gradle project into your Java IDE</p>
+                        <p style="color: white">AND</p>
+                        <p style="color: white">copy/extract keycloak.zip from provided USB sticks</p>
                     </section>
                 </section>
 
@@ -138,13 +145,87 @@
                         <h4>Authorization Code Grant Flow</h4>
                         <img src="images/authorization_code_schema.png" class="plain" width="100%">
                     </section>
-
                     <section data-background="images/title_image.png">
                         <h4 style="color: white">We'll see</h4>
                         <h3 style="color: white">Authorization Code Grant Flow</h3>
                         <p style="color: white">in action as part of <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/tree/master/intro-labs/auth-code-demo">Intro Lab</a></p>
                     </section>
-
+                    <section>
+                        <h3>Implicit Flow Attacks</h3>
+                        <img class="plain" src="images/oauth_implicit_grant_attacks_d_fett.png" width="100%">
+                        <br><small>Source: Torsten Lodderstedt and Daniel Fett</small>
+                        <p><small><a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">OAuth 2.0 Security Best Current Practice</a></small></p>
+                    </section>
+                    <section>
+                        <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
+                        <table style="font-size: smaller">
+                            <thead>
+                            <tr>
+                                <th>Client Type</th>
+                                <th>Flow</th>
+                                <th>Refresh Tokens</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Confidential</td>
+                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Public (Native)</td>
+                                <td>Authorization Code (PKCE)</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Public (SPA)</td>
+                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
+                                <td>--</td>
+                            </tr>
+                            <tr style="text-decoration: line-through;">
+                                <td>Trusted</td>
+                                <td>RO Password Creds</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>No Resource Owner</td>
+                                <td>Client Credentials</td>
+                                <td>--</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h2>Proof Key for Code Exchange by OAuth Public Clients (PKCE)</h2>
+                        <p>(&ldquo;Pixy&rdquo;)</p>
+                        <p>Mitigates authorization code attacks</p>
+                        <p>Mitigates token leakage in SPAs</p>
+                        <p>
+                            <small>
+                                <a href="https://tools.ietf.org/html/rfc7636">Proof Key for Code Exchange by OAuth Public Clients</a>
+                            </small>
+                        </p>
+                    </section>
+                    <section>
+                        <h4>PKCE - Authorization Request</h4>
+                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
+                        <p style="text-align: left; margin-left: 100px;">?response_type=code</p>
+                        <p style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
+                        <p style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
+                        <p style="text-align: left; margin-left: 100px;">&state=xyz</p>
+                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge=xyz...</p>
+                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge_method=S256</p>
+                    </section>
+                    <section>
+                        <h4>PKCE - Token Request</h4>
+                        <p style="text-align: left">POST https://authserver.example.com/token</p>
+                        <p style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
+                        <p style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
+                        <p style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
+                        <p style="text-align: left; margin-left: 60px;">&client_id=123&client_secret=456</p>
+                        <p style="text-align: left; margin-left: 60px; color: red;">&code_verifier=4gth4jn78k_8</p>
+                    </section>
                 </section>
 
                 <!-- OpenID Connect 1.0 -->
@@ -177,8 +258,6 @@
                         <h3>Additions to OAuth 2.0</h3>
                         <p>Id Token (JWT format)</p>
                         <p>User Info Endpoint</p>
-                        <p>Standard Scopes</p>
-                        <p>Hybrid Grant Flow</p>
                         <p>OpenID Provider Configuration Information</p>
                     </section>
                     <section>
@@ -303,50 +382,6 @@
                         </code></pre>
                     </section>
                     <section>
-                        <h3>Standard Scopes</h3>
-                        <table style="font-size: smaller">
-                            <thead>
-                            <tr>
-                                <th>Scope</th>
-                                <th>Mandatory</th>
-                                <th>Description</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>openid</td>
-                                <td>X</td>
-                                <td>OIDC MUST contain the openid scope</td>
-                            </tr>
-                            <tr>
-                                <td>profile</td>
-                                <td>--</td>
-                                <td>Request claims like "name", "family_name", "picture"</td>
-                            </tr>
-                            <tr>
-                                <td>email</td>
-                                <td>--</td>
-                                <td>Request claims for "email" and "email_verified"</td>
-                            </tr>
-                            <tr>
-                                <td>address</td>
-                                <td>--</td>
-                                <td>Request "address" claim</td>
-                            </tr>
-                            <tr>
-                                <td>phone</td>
-                                <td>--</td>
-                                <td>Request "phone_number" & "phone_number_verified" claims</td>
-                            </tr>
-                            <tr>
-                                <td>offline</td>
-                                <td>--</td>
-                                <td>Include refresh token in token response</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                    <section>
                         <h3>OpenID Connect 1.0 Configuration</h3>
                         <p>https://example.com/.well-known/openid-configuration</p>
                         <pre><code class="json" data-trim>
@@ -370,52 +405,6 @@
                             </small>
                         </p>
                     </section>
-                    <section>
-                        <h3>Certified OIDC Provider</h3>
-                        <table style="font-size: smaller">
-                            <thead>
-                            <tr>
-                                <th>Server/Service</th>
-                                <th>Reference</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Auth0</td>
-                                <td><a href="https://auth0.com/">https://auth0.com</a></td>
-                            </tr>
-                            <tr>
-                                <td>Okta</td>
-                                <td><a href="https://okta.com">https://okta.com</a></td>
-                            </tr>
-                            <tr>
-                                <td>IdentityServer</td>
-                                <td><a href="https://identityserver.io/">https://identityserver.io</a></td>
-                            </tr>
-                            <tr>
-                                <td>JBoss Keycloak</td>
-                                <td><a href="https://www.keycloak.org/">https://www.keycloak.org</a></td>
-                            </tr>
-                            <tr>
-                                <td>Pivotal CloudFoundry UAA</td>
-                                <td><a href="https://github.com/cloudfoundry/uaa">https://github.com/cloudfoundry/uaa</a></td>
-                            </tr>
-                            <tr>
-                                <td>PingFederate</td>
-                                <td><a href="https://www.pingidentity.com">https://www.pingidentity.com</a></td>
-                            </tr>
-                            <tr>
-                                <td>...</td>
-                                <td>...</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <p>
-                            <small>
-                                <a href="https://openid.net/developers/certified/">Certified OpenID Provider Servers and Services</a>
-                            </small>
-                        </p>
-                    </section>
                 </section>
 
                 <!-- OIDC Workshop -->
@@ -429,10 +418,6 @@
                     <section>
                         <h2>&ldquo;Legacy&rdquo; Spring Security OAuth 2 Stack</h2>
                         <img src="images/spring_security_old.png" class="plain">
-                    </section>
-                    <section>
-                        <h2>Always use most recent versions !!</h2>
-                        <img class="plain" src="images/openredirector_spring_security.png">
                     </section>
                     <section data-transition="none">
                         <h2>&ldquo;New&rdquo; Spring Security <br> OAuth 2 Stack</h2>
@@ -449,8 +434,10 @@
                 <section>
                     <section data-background="images/title_image.png">
                         <h2 style="color: white">Let's Code!!</h2>
-                        <p style="color: white">Check out (git) or download source (zip) from</p>
-                        <p><a href="https://tinyurl.com/yylensdd">https://tinyurl.com/yylensdd</a></p>
+                        <p style="color: white">git clone https://tinyurl.com/yylensdd oidc_workshop</p>
+                        <p style="color: white">import as gradle project into your Java IDE</p>
+                        <p style="color: white">AND</p>
+                        <p style="color: white">copy/extract keycloak.zip from provided USB sticks</p>
                     </section>
                     <section>
                         <h2>Hands-On Organization</h2>
@@ -465,9 +452,17 @@
                     </section>
                     <section>
                         <h3>Setup Keycloak</h3>
-                        <p>Follow instructions in <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/blob/master/setup_keycloak/README.md">setup_keycloak/README.md</a><br>
-                        or copy and extract ready-to use keycloak zip file from USB stick</p>
-                        Start keycloak on Linux/Mac OS
+                        <ol>
+                            <li>Download the binary distribution: https://tinyurl.com/y2dcuu2o</li>
+                            <li>Extract the downloaded <strong>keycloak-6.0.1.zip</strong> file</li>
+                            <li>Download the prepared keycloak configuration: https://tinyurl.com/y3gpuwkj</li>
+                            <li>Extract the downloaded file <strong>keycloak_data.zip</strong> into the sub directory <em>standalone</em> of extracted keycloak</li>
+                        </ol>
+                    </section>
+                    <section>
+                        <h3>Start Keycloak</h3>
+                        <p>
+                            Start keycloak on Linux/Mac OS
                         <pre><code class="hljs" data-trim>
                             [keycloak_install_dir]/bin/standalone.sh
                         </code></pre>
@@ -475,12 +470,13 @@
                         <pre><code class="hljs" data-trim>
                             [keycloak_install_dir]\bin\standalone.bat
                         </code></pre>
+                        </p>
                     </section>
                     <section>
                         <h2>Intro-Lab</h2>
                         <h3>Authorization Code Grant Flow</h3>
                         <h3>In Action</h3>
-                        <p>See <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/tree/master/intro-labs/auth-code-demo">intro-Labs/auth-code-demo</a> for instructions</p>
+                        <p>See <a href="https://github.com/andifalk/oidc-workshop-spring-io-2019/tree/master/intro-labs/auth-code-demo">intro-labs/auth-code-demo</a> for instructions</p>
                     </section>
                     <section>
                         <h2>Hands-On application</h2>
@@ -504,152 +500,6 @@
                             <li>Lab 4: OAuth2/OIDC Testing Environment</li>
                         </ul>
                         <p style="color: darkblue">Please follow lab tutorials in GitHub Repo</p>
-                    </section>
-                </section>
-
-                <!-- OAuth Security Workshop Stuttgart -->
-                <section>
-                    <section data-background="images/title_image.png">
-                        <h3 style="color: white">Current Discussions & </h3>
-                        <h3 style="color: white">Best Practices</h3>
-                        <h3 style="color: white">in OAuth 2.0/OIDC</h3>
-                    </section>
-                    <section>
-                        <h4>4th OAuth Security Workshop 2019</h4>
-                        <p>Stuttgart</p>
-                        <p>
-                            <img src="images/osw2019picture.jpg" class="plain" width="70%">
-                        </p>
-                        <p>
-                            <small>
-                                <a href="https://sec.uni-stuttgart.de/events/osw2019">https://sec.uni-stuttgart.de/events/osw2019</a>
-                            </small>
-                        </p>
-                    </section>
-                    <section>
-                        <img src="images/why_not_use_implicit_grant.png" class="plain" width="50%">
-                        <br><small><a href="https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926">https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926</a></small>
-                    </section>
-                    <section>
-                        <h4>Implicit Grant Flow</h4>
-                        <img class="plain" src="images/implicit_schema.png" >
-                    </section>
-                    <section>
-                        <h3>Authorization Request</h3>
-                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">?response_type=token</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
-                        <p class="fragment" style="text-align: left; margin-left: 100px;">&state=xyz</p>
-                    </section>
-                    <section>
-                        <h3>Authorization Response (with Access Token)</h3>
-                        <p style="text-align: left">HTTP/1.1 302 Found</p>
-                        <p style="text-align: left">Location: https://client.abc.com/callback</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">#access_token=2YotnFZFEjr1zCsicMWpAA</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&token_type=bearer</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&expires_in=3600</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&scope=api.read api.write</p>
-                        <p class="fragment" style="text-align: left; margin-left: 200px;">&state=xyz</p>
-                    </section>
-                    <section>
-                        <h3>Implicit Flow Attacks</h3>
-                        <img src="images/oauth_implicit_grant_attacks_d_fett.png" class="plain" width="100%">
-                        <br><small>Source: Torsten Lodderstedt and Daniel Fett</small>
-                        <p><small><a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">OAuth 2.0 Security Best Current Practice</a></small></p>
-                    </section>
-                    <section>
-                        <h3>&ldquo;OAuth 2.1&rdquo; Grant Flows</h3>
-                        <table style="font-size: smaller">
-                            <thead>
-                            <tr>
-                                <th>Client Type</th>
-                                <th>Flow</th>
-                                <th>Refresh Tokens</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Confidential</td>
-                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
-                                <td>X</td>
-                            </tr>
-                            <tr>
-                                <td>Public (Native)</td>
-                                <td>Authorization Code (PKCE)</td>
-                                <td>X</td>
-                            </tr>
-                            <tr>
-                                <td>Public (SPA)</td>
-                                <td style="font-weight: bold">Authorization Code (PKCE)</td>
-                                <td>--</td>
-                            </tr>
-                            <tr style="text-decoration: line-through;">
-                                <td>Trusted</td>
-                                <td>RO Password Creds</td>
-                                <td>X</td>
-                            </tr>
-                            <tr>
-                                <td>No Resource Owner</td>
-                                <td>Client Credentials</td>
-                                <td>--</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                    <section>
-                        <h2>Proof Key for Code Exchange by OAuth Public Clients (PKCE)</h2>
-                        <p>(&ldquo;Pixy&rdquo;)</p>
-                        <p>Mitigates authorization code attacks</p>
-                        <p>Mitigates token leakage in SPAs</p>
-                        <p>
-                            <small>
-                                <a href="https://tools.ietf.org/html/rfc7636">Proof Key for Code Exchange by OAuth Public Clients</a>
-                            </small>
-                        </p>
-                    </section>
-                    <section>
-                        <h4>PKCE - Authorization Request</h4>
-                        <p style="text-align: left">GET https://authserver.example.com/authorize</p>
-                        <p style="text-align: left; margin-left: 100px;">?response_type=code</p>
-                        <p style="text-align: left; margin-left: 100px;">&client_id=abcdefg</p>
-                        <p style="text-align: left; margin-left: 100px;">&redirect_uri=https://client.abc.com/callback</p>
-                        <p style="text-align: left; margin-left: 100px;">&scope=api.read api.write</p>
-                        <p style="text-align: left; margin-left: 100px;">&state=xyz</p>
-                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge=xyz...</p>
-                        <p style="text-align: left; margin-left: 100px; color: red;">&code_challenge_method=S256</p>
-                    </section>
-                    <section>
-                        <h4>PKCE - Token Request</h4>
-                        <p style="text-align: left">POST https://authserver.example.com/token</p>
-                        <p style="text-align: left; margin-left: 60px;">Content-Type: <br>application/x-www-form-urlencoded</p>
-                        <p style="text-align: left; margin-left: 60px;">grant_type=authorization_code&code=ab23bhW56Xb</p>
-                        <p style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
-                        <p style="text-align: left; margin-left: 60px;">&client_id=123&client_secret=456</p>
-                        <p style="text-align: left; margin-left: 60px; color: red;">&code_verifier=4gth4jn78k_8</p>
-                    </section>
-                    <section>
-                        <h3>Steal Tokens via XSS</h3>
-                        <p>&ldquo;XSS is Game-Over for OAuth 2&rdquo; (Jim Manico)</p>
-                        <img src="images/manico_xss_local_storage.jpeg" class="plain" width="60%">
-                    </section>
-                    <section>
-                        <h3>OAuth 2 Access Token JWT Profile</h3>
-                        <p>Required claims: iss, exp, aud, sub, client_id</p>
-                        <p>Consider privacy restrictions for identity claims</p>
-                        <p>Authorization claims according to SCIM Core (RFC7643):</p>
-                        <ul>
-                            <li>Groups</li>
-                            <li>Entitlements</li>
-                            <li>Roles</li>
-                        </ul>
-                        <p>
-                            <small>
-                                <a href="https://tools.ietf.org/html/draft-ietf-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a><br>
-                                <a href="https://tools.ietf.org/pdf/rfc7643.pdf">System for Cross-domain Identity Management (SCIM)</a>
-                            </small>
-                        </p>
                     </section>
                 </section>
 

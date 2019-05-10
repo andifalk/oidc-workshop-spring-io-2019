@@ -155,7 +155,7 @@ WWW-Authenticate: Basic realm="Realm"
 }
 ``` 
 
-__<u>Step 1: Configure as resource server</u>__  
+#### Step 1: Configure as resource server  
 To change this application into a resource server you have to make changes in the dependencies 
 of the gradle build file _build.gradle_:
 
@@ -264,23 +264,9 @@ This configuration above...
 * protects any request (i.e. requires authentication)
 * enables this as a resource server with expecting access tokens in JWT format
 
-__<u>Step 2: Remove local password storage</u>__  
+#### Step 2: Run and test basic resource server 
 
-Now keycloak will take over the authentication, so we don't need to store and handle 
-passwords any more in our application, therefore it is a good idea now to remove the 
-__password__ attribute (references) and the __password encoder__ (references) 
-from the following classes:
-
-* com.example.library.server.dataaccess.User
-* com.example.library.server.dataaccess.UserBuilder
-* com.example.library.server.security.LibraryUser
-* com.example.library.server.DataInitializer
-* com.example.library.server.config.WebSecurityConfiguration 
-* com.example.library.server.api.UserRestController
-
-__<u>Step 3: Run and test basic resource server</u>__ 
-
-After removing all password relict's from our application it should be possible to re-start
+After removing all password relics from our application it should be possible to re-start
 the reconfigured application _com.example.library.server.Lab1InitialLibraryServerApplication_.
 
 Now, the requests you have tried when starting this lab using basic authentication won't work any more
@@ -399,7 +385,7 @@ public List<User> findAll() {
 Due to time restrictions we won't add these additional authority checks, we rather want to implement our
 customized JWT to Spring Security authorities mapping. So let's continue with this next step. 
 
-__<u>Step 4: Implement a custom JWT converter</u>__
+__<u>Step 3: Implement a custom JWT converter</u>__
     
 To add our custom mapping for a JWT access token Spring Security requires us to implement
 the interface _Converter<Jwt, AbstractAuthenticationToken>_.
@@ -524,7 +510,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 _<u>Note:</u>_: The other approach can be seen in class _LibraryUserRolesJwtAuthenticationConverter_ in completed
 application in project _library-server-complete-custom_.
 
-__<u>Step 5: Add an additional JWT validator for the 'audience' claim</u>__
+__<u>Step 4: Add an additional JWT validator for the 'audience' claim</u>__
 
 Implementing an additional token validator is quite easy, you just have to implement the 
 provided interface _OAuth2TokenValidator_.
