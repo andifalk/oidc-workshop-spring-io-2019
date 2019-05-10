@@ -1,17 +1,9 @@
-# Spring Security 5 Workshop
+# Complete library server application with custom mapping
 
-## Initial application
+This is the completed reference of the library resource server application that is using
+the customized authorities and user mapping provided by Spring Security 5.
 
-This is the initial absolutely unsecured reactive web application.
+![Spring IO Workshop 2019](../../docs/images/manual_role_mapping.png)
 
-This application deals with books and users.
-
-A standard user can borrow or return borrowed books, a curator user can add or remove books
-and an admin user can show, add or remove users.
-
-Please start into the workshop with this initial application.
-
-You find the accompanying workshop tutorial [here](https://andifalk.github.io/reactive-spring-security-5-workshop/)
-
-If you have already read all introductory sections of the tutorial you can directly
-start with the [first step in the tutorial](https://andifalk.github.io/reactive-spring-security-5-workshop/#_step_1_auto_configuration)
+See [Spring Security 5 resource server authorization](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver-authorization-extraction) 
+for details on custom authorities mapping.

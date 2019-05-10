@@ -1,5 +1,10 @@
 # Lab 1: Creating an OAuth 2.0/OIDC compliant Resource Server
 
+In the first lab we want to build an OAuth2/OIDC resource server.
+
+See [Spring Security 5 Resource Server reference doc](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver) 
+for all details on how to build and configure a resource server. 
+
 ## Lab Contents
 
 * [The workshop application](#the-workshop-application)
@@ -16,6 +21,8 @@
 In this first workshop lab you will be provided a complete spring mvc web server application together
 with a corresponding spring mvc thymeleaf web client app (which will come into play in [lab 2](../lab2/README.md)).  
 The server application is already secured by basic authentication and also includes authorization using static roles. 
+
+![Spring IO Workshop 2019](../docs/images/demo-architecture.png)
 
 The server application provides a RESTful service for administering books and users 
 (a very _lightweight_ books library).
@@ -204,6 +211,14 @@ spring:
 An error you get very often with files in yaml format is that the indents are not correct. 
 This can lead to unexpected errors later when you try to run all this stuff.
 
+With this configuration in place we have already a working resource server
+that can handle JWt access tokens transmitted via http bearer token header. 
+Spring Security also validates by default:
+
+* the JWT signature against the queried public key(s) from jwks_url
+* the JWT _iss_ claim against the configured issuer uri
+* that the JWT is not expired
+
 Usually this configuration would be sufficient but as we also want to make sure that 
 our resource server is working with stateless token authentication we have to configure stateless
 sessions. Starting with Spring Boot 2 you always have to configure Spring Security
@@ -279,12 +294,22 @@ __You may argue now: "This is just like doing basic authentication??"__
 Yes, you're right. You should __ONLY__ use this grant flow for testing purposes as it
 completely bypasses the base concepts of OAuth 2.
 
-Using Httpie:
+This is how this password grant request looks like:
+
+httpie:
 
 ```bash
 http --form http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token grant_type=password \
 username=ckent password=kent client_id=library-client client_secret=9584640c-3804-4dcd-997b-93593cfb9ea7
 ``` 
+
+curl:
+
+```bash
+curl -X POST -d 'grant_type=password&username=ckent&password=kent&client_id=library-client&client_secret=9584640c-3804-4dcd-997b-93593cfb9ea7' \
+http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token
+```
+
 This should return an access token together with a refresh token:
 
 ```http request
@@ -306,9 +331,18 @@ Content-Type: application/json
 To make the same request for a list of books (like in the beginning of this lab) we have to
 specify the access token as part of a _Authorization_ header of type _Bearer_ like this:
 
+httpie:
+
 ```bash
 http localhost:9091/library-server/users \
 'Authorization: Bearer [access_token]'
+```
+
+curl:
+
+```bash
+curl -H 'Authorization: Bearer [access_token]' \
+-v http://localhost:9091/library-server/users | jq
 ```
 
 You have to replace _[access_token]_ with the one you have obtained in previous request.  
@@ -318,6 +352,8 @@ JWT token to the corresponding authorities.
 
 Navigate your web browser to [jwt.io](https://jwt.io) and paste your access token into the
 _Encoded_ text field. 
+
+![Spring IO Workshop 2019](../docs/images/jwt_io.png)
 
 If you scroll down a bit on the right hand side then you will see the following block:
 
@@ -338,6 +374,8 @@ If you scroll down a bit on the right hand side then you will see the following 
 As you can see our user has the scopes _library_admin_, _email_ and _profile_.
 These scopes are now mapped to the Spring Security authorities 
 _SCOPE_library_admin_, _SCOPE_email_ and _SCOPE_profile_.  
+
+![Spring IO Workshop 2019](../docs/images/jwt_io_decoded.png)
 
 If you have a look inside the _com.example.library.server.business.UserService_ class
 you will notice that the corresponding method has the following authorization check:
@@ -601,6 +639,63 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 }
 ```  
+
+Now we can re-start the application and test again the same request we had retrieved an '403' error before.
+
+First get another fresh access token:
+
+httpie:
+
+```bash
+http --form http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token grant_type=password \
+username=ckent password=kent client_id=library-client client_secret=9584640c-3804-4dcd-997b-93593cfb9ea7
+``` 
+
+curl:
+
+```bash
+curl -X POST -d 'grant_type=password&username=ckent&password=kent&client_id=library-client&client_secret=9584640c-3804-4dcd-997b-93593cfb9ea7' \
+http://localhost:8080/auth/realms/workshop/protocol/openid-connect/token
+```
+
+This should return an access token together with a refresh token:
+
+```http request
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgO...",
+    "expires_in": 300,
+    "not-before-policy": 1556650611,
+    "refresh_expires_in": 1800,
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIg...",
+    "scope": "profile email user",
+    "session_state": "c92a82d1-8e6d-44d7-a2f3-02f621066968",
+    "token_type": "bearer"
+}
+```
+
+To make the same request for a list of users we have to
+specify the access token as part of a _Authorization_ header of type _Bearer_ like this:
+
+httpie:
+
+```bash
+http localhost:9091/library-server/users \
+'Authorization: Bearer [access_token]'
+```
+
+curl:
+
+```bash
+curl -H 'Authorization: Bearer [access_token]' \
+-v http://localhost:9091/library-server/users | jq
+```
+
+Now, with our previous changes this request should succeed with an '200' OK status and return a list of users.
+
+<hr>
 
 This ends part 1 of this lab. We continue with part 2 to replace the automatic mapping with our 
 own custom mapping.

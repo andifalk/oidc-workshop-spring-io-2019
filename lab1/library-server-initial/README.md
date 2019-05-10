@@ -1,16 +1,12 @@
-# The initial application
+# Initial library server application
 
-## 
+This is the initial library resource server application that is the starting point
+for the hands-on part to implement an OAuth2/OIDC resource server.
 
-This is the initial absolutely unsecured reactive web application.
+![Spring IO Workshop 2019](../../docs/images/demo-architecture.png)
 
-This application deals with books and users.
+The completed reference for the resource server (based on this initial application) 
+can be found [here](../library-server-complete-custom/README.md).
 
-A standard user can borrow or return borrowed books, a curator user can add or remove books
-and an admin user can show, add or remove users.
-
-Please start into the workshop with this initial application.
-
-
-If you have already read all introductory sections of the tutorial you can directly
-start with the [first step in the tutorial](https://andifalk.github.io/reactive-spring-security-5-workshop/#_step_1_auto_configuration)
+See [Spring Security 5 resource server](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver) 
+for details on how to build and configure a resource server.

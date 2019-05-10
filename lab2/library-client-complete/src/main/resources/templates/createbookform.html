@@ -1,8 +1,8 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Library Client</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
@@ -13,26 +13,26 @@
 
     <hr>
 
-    <form action="#" th:action="@{/create}" th:object="${book}" method="post">
+    <form action="#" method="post" th:action="@{/create}" th:object="${book}">
         <div class="form-group">
             <label for="author">Author</label>
-            <input type="text" class="form-control" id="author" name="author" th:value="*{author}"
-                   placeholder="author"/>
+            <input class="form-control" id="author" name="author" placeholder="author" th:value="*{author}"
+                   type="text"/>
         </div>
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" th:value="*{title}" placeholder="title"/>
+            <input class="form-control" id="title" name="title" placeholder="title" th:value="*{title}" type="text"/>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description" name="description" th:value="*{description}"
-                   placeholder="description"/>
+            <input class="form-control" id="description" name="description" placeholder="description" th:value="*{description}"
+                   type="text"/>
         </div>
         <div class="form-group">
-            <label for="isbn" >ISBN</label>
-            <input type="text" class="form-control" id="isbn" name="isbn" th:value="*{isbn}" placeholder="isbn"/>
+            <label for="isbn">ISBN</label>
+            <input class="form-control" id="isbn" name="isbn" placeholder="isbn" th:value="*{isbn}" type="text"/>
         </div>
-        <button type="submit" name="create" id="create" class="btn btn-primary">Create</button>
+        <button class="btn btn-primary" id="create" name="create" type="submit">Create</button>
     </form>
 
     <hr>

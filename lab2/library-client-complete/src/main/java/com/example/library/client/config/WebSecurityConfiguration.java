@@ -9,12 +9,9 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,29 +20,36 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().anyRequest().fullyAuthenticated().and()
-            .oauth2Client().and()
-            .oauth2Login().userInfoEndpoint().userAuthoritiesMapper(userAuthoritiesMapper());
+    http.authorizeRequests()
+        .anyRequest()
+        .fullyAuthenticated()
+        .and()
+        .oauth2Client()
+        .and()
+        .oauth2Login()
+        .userInfoEndpoint()
+        .userAuthoritiesMapper(userAuthoritiesMapper());
   }
 
   private GrantedAuthoritiesMapper userAuthoritiesMapper() {
     return (authorities) -> {
       Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
-      authorities.forEach(authority -> {
-        if (authority instanceof OidcUserAuthority) {
-          OidcUserAuthority oidcUserAuthority = (OidcUserAuthority)authority;
+      authorities.forEach(
+          authority -> {
+            if (authority instanceof OidcUserAuthority) {
+              OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
 
-          OidcIdToken idToken = oidcUserAuthority.getIdToken();
-          OidcUserInfo userInfo = oidcUserAuthority.getUserInfo();
+              OidcIdToken idToken = oidcUserAuthority.getIdToken();
+              OidcUserInfo userInfo = oidcUserAuthority.getUserInfo();
 
-          List<SimpleGrantedAuthority> groupAuthorities = userInfo.getClaimAsStringList("groups")
-                  .stream().map(
-                          g -> new SimpleGrantedAuthority("ROLE_" + g.toUpperCase())
-                  ).collect(Collectors.toList());
-          mappedAuthorities.addAll(groupAuthorities);
-        }
-      });
+              List<SimpleGrantedAuthority> groupAuthorities =
+                  userInfo.getClaimAsStringList("groups").stream()
+                      .map(g -> new SimpleGrantedAuthority("ROLE_" + g.toUpperCase()))
+                      .collect(Collectors.toList());
+              mappedAuthorities.addAll(groupAuthorities);
+            }
+          });
 
       return mappedAuthorities;
     };
