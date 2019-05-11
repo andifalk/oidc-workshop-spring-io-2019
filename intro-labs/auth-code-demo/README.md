@@ -33,14 +33,23 @@ to visualize the whole flow.
 
 In addition the demo client can also call the token introspection endpoint to verify if a 
 token is still valid and get a new access token by using the refresh token.
+           
+## Run the demo application           
                 
 To start the demo:
 
 * Make sure _Keycloak_ is running correctly
 * Browse to [localhost:9095/client](http://localhost:9095/client) to start the demo client                  
 
+__Important:__ You can use one of the following users to login:
 
+| Username | Email                    | Password | Role            |
+| ---------| ------------------------ | -------- | --------------- |
+| bwayne   | bruce.wayne@example.com  | wayne    | LIBRARY_USER    |
+| bbanner  | bruce.banner@example.com | banner   | LIBRARY_USER    |
+| ckent    | clark.kent@example.com   | kent     | LIBRARY_ADMIN   |
 
+You may use the _username_ or _email_ in the username input field.
 
 
 

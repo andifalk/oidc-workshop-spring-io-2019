@@ -9,12 +9,16 @@ for all details on how to build and configure an OAuth 2.0 client.
 
 * [The workshop application](#the-workshop-application)
   * [Architecture](#the-client-application)
-  * [REST API](#rest-api)
   * [Users and Roles](#users-and-roles)
   * [Logout Users](#logout-users)
 * [The Lab 2 tutorial](#lab-2-tutorial)
-  * [Lab 2 contents](#lab-contents)
+  * [Lab 2 contents](#lab-2-contents)
   * [Implement the OAuth 2.0/OIDC client](#implement-the-client)
+    * [Explore the initial client application](#explore-the-initial-application)
+    * [Step 1: Configure as OAuth2/OIDC client](#step-1-configure-as-oauth-2oidc-client)
+    * [Step 2: Configure web client to send bearer access token](#step-2-configure-web-client-to-send-bearer-access-token)
+    * [Step 3: Configure web client authorities](#step-3-configure-web-client-authorities)
+    * [Step 4: Change authentication principal](#step-4-change-authentication-principal)
 
 ## The workshop application
 
@@ -45,12 +49,12 @@ There are three target user roles for this client and server application:
 * LIBRARY_CURATOR: A curator user who can add, edit or delete books
 * LIBRARY_ADMIN: An administrator user who can list, add or remove users
 
-| Username | Email                    | Role            |
-| ---------| ------------------------ | --------------- |
-| bwayne   | bruce.wayne@example.com  | LIBRARY_USER    |
-| bbanner  | bruce.banner@example.com | LIBRARY_USER    |
-| pparker  | peter.parker@example.com | LIBRARY_CURATOR |
-| ckent    | clark.kent@example.com   | LIBRARY_ADMIN   |
+| Username | Email                    | Password | Role            |
+| ---------| ------------------------ | -------- | --------------- |
+| bwayne   | bruce.wayne@example.com  | wayne    | LIBRARY_USER    |
+| bbanner  | bruce.banner@example.com | banner   | LIBRARY_USER    |
+| pparker  | peter.parker@example.com | parker   | LIBRARY_CURATOR |
+| ckent    | clark.kent@example.com   | kent     | LIBRARY_ADMIN   |
 
 These users are configured for authenticating using keycloak.
 
@@ -86,7 +90,7 @@ Now when you refresh the library client in the browser you should be redirected 
 Now, let's start with lab 2. Here we will implement the required additions to get an 
 OAuth2/OIDC compliant client that calls the resource server we have implemented in lab 1.
 
-### Lab Contents
+### Lab 2 Contents
 
 In the lab 2 folder you find 2 applications:
 
@@ -114,7 +118,9 @@ using basic authentication but is not prepared to send the required bearer acces
 Now stop the client application again. You can leave the resource server running as we will need this after we have 
 finished this client.
 
-__<u>Step 1: Configure as OAuth 2/OIDC client</u>__
+<hr>
+
+#### Step 1: Configure as OAuth 2/OIDC client
 
 To change this application into an OAuth2/OIDC client you have to make changes in the dependencies 
 of the gradle build file _build.gradle_:
@@ -186,7 +192,9 @@ spring:
 An error you get very often with files in yaml format is that the indents are not correct. 
 This can lead to unexpected errors later when you try to run all this stuff.
 
-__<u>Step 2: Configure web client to use bearer access token</u>__
+<hr>
+
+#### Step 2: Configure web client to send bearer access token
 
 For all requests to the resource server we use the reactive web client, that was introduced by Spring 5.
 The next required step is to make this web client aware of transmitting the required bearer access tokens
@@ -225,7 +233,9 @@ With this additions we add a filter function to the web client that automaticall
 access token to all requests and also initiates the authorization grant flow if no valid 
 access token is available.
 
-__<u>Step 3: Configure web client authorities</u>__
+<hr>
+
+#### Step 3: Configure web client authorities
 
 Same as on resource server side we don't want to use the automatic _SCOPE_xxx_ authorities but instead want to
 map again the _groups_ claim we get from the automatically called _userinfo_ endpoint to the expected _ROLE_xxx_
@@ -307,7 +317,9 @@ we configure an OAuth2 client and an OIDC login client and reconfigure the _user
 to map authorities different as the standard one. The custom mapping is done in the implementation
 of the _GrantedAuthoritiesMapper_ interface that maps entries of the _groups_ claim to authority roles . 
 
-__<u>Step 4: Change authentication principal</u>__
+<hr>
+
+#### Step 4: Change authentication principal
 
 The final required step is to change the authentication principal from _org.springframework.security.core.userdetails.User_ 
 to _org.springframework.security.oauth2.core.oidc.user.OidcUser_.
@@ -357,13 +369,19 @@ Now re-start the library client and browse again
 to [localhost:9090/library-client](http://localhost:9090/library-client) and login using the different
 users:
 
-| Username | Email                    | Role            |
-| ---------| ------------------------ | --------------- |
-| bwayne   | bruce.wayne@example.com  | LIBRARY_USER    |
-| bbanner  | bruce.banner@example.com | LIBRARY_USER    |
-| pparker  | peter.parker@example.com | LIBRARY_CURATOR |
-| ckent    | clark.kent@example.com   | LIBRARY_ADMIN   |
+| Username | Email                    | Password | Role            |
+| ---------| ------------------------ | -------- | --------------- |
+| bwayne   | bruce.wayne@example.com  | wayne    | LIBRARY_USER    |
+| bbanner  | bruce.banner@example.com | banner   | LIBRARY_USER    |
+| pparker  | peter.parker@example.com | parker   | LIBRARY_CURATOR |
+| ckent    | clark.kent@example.com   | kent     | LIBRARY_ADMIN   |
 
 Now, after authenticating at keycloak you should be able to see the library client. 
 
-That's a wrap with the second Lab.
+<hr>
+
+That's a wrap for this second Lab.
+
+If time still allows you can continue with [Lab 3](../lab3/README.md) to implement the same client
+but this time using another OAuth2 grant flow: The client credentials flow (
+for machine-to-machine interactions without the need for a user identity).

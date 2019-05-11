@@ -13,8 +13,15 @@ for all details on how to build and configure a resource server.
   * [User roles](#user-roles)
 * [The Lab 1 tutorial](#lab-1-tutorial)
   * [Lab 1 contents](#lab-contents)
-  * [Part 1: Implement a resource server w/ custom user/authorities mapping](#lab-1---part-1)
-  * [Part 2: Look inside a resource server w/ automatic scope mapping](#lab-1---part-2)
+  * [Part 1: Implement a resource server with custom user/authorities mapping](#lab-1---part-1)
+    * [Explore the initial server application](#explore-the-initial-application)    
+    * [Step 1: Configure as resource server](#step-1-configure-as-resource-server)
+    * [Step 2: Run and test basic resource server](#step-2-run-and-test-basic-resource-server)
+    * [Step 3: Implement a custom JWT converter](#step-3-implement-a-custom-jwt-converter)
+    * [Step 4: An additional JWT validator for 'audience' claim](#step-4-add-an-additional-jwt-validator-for-the-audience-claim)
+  * [Part 2: Look inside a resource server with automatic scope mapping](#lab-1---part-2)
+    * [Step 1: Adapting authorization checks](#step-1-adapting-the-authorization-checks)
+    * [Part 1: Changing the authentication principal](#step-2-adapting-the-authentication-principal)
 
 ## The workshop application
 
@@ -68,12 +75,12 @@ There are three target user roles for this application:
 
 __Important:__ We will use the following users in all subsequent labs from now on:
 
-| Username | Email                    | Role            |
-| ---------| ------------------------ | --------------- |
-| bwayne   | bruce.wayne@example.com  | LIBRARY_USER    |
-| bbanner  | bruce.banner@example.com | LIBRARY_USER    |
-| pparker  | peter.parker@example.com | LIBRARY_CURATOR |
-| ckent    | clark.kent@example.com   | LIBRARY_ADMIN   |
+| Username | Email                    | Password | Role            |
+| ---------| ------------------------ | -------- | --------------- |
+| bwayne   | bruce.wayne@example.com  | wayne    | LIBRARY_USER    |
+| bbanner  | bruce.banner@example.com | banner   | LIBRARY_USER    |
+| pparker  | peter.parker@example.com | parker   | LIBRARY_CURATOR |
+| ckent    | clark.kent@example.com   | kent     | LIBRARY_ADMIN   |
 
 These users are configured for basic authentication and also later for authenticating using keycloak.
 
@@ -241,7 +248,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
-  protected void configure(HttpSecurity http) {
+  protected void configure(HttpSecurity http) throws Exception {
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -385,7 +392,7 @@ public List<User> findAll() {
 Due to time restrictions we won't add these additional authority checks, we rather want to implement our
 customized JWT to Spring Security authorities mapping. So let's continue with this next step. 
 
-__<u>Step 3: Implement a custom JWT converter</u>__
+#### Step 3: Implement a custom JWT converter 
     
 To add our custom mapping for a JWT access token Spring Security requires us to implement
 the interface _Converter<Jwt, AbstractAuthenticationToken>_.
@@ -485,7 +492,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(HttpSecurity http) {
+  protected void configure(HttpSecurity http) throws Exception {
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -510,7 +517,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 _<u>Note:</u>_: The other approach can be seen in class _LibraryUserRolesJwtAuthenticationConverter_ in completed
 application in project _library-server-complete-custom_.
 
-__<u>Step 4: Add an additional JWT validator for the 'audience' claim</u>__
+#### Step 4: Add an additional JWT validator for the 'audience' claim 
+
 
 Implementing an additional token validator is quite easy, you just have to implement the 
 provided interface _OAuth2TokenValidator_.
@@ -585,7 +593,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(HttpSecurity http) {
+  protected void configure(HttpSecurity http) throws Exception {
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -693,12 +701,17 @@ project _library-server-complete-custom_ for the next labs.
 
 In part 2 of this lab we just have a look inside the completed resource server using
 the automatic mapping approach provided by Spring Security 5.
+
+__Due to time restrictions we don't implement this variant of resource server as part of this workshop!__
+
+This serves as a reference for you to see what has to be changed when using the automatic mapping of scopes
+to authorities. 
  
 ![Spring IO Workshop 2019](../docs/images/automatic_role_mapping.png)
 
 To have a look open the project _library-server-complete-automatic_. 
 
-__<u>Step 1: Adapting the authorization checks</u>__
+#### Step 1: Adapting the authorization checks 
 
 As already mentioned in part 1 of this lab the authorities do not map to the verified ones any more
 when using the automatic scope mapping:
@@ -717,7 +730,7 @@ This change would be required to perform this for all methods
 in the classes _com.example.library.server.business.BookService_ and 
 _com.example.library.server.business.UserService_.
 
-__<u>Step 2: Adapting the Authentication Principal</u>__
+#### Step 2: Adapting the Authentication Principal 
 
 Please open _com.example.library.server.api.BookRestController_ class and look
 for the methods to borrow or return a book:
@@ -790,6 +803,8 @@ It is required to do the same for the _return_ books method as well:
         .orElse(ResponseEntity.notFound().build());
 }
 ```  
+
+<hr>
 
 This concludes the Lab 1. We will continue with implementing the corresponding OAuth2/OIDC client
 for the resource server in project _library-server-complete-custom.
