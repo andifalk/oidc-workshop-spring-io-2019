@@ -162,6 +162,8 @@ WWW-Authenticate: Basic realm="Realm"
 }
 ``` 
 
+<hr>
+
 #### Step 1: Configure as resource server  
 To change this application into a resource server you have to make changes in the dependencies 
 of the gradle build file _build.gradle_:
@@ -270,6 +272,8 @@ This configuration above...
   (which also makes it possible to make post requests on the command line)
 * protects any request (i.e. requires authentication)
 * enables this as a resource server with expecting access tokens in JWT format
+
+<hr>
 
 #### Step 2: Run and test basic resource server 
 
@@ -391,6 +395,8 @@ public List<User> findAll() {
 
 Due to time restrictions we won't add these additional authority checks, we rather want to implement our
 customized JWT to Spring Security authorities mapping. So let's continue with this next step. 
+
+<hr>
 
 #### Step 3: Implement a custom JWT converter 
     
@@ -516,6 +522,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 _<u>Note:</u>_: The other approach can be seen in class _LibraryUserRolesJwtAuthenticationConverter_ in completed
 application in project _library-server-complete-custom_.
+
+<hr>
 
 #### Step 4: Add an additional JWT validator for the 'audience' claim 
 
@@ -697,6 +705,8 @@ own custom mapping.
 __<u>Important Note</u>__: If you could not manage to finish part 1 then just use the 
 project _library-server-complete-custom_ for the next labs.
 
+<hr>
+
 ### Lab 1 - Part 2
 
 In part 2 of this lab we just have a look inside the completed resource server using
@@ -710,6 +720,8 @@ to authorities.
 ![Spring IO Workshop 2019](../docs/images/automatic_role_mapping.png)
 
 To have a look open the project _library-server-complete-automatic_. 
+
+<hr>
 
 #### Step 1: Adapting the authorization checks 
 
@@ -729,6 +741,8 @@ public List<User> findAll() {
 This change would be required to perform this for all methods 
 in the classes _com.example.library.server.business.BookService_ and 
 _com.example.library.server.business.UserService_.
+
+<hr>
 
 #### Step 2: Adapting the Authentication Principal 
 
