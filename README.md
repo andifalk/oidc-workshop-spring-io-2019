@@ -5,7 +5,7 @@
 
 ![Spring IO Workshop 2019](docs/images/spring_io_2019_workshop.jpg)
 
-Have you ever wondered what the heck is OpenID Connect and how it differs from OAuth 2.0? Are Grant Types, Flows, JOSE, JWT or JWK unknown beings for you?
+Have you ever wondered what the heck is [OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html) and how it differs from [OAuth 2.0](https://tools.ietf.org/html/rfc6749)? Are Grant Types, Flows, JOSE, JWT or JWK unknown beings for you?
 Then this workshop is a great opportunity for you to get to know all these things by getting your hands dirty in code using Spring Security 5.1.
 
 This repository contains the complete material for workshop at [Spring I/O 2019](https://2019.springio.net/) on [Securing Microservices with OpenID Connect and Spring Security 5.1](https://2019.springio.net/sessions/securing-microservices-with-openid-connect-and-spring-security-51-workshop)
@@ -14,7 +14,7 @@ This repository contains the complete material for workshop at [Spring I/O 2019]
 
 This workshop content is split up into the following parts:
 
-* Introduction into [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html):   
+* Introduction into OAuth 2.0 and OpenID Connect 1.0:   
   [Presentation Slides (HTML5)](https://andifalk.github.io/oidc-workshop-spring-io-2019/)
   
 * [Hands-On Part](https://github.com/andifalk/oidc-workshop-spring-io-2019#hands-on-part-labs) with Spring Security 5.1
