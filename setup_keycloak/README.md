@@ -14,8 +14,8 @@ OR follow the following steps:
 1. Download the binary distribution [here (zip archive)](https://downloads.jboss.org/keycloak/6.0.1/keycloak-6.0.1.zip).
 2. Extract the downloaded zip file __keycloak-6.0.1.zip__ into a new local directory of your choice 
 (this directory will be referenced as __<KEYCLOAK_INSTALL_DIR>__ in next steps)
-3. Download the prepared keycloak configuration for this 
-workshop [here](keycloak_data.zip)
+3. Download the [prepared keycloak configuration](https://github.com/andifalk/oidc-workshop-spring-io-2019/raw/master/setup_keycloak/keycloak_data.zip) 
+for this workshop
 4. Extract the downloaded file __keycloak_data.zip__ into the sub directory __<KEYCLOAK_INSTALL_DIR>/standalone__ 
 that has been created as part of step 2
 
