@@ -862,7 +862,8 @@ It is required to do the same for the _return_ books method as well:
 
 <hr>
 
-This concludes the Lab 1. We will continue with implementing the corresponding OAuth2/OIDC client
-for the resource server in project _library-server-complete-custom.
+This concludes the [Lab 1](../lab1/README.md).   
+We will continue with implementing the corresponding OAuth2/OIDC client for the 
+resource server in project __library-server-complete-custom__.
 
-To continue with the client open [Lab 2](../lab2/README.md).
+To continue with the OAuth2/OIDC client please continue at [Lab 2](../lab2/README.md).
