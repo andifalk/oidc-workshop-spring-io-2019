@@ -146,7 +146,7 @@ implementation('org.springframework.boot:spring-boot-starter-security')
 ```
 and add this dependency instead:
 ```groovy
-implementation ('org.springframework.boot:spring-boot-starter-oauth2-client')
+implementation('org.springframework.boot:spring-boot-starter-oauth2-client')
 ```
 
 Spring security 5 uses the 
@@ -397,24 +397,27 @@ users:
 
 Now, after authenticating at keycloak you should be able to see the library client. 
 
+Please also checkout what happens if you login using users having different roles, e.g. as _pparker_
+as the library curator.
+
 If you want to see what is going on behind the scenes just add a debugging breakpoints to the following
 classes and methods
 
-<u>Authorization Request:</u>
+__Authorization Request:__
 
 For this part add a debugging breakpoint to the method 
 
 _OAuth2AuthorizationRequest resolve(HttpServletRequest request, String registrationId, String redirectUriAction)_ 
 in class _org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver_.
 
-<u>Authorization code redirect callback:</u>
+__Authorization code redirect callback:__
 
 For this part add a debugging breakpoint to the method 
 
 _Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)_
 in class _org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter_
 
-<u>Exchange authorization code for access token:</u>
+__Exchange authorization code for access token:__
 
 For this part add a debugging breakpoint to the method  
 
