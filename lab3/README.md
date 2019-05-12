@@ -269,5 +269,5 @@ If time still allows you can continue with [Lab 4](../lab4/README.md) to see how
 configure the resource server from [Lab 1](../lab1/README.md) with a custom static private/public key pair
 and create your own JWT tokens using the private key.
 
-This is quite helpful in testing environments, e.g. doing load/performmance testing and preventing
-from load testing the identity server.
+This is quite helpful in testing environments, e.g. doing load/performance testing and preventing
+from load testing the identity server as well.

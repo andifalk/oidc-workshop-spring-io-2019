@@ -12,4 +12,4 @@ pluginManagement {
         }
     }
 }
-rootProject.name = 'lab4-library-server-complete'
+rootProject.name = 'library-server-static-complete'

@@ -116,7 +116,7 @@ OAuth2/OIDC compliant resource server with customized mapping of token claims to
 
 #### Explore the initial application
 
-Please navigate your Java IDE to the lab1/library-server-initial project and at first explore this project a bit.  
+Please navigate your Java IDE to the __lab1/library-server-initial__ project and at first explore this project a bit.  
 Then start the application by running the class _com.example.library.server.Lab1InitialLibraryServerApplication_.
 
 To test if the application works as expected, either
@@ -277,7 +277,7 @@ This configuration above...
 
 #### Step 2: Run and test basic resource server 
 
-After removing all password relics from our application it should be possible to re-start
+Now it should be possible to re-start
 the reconfigured application _com.example.library.server.Lab1InitialLibraryServerApplication_.
 
 Now, the requests you have tried when starting this lab using basic authentication won't work any more
@@ -706,7 +706,7 @@ This ends part 1 of this lab. We continue with part 2 to replace the automatic m
 own custom mapping.
 
 __<u>Important Note</u>__: If you could not manage to finish part 1 then just use the 
-project _library-server-complete-custom_ for the next labs.
+project __lab1/library-server-complete-custom__ for the next labs.
 
 <hr>
 
@@ -722,7 +722,7 @@ to authorities.
  
 ![Spring IO Workshop 2019](../docs/images/automatic_role_mapping.png)
 
-To have a look open the project _library-server-complete-automatic_. 
+To have a look open the project __lab1/library-server-complete-automatic__. 
 
 <hr>
 

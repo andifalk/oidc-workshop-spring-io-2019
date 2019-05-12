@@ -24,5 +24,5 @@ include 'lab2:library-client-complete'
 include 'lab3:library-client-credentials-initial'
 include 'lab3:library-client-credentials-complete'
 include 'lab4:jwt-generator'
-include 'lab4:library-server-complete'
+include 'lab4:library-server-static-complete'
 

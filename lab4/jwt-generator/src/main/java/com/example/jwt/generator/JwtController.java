@@ -9,7 +9,6 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.jwk.RSAKey;
 import net.minidev.json.JSONObject;
-import net.minidev.json.parser.ParseException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +21,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,13 +28,12 @@ import java.util.Map;
 public class JwtController {
 
   private JWSSigner signer;
-  private RSAKey rsaKey;
 
   @PostConstruct
   public void initSigningKey() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, JOSEException {
     KeyStore keyStore = KeyStore.getInstance("jks");
     keyStore.load(new ClassPathResource("jwt_keys.jks").getInputStream(), "secret".toCharArray());
-    rsaKey = RSAKey.load(keyStore, "library-server", "secret".toCharArray());
+    RSAKey rsaKey = RSAKey.load(keyStore, "library-server", "secret".toCharArray());
     this.signer = new RSASSASigner(rsaKey);
   }
 
