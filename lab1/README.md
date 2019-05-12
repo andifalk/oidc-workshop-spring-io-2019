@@ -136,11 +136,8 @@ curl http://localhost:9091/library-server/books -u bruce.wayne@example.com:wayne
 ```
 
 If this succeeds you should see a list of books in JSON format.  
-Also try the same request with user credentials of 'peter.parker@example.com / parker'.
 
-__Question: What response would you expect here?__
-
-Finally also try same request without specifying any user:
+Also try same request without specifying any user:
 
 ```bash
 http localhost:9091/library-server/books
@@ -162,6 +159,20 @@ WWW-Authenticate: Basic realm="Realm"
 }
 ``` 
 
+Also try to request the list of users with same user credentials of 'bruce.wayne@example.com / wayne'.
+
+Httpie:
+```bash
+http localhost:9091/library-server/users --auth 'bruce.wayne@example.com:wayne'
+``` 
+
+Curl:
+```bash
+curl http://localhost:9091/library-server/users -u bruce.wayne@example.com:wayne | jq
+```
+
+__Question:__ What response would you expect here?
+
 <hr>
 
 #### Step 1: Configure as resource server  
@@ -174,7 +185,7 @@ implementation('org.springframework.boot:spring-boot-starter-security')
 ```
 and add this dependency instead:
 ```groovy
-implementation ('org.springframework.boot:spring-boot-starter-oauth2-resource-server')
+implementation('org.springframework.boot:spring-boot-starter-oauth2-resource-server')
 ```
 
 Spring security 5 uses the 
@@ -230,7 +241,8 @@ Spring Security also validates by default:
 
 Usually this configuration would be sufficient but as we also want to make sure that 
 our resource server is working with stateless token authentication we have to configure stateless
-sessions. Starting with Spring Boot 2 you always have to configure Spring Security
+sessions (i.e. prevent _JSESSION_ cookies).  
+Starting with Spring Boot 2 you always have to configure Spring Security
 yourself as soon as you introduce a class that extends _WebSecurityConfigurerAdapter_.
 
 Open the class _com.example.library.server.config.WebSecurityConfiguration_ and change the
@@ -263,6 +275,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .oauth2ResourceServer()
         .jwt();
   }
+  
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
 }
 ```
 
@@ -272,6 +289,10 @@ This configuration above...
   (which also makes it possible to make post requests on the command line)
 * protects any request (i.e. requires authentication)
 * enables this as a resource server with expecting access tokens in JWT format
+
+Usually _PasswordEncoder_ would not be required any more as we now do not verify passwords
+any more in a resource server, but for time reasons we won't delete it. Otherwise we would need
+plenty of time just removing all password related stuff from other places.
 
 <hr>
 
@@ -410,8 +431,11 @@ In general you have two choices here:
 * Map the corresponding _LibraryUser_ to the JWT token user data but map locally
   stored roles of the _LibraryUser_ to Spring Security authorities.
 
-In this workshop we will use the first approach and read the authorization data
-from the _groups_ claim inside the JWT token.
+In this workshop we will use the first approach and...
+ 
+ * ...read the authorization data from the _groups_ claim inside the JWT token
+ * ...map to our local _LibraryUser_ by reusing the _LibraryUserDetailsService_ to search
+   for a user having the same email as the _email_ claim inside the JWT token
 
 To achieve this please go ahead and create a new class _LibraryUserJwtAuthenticationConverter_
 in package _com.example.library.server.security_ with the following contents:
@@ -520,6 +544,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   LibraryUserJwtAuthenticationConverter libraryUserJwtAuthenticationConverter() {
     return new LibraryUserJwtAuthenticationConverter(libraryUserDetailsService);
   }
+  
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
 }
 ```
 
@@ -534,7 +563,12 @@ application in project _library-server-complete-custom_.
 Implementing an additional token validator is quite easy, you just have to implement the 
 provided interface _OAuth2TokenValidator_.
 Validating the _audience_ claim of a token is strongly recommended by OAuth 2 & OIDC experts
-to avoid misusing access tokens for other resource servers.
+to avoid misusing access tokens for other resource servers. So we should also validate
+that only requests with access tokens containing the expected value of "library-service" in 
+the _audience_ claim are successfully authenticated.
+
+So let's create a new class _AudienceValidator_ in package _com.example.library.server.security_
+with the following contents:
 
 ```java
 package com.example.library.server.security;
@@ -642,6 +676,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   LibraryUserJwtAuthenticationConverter libraryUserJwtAuthenticationConverter() {
     return new LibraryUserJwtAuthenticationConverter(libraryUserDetailsService);
   }
+  
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }  
 }
 ```  
 
