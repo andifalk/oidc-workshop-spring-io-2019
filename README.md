@@ -18,7 +18,6 @@ This workshop content is split up into the following parts:
   [Presentation Slides (HTML5)](https://andifalk.github.io/oidc-workshop-spring-io-2019/)
   
 * [Hands-On Part](https://github.com/andifalk/oidc-workshop-spring-io-2019#hands-on-part-labs) with Spring Security 5.1
-  * Implementing a [GitHub](https://github.com) client using common [OAuth 2.0](https://tools.ietf.org/html/rfc6749) providers
   * Creating an [OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) resource server
   * Mapping [OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) claims to Spring Security authorities
   * Creating an [OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) client
