@@ -37,6 +37,10 @@ To start the workshop you need:
 * [Keycloak](https://keycloak.org) as OpenID Connect/OAuth2 identity provider/authorization server (see below for setting this up)
 * This GitHub repository: [(https://github.com/andifalk/oidc-workshop-spring-io-2019.git](https://github.com/andifalk/oidc-workshop-spring-io-2019.git)
 
+## Setup Keycloak
+
+[Preparation: Setting up Keycloak as Identity Provider](setup_keycloak)
+
 ## Intro Labs
 
 [Intro Lab 1: Follow the OAuth 2.0 authorization code flow in detail](intro-labs/auth-code-demo)
@@ -46,8 +50,6 @@ To start the workshop you need:
 ## Hands-On Part Labs
 
 The hands-on part of the workshop is split up into the following parts:
-
-[Preparation: Setting up Keycloak as Identity Provider](setup_keycloak)
 
 [Lab 1: Implementing an OAuth2/OIDC resource server](lab1)
 
