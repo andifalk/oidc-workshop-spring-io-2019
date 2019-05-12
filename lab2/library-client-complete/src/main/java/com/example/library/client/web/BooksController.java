@@ -22,6 +22,7 @@ import java.io.IOException;
 public class BooksController {
 
   private final WebClient webClient;
+
   @Value("${library.server}")
   private String libraryServer;
 

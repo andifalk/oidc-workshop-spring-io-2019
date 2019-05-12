@@ -411,7 +411,10 @@ In general you have two choices here:
   stored roles of the _LibraryUser_ to Spring Security authorities.
 
 In this workshop we will use the first approach and read the authorization data
-from the _groups_ claim inside the JWT token:
+from the _groups_ claim inside the JWT token.
+
+To achieve this please go ahead and create a new class _LibraryUserJwtAuthenticationConverter_
+in package _com.example.library.server.security_ with the following contents:
 
 ```java
 package com.example.library.server.security;

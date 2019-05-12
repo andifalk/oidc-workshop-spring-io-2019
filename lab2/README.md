@@ -2,6 +2,21 @@
 
 In the second lab we want to build an OAuth2/OIDC client for the resource server we have built in Lab 1.
 
+In [Lab 2](../lab2/README.md) the client will be using
+the [OAuth2 authorization code grant flow](https://tools.ietf.org/html/rfc6749#section-4.1).
+
+According to the specification this grant flow is described as follows:
+<blockquote cite="https://tools.ietf.org/html/rfc6749#section-4.1">
+The authorization code grant type is used to obtain both access tokens and refresh tokens 
+and is optimized for confidential clients. Since this is a redirection-based flow, the client 
+must be capable of interacting with the resource owner's user-agent (typically a web browser) 
+and capable of receiving incoming requests (via redirection) from the authorization server.</blockquote>
+
+__Important Note: The client credentials grant type MUST only be used by confidential clients.__
+
+Later in [Lab 3](../lab3/README.md) we will build almost the same OAuth2 client but in Lab 3 we will be 
+using the [client credentials grant flow](https://tools.ietf.org/html/rfc6749#section-4.4) instead. 
+
 See [Spring Security 5 OAuth 2.0 Client reference doc](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2client) 
 for all details on how to build and configure an OAuth 2.0 client. 
 
@@ -364,6 +379,10 @@ and We have to change this in class _com.example.library.client.web.BooksControl
     }    
     ...  
     ```
+
+<hr>
+
+#### Step 5: Run/debug the OAuth2 web client application
   
 Now re-start the library client and browse again 
 to [localhost:9090/library-client](http://localhost:9090/library-client) and login using the different
@@ -378,10 +397,34 @@ users:
 
 Now, after authenticating at keycloak you should be able to see the library client. 
 
+If you want to see what is going on behind the scenes just add a debugging breakpoints to the following
+classes and methods
+
+<u>Authorization Request:</u>
+
+For this part add a debugging breakpoint to the method 
+
+_OAuth2AuthorizationRequest resolve(HttpServletRequest request, String registrationId, String redirectUriAction)_ 
+in class _org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver_.
+
+<u>Authorization code redirect callback:</u>
+
+For this part add a debugging breakpoint to the method 
+
+_Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)_
+in class _org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter_
+
+<u>Exchange authorization code for access token:</u>
+
+For this part add a debugging breakpoint to the method  
+
+_OAuth2AccessTokenResponse getTokenResponse(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest)_ 
+in class _org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient_
+
 <hr>
 
 That's a wrap for this second Lab.
 
-If time still allows you can continue with [Lab 3](../lab3/README.md) to implement the same client
+If time still allows you can continue with [Lab 3](../lab3/README.md) to implement almost the same OAuth2 client
 but this time using another OAuth2 grant flow: The client credentials flow (
 for machine-to-machine interactions without the need for a user identity).

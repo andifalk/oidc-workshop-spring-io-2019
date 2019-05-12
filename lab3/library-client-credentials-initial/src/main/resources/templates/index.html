@@ -1,4 +1,4 @@
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/dialect" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Library Client</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
@@ -10,25 +10,17 @@
 <div class="container">
 
     <h1>Library Client</h1>
+    <h2>Client Credentials Flow</h2>
 
     <div class="row">
 
         <div class="col">
-            <p>A nice library to borrow books</p>
-        </div>
-
-        <div class="col">
-            <p th:text="'Hello ' + ${fullname}"></p>
+            <p>Show all books of the library</p>
         </div>
 
     </div>
 
     <hr>
-
-    <div class="jumbotron" sec:authorize="hasRole('LIBRARY_CURATOR')">
-        <a class="btn btn-primary" href="#" role="button" sec:authorize="hasRole('LIBRARY_CURATOR')"
-           th:href="@{/createbook}">Create Book</a>
-    </div>
 
     <table class="table table-striped">
         <thead>
@@ -37,7 +29,6 @@
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">ISBN</th>
-            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -46,14 +37,6 @@
             <td th:text="${bookResource.title}">Title</td>
             <td th:text="${bookResource.description}">descr</td>
             <td th:text="${bookResource.isbn}">isbn</td>
-            <td><a class="btn btn-primary" href="#" role="button" sec:authorize="hasRole('LIBRARY_USER')"
-                   th:href="@{'/return?identifier=' + ${bookResource.identifier}}"
-                   th:unless="${!bookResource.returnBookAllowed}">Return</a><a class="btn btn-primary" href="#"
-                                                                               role="button"
-                                                                               sec:authorize="hasRole('LIBRARY_USER')"
-                                                                               th:href="@{'/borrow?identifier=' + ${bookResource.identifier}}"
-                                                                               th:unless="${bookResource.borrowed}">Borrow</a>
-            </td>
         </tr>
         </tbody>
     </table>
