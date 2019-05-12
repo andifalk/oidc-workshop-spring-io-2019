@@ -65,7 +65,7 @@ The packages of the application are organized as follows:
 To call the provided REST API you can use curl or httpie. 
 For details on how to call the REST API please consult the [REST API documentation](../docs/api-doc.html) which also provides sample requests for curl and httpie.
 
-### User roles
+### Users and roles
 
 There are three target user roles for this application:
 
