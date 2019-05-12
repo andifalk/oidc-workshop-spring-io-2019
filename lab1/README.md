@@ -559,13 +559,25 @@ application in project _library-server-complete-custom_.
 
 #### Step 4: Add an additional JWT validator for the 'audience' claim 
 
-
 Implementing an additional token validator is quite easy, you just have to implement the 
 provided interface _OAuth2TokenValidator_.
-Validating the _audience_ claim of a token is strongly recommended by OAuth 2 & OIDC experts
-to avoid misusing access tokens for other resource servers. So we should also validate
-that only requests with access tokens containing the expected value of "library-service" in 
-the _audience_ claim are successfully authenticated.
+
+According to [OpenID Connect 1.0 specification](https://openid.net/specs/openid-connect-core-1_0.html#IDToken) the _audience_ claim 
+is mandatory for ID tokens:
+
+<blockquote cite=https://openid.net/specs/openid-connect-core-1_0.html#IDToken">
+Audience(s) that this ID Token is intended for. It MUST contain the OAuth 2.0 client_id of the Relying Party as an audience value. It MAY also contain identifiers for other audiences.
+</blockquote>
+
+Despite of the fact that the _audience_ claim is not specified or mandatory for access tokens
+specifying and validating the _audience_ claim of access tokens is strongly recommended by OAuth 2 & OIDC experts
+to avoid misusing access tokens for other resource servers.   
+There is also a new [draft specification](https://tools.ietf.org/html/draft-ietf-oauth-access-token-jwt)
+on the way to provide a standardized and interoperable profile as an alternative 
+to the proprietary JWT access token layouts.
+
+So we should also validate that only those requests bearing access tokens containing the 
+expected value of "library-service" in the _audience_ claim are successfully authenticated.
 
 So let's create a new class _AudienceValidator_ in package _com.example.library.server.security_
 with the following contents:
@@ -741,8 +753,9 @@ Now, with our previous changes this request should succeed with an '200' OK stat
 
 <hr>
 
-This ends part 1 of this lab. We continue with part 2 to replace the automatic mapping with our 
-own custom mapping.
+This ends part 1 of this lab.  
+We continue with [part 2](#lab-1---part-2) to have a closer look
+into a resource server just using the automatic mapping provided by Spring Security 5.
 
 __<u>Important Note</u>__: If you could not manage to finish part 1 then just use the 
 project __lab1/library-server-complete-custom__ for the next labs.
