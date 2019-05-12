@@ -9,6 +9,7 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.jwk.RSAKey;
 import net.minidev.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,16 +50,18 @@ public class JwtController {
     Map<String, Object> payload = new HashMap<>();
 
     payload.put("iss", "test_issuer");
+    payload.put("exp", Math.abs(System.currentTimeMillis() / 1000) + (5 * 60));
     payload.put("aud", new String[] {"library-service"});
-    payload.put("sub", user.getEmail());
+    payload.put("sub", user.getEmail() != null ? user.getEmail() : "bruce.wayne@example.com");
     payload.put("scope", "openid email profile");
-    payload.put("groups", new String[] {"library_user"});
-    payload.put("preferred_username", user.getUsername());
-    payload.put("given_name", user.getFirstName());
-    payload.put("family_name", user.getLastName());
-    payload.put("email", user.getEmail());
+    payload.put("groups", StringUtils.isNotBlank(user.getRole()) ? new String[] {user.getRole()} : new String[] {"library_user"});
+    payload.put("preferred_username", StringUtils.isNotBlank(user.getUsername()) ? user.getUsername() : "bwayne");
+    payload.put("given_name", StringUtils.isNotBlank(user.getFirstName()) ? user.getFirstName() : "Bruce");
+    payload.put("family_name", StringUtils.isNotBlank(user.getLastName()) ? user.getLastName() : "Wayne");
+    payload.put("email", StringUtils.isNotBlank(user.getEmail()) ? user.getEmail() : "bruce.wayne@example.com");
     payload.put("email_verified", true);
-    payload.put("name", user.getFirstName() + " " + user.getLastName());
+    payload.put("name", StringUtils.isNotBlank(user.getFirstName())
+            && StringUtils.isNotBlank(user.getLastName()) ? user.getFirstName() + " " + user.getLastName() : "Bruce Wayne");
 
     String jwt = createJwt(payload);
     model.addAttribute("jwt", jwt);
@@ -85,6 +88,4 @@ public class JwtController {
     // -jPDm5Iq0SZnjKjCNS5Q15fokXZc8u0A
     return jwsObject.serialize();
   }
-
-
 }

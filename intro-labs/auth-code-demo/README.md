@@ -51,6 +51,18 @@ __Important:__ You can use one of the following users to login:
 
 You may use the _username_ or _email_ in the username input field.
 
+If you stay too long on step 2 (where you have retrieved the authorization code) then you might
+get an error when proceeding to step 3 (exchanging the code for an access token).  
+This is because the authorization code timed out.
+
+According to the [OAuth2 specification](https://tools.ietf.org/html/rfc6749#section-4.1.2):
+
+<blockquote cite="https://tools.ietf.org/html/rfc6749#section-4.1.2">
+The authorization code MUST expire shortly after it is issued to mitigate the risk of leaks.  
+A maximum authorization code lifetime of 10 minutes is RECOMMENDED. 
+The client MUST NOT use the authorization code more than once. 
+</blockquote>
+
 
 
 

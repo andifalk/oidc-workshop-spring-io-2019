@@ -1,5 +1,7 @@
 package com.example.authorizationcode.client.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -59,7 +62,7 @@ public class TokenIntrospectionController {
         .bodyToMono(String.class)
         .map(
             s -> {
-              model.addAttribute("introspection_response", s);
+              model.addAttribute("introspection_response", prettyJson(s));
               return "introspection";
             })
         .onErrorResume(
@@ -70,5 +73,15 @@ public class TokenIntrospectionController {
                   "error_description", ((WebClientResponseException) t).getResponseBodyAsString());
               return Mono.just("error");
             });
+  }
+
+  private String prettyJson(String raw) {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    try {
+      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readValue(raw, Object.class));
+    } catch (IOException e) {
+      return raw;
+    }
   }
 }

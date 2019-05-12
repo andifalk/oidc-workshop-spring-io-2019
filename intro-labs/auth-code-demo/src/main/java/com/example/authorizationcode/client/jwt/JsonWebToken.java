@@ -1,7 +1,11 @@
 package com.example.authorizationcode.client.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.Base64;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,7 +45,14 @@ public class JsonWebToken {
   }
 
   public String getPayload() {
-    return new String(Base64.getDecoder().decode(base64Payload), UTF_8);
+    String raw_json = new String(Base64.getDecoder().decode(base64Payload), UTF_8);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    try {
+      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readValue(raw_json, Object.class));
+    } catch (IOException e) {
+      return raw_json;
+    }
   }
 
   public String getSignature() {
