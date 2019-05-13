@@ -13,6 +13,10 @@ jobs:
       script:
         - ./gradlew build
     - stage: build
+      jdk: oraclejdk9
+      script:
+        - ./gradlew build
+    - stage: build
       jdk: openjdk11
       script:
         - ./gradlew build
