@@ -69,6 +69,12 @@
                         </p>
                     </section>
                     <section>
+                        <p>
+                            <img class="plain" src="images/kubernetes_session.png">
+                        </p>
+                        <p style="color: #0000bf">Session tomorrow at 18:00</p>
+                    </section>
+                    <section>
                         <h1>Agenda</h1>
                         <p>Intro to OAuth 2.0</p>
                         <p>Intro to OpenID Connect 1.0</p>
@@ -232,6 +238,23 @@
                         <p style="text-align: left; margin-left: 60px;">&redirect_uri=https://client.abc.com/callback</p>
                         <p style="text-align: left; margin-left: 60px;">&client_id=123&client_secret=456</p>
                         <p style="text-align: left; margin-left: 60px; color: red;">&code_verifier=4gth4jn78k_8</p>
+                    </section>
+                    <section>
+                        <h3>OAuth 2 Access Token JWT Profile</h3>
+                        <p>Required claims: iss, exp, aud, sub, client_id</p>
+                        <p>Consider privacy restrictions for identity claims</p>
+                        <p>Authorization claims according to SCIM Core (RFC7643):</p>
+                        <ul>
+                            <li>Groups</li>
+                            <li>Entitlements</li>
+                            <li>Roles</li>
+                        </ul>
+                        <p>
+                            <small>
+                                <a href="https://tools.ietf.org/pdf/rfc7643.pdf">System for Cross-domain Identity Management (SCIM)</a><br>
+                                <a href="https://tools.ietf.org/html/draft-ietf-oauth-access-token-jwt">JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens</a>
+                            </small>
+                        </p>
                     </section>
                 </section>
 
