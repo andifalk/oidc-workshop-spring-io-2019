@@ -24,7 +24,8 @@ This workshop content is split up into the following parts:
   * Testing a [OpenID Connect 1.0](https://openid.net/specs/openid-connect-core-1_0.html) resource server
 
 * A look into the future of OAuth 2.0 and OIDC features to be released in Spring Security 5.2 and 5.3  
-  [Presentation Slides (HTML5)](https://andifalk.github.io/oidc-workshop-spring-io-2019/#/5/)
+  [Presentation Slides (HTML5)](https://andifalk.github.io/oidc-workshop-spring-io-2019/#/5/) <br>
+  [Presentation Slides (PDF)](https://github.com/andifalk/oidc-workshop-spring-io-2019/raw/master/Securing_Microservices_OpenID_Connect_Spring_Security_5_1.pdf)
 
 ## Requirements for Hands-On Part
 
