@@ -31,7 +31,7 @@ This workshop content is split up into the following parts:
 
 To start the workshop you need:
 
-* [Java JDK version 8 or 11](https://openjdk.java.net/install/)
+* [Java JDK version 8, 9 or 11](https://openjdk.java.net/install/)
 * A Java IDE ([Eclipse](https://www.eclipse.org/), [STS](https://spring.io/tools), [IntelliJ](https://www.jetbrains.com/idea/), [VS Code](https://code.visualstudio.com/), [NetBeans](https://netbeans.org/), ...)
 * A tool like [curl](https://curl.haxx.se/download.html), [HTTPie](https://httpie.org/) or [Postman](https://www.getpostman.com/) is helpful to play with the REST API services.  
 * The [REST API documentation](https://andifalk.github.io/oidc-workshop-spring-io-2019/api-doc.html) of the initial library application
